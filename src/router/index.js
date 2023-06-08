@@ -1,13 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "../views/LoginView.vue";
 import SignUpView from "../views/SignUpView.vue";
-// import HomeView from "../views/HomeView.vue";
+import HomeView from "../views/HomeView.vue";
+import BookmarkView from "../views/BookmarkView.vue";
 const routes = [
-  // {
-  //   path: "/",
-  //   name: "home",
-  //   component: HomeView,
-  // },
+  {
+    path: "/",
+    name: "home",
+    component: HomeView,
+  },
   {
     path: "/login",
     name: "login",
@@ -20,6 +21,11 @@ const routes = [
     component: SignUpView,
   },
   { path: "/:pathMatch(.*)*", redirect: "/sign-up" },
+  {
+    path: "/bookmark",
+    name: "bookmark",
+    component: BookmarkView,
+  },
 ];
 
 const router = createRouter({
