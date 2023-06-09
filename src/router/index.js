@@ -3,6 +3,7 @@ import LoginView from "../views/LoginView.vue";
 import SignUpView from "../views/SignUpView.vue";
 import HomeView from "../views/HomeView.vue";
 import BookmarkView from "../views/BookmarkView.vue";
+import GameCardView from "../views/GameCardView.vue";
 const routes = [
   {
     path: "/",
@@ -26,6 +27,13 @@ const routes = [
     name: "bookmark",
     component: BookmarkView,
   },
+  { path: "/:pathMatch(.*)*", redirect: "/bookmark" },
+  {
+    path: "/game-card",
+    name: "game-card",
+    component: GameCardView,
+  },
+  { path: "/:pathMatch(.*)*", redirect: "/game-card" },
 ];
 
 const router = createRouter({
