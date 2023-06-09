@@ -56,20 +56,20 @@
   </div>
 </template>
 <script>
-import AuthService from "@/services/AuthService.js";
+import AuthService from "@/services/AuthService.js"
 export default {
   name: "navbar-component",
   data() {
     return {
-      showMenu: false,
-    };
+      showMenu: false
+    }
   },
   inject: ["GStore"],
   methods: {
     handleLogout() {
-      AuthService.logout();
-      this.$router.push("/login");
-    },
-  },
-};
+      AuthService.logout()
+      this.$router.push("/login")
+    }
+  }
+}
 </script>

@@ -1,9 +1,9 @@
-import { createApp } from "vue";
-import App from "./App.vue";
-import router from "./router";
-import GStore from "./store";
-import "./assets/tailwind.css";
-import "@/services/AxiosInterceptorSetup.js";
-import "./assets/tailwind.css";
+import { createApp } from "vue"
+import App from "./App.vue"
+import router from "./router"
+import GStore from "./store"
+import "./assets/tailwind.css"
+import "@/services/AxiosInterceptorSetup.js"
+import "./assets/tailwind.css"
 
-createApp(App).provide("GStore", GStore).use(router).mount("#app");
+createApp(App).provide("GStore", GStore).use(router).mount("#app")
