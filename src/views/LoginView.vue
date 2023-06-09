@@ -83,38 +83,38 @@
   </div>
 </template>
 <script>
-import { Form, Field, ErrorMessage } from "vee-validate"
-import * as yup from "yup"
-import AuthService from "@/services/AuthService.js"
+import { Form, Field, ErrorMessage } from "vee-validate";
+import * as yup from "yup";
+import AuthService from "@/services/AuthService.js";
 export default {
   name: "LoginView",
   components: {
     Form,
     Field,
-    ErrorMessage
+    ErrorMessage,
   },
   data() {
     const schema = yup.object().shape({
       username: yup.string().required("Username is required!"),
-      password: yup.string().required("Password is required!")
-    })
+      password: yup.string().required("Password is required!"),
+    });
     return {
       loading: false,
       message: "",
-      schema
-    }
+      schema,
+    };
   },
   methods: {
     handleLogin(user) {
       AuthService.login(user)
         .then((res) => {
-          console.log(res)
-          this.$router.push({ name: "home" })
+          console.log(res);
+          this.$router.push({ name: "home" });
         })
         .catch((e) => {
-          console.log(e)
-        })
-    }
-  }
-}
+          console.log(e);
+        });
+    },
+  },
+};
 </script>

@@ -5,13 +5,13 @@
   </div>
 </template>
 <script>
-import NavbarComponent from "@/components/NavBar.vue"
+import NavbarComponent from "@/components/NavBar.vue";
 
 export default {
   name: "app-page",
   components: {
-    NavbarComponent
+    NavbarComponent,
   },
-  inject: ["GStore"]
-}
+  inject: ["GStore"],
+};
 </script>

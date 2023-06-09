@@ -71,32 +71,32 @@
 </template>
 
 <script>
-import AuthService from "@/services/AuthService.js"
+import AuthService from "@/services/AuthService.js";
 
 export default {
   data() {
     return {
       username: "",
-      password: ""
-    }
+      password: "",
+    };
   },
   methods: {
     signup() {
       const user = {
         username: this.username,
-        password: this.password
-      }
+        password: this.password,
+      };
       AuthService.login(user)
         .then((response) => {
           // Handle successful signup
-          console.log(response)
-          this.$router.push("/login") // Navigate to the login page
+          console.log(response);
+          this.$router.push("/login"); // Navigate to the login page
         })
         .catch((error) => {
           // Handle signup error
-          console.error(error)
-        })
-    }
-  }
-}
+          console.error(error);
+        });
+    },
+  },
+};
 </script>
