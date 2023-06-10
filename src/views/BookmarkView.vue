@@ -1,5 +1,10 @@
 <template>
-  <div class="about">
-    <h1>This is a Bookmark page</h1>
+  <div class="">
+    <h1>bookmark</h1>
   </div>
 </template>
+<script>
+export default {
+  name: "bookmark-page",
+};
+</script>
