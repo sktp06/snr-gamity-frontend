@@ -17,7 +17,7 @@ export default {
   search(query) {
     return apiClient.post(`/game/search?query=${query}`).then((response) => {
       GStore.gameList = response.data;
-      console.log(GStore);
+      console.log(GStore.gameList);
     });
   },
 };
