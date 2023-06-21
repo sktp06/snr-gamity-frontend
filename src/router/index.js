@@ -4,6 +4,7 @@ import SignUpView from "../views/SignUpView.vue";
 import HomeView from "../views/HomeView.vue";
 import BookmarkView from "../views/BookmarkView.vue";
 import GameCardView from "../views/GameCardView.vue";
+import BookmarkService from "@/services/BookmarkService";
 // import UpComingGameView from "../views/UpComingGameView.vue";
 const routes = [
   {
@@ -27,6 +28,11 @@ const routes = [
     path: "/bookmark",
     name: "bookmark",
     component: BookmarkView,
+    beforeEnter: () => {
+      BookmarkService.getbookmarkList(
+        JSON.parse(localStorage.getItem("user")).id
+      );
+    },
   },
   { path: "/:pathMatch(.*)*", redirect: "/bookmark" },
   {

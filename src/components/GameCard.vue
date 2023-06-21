@@ -12,24 +12,28 @@
     </p>
     <p class="mb-2">Release Date: {{ game.release_dates }}</p>
     <button
-      @click="addToFavorites"
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      @click="addToFavorites(game.id)"
+      class="bg-blue-400 hover:bg-green-400 text-white font-bold py-2 px-4 rounded-full"
     >
-      Add to Favorites
+      Add to Favourites
     </button>
   </div>
 </template>
 
 <script>
+import BookmarkService from "@/services/BookmarkService.js";
+
 export default {
   props: ["game"],
   mounted() {
     console.log(this.game); // Check the structure of the game object
   },
   methods: {
-    addToFavorites() {
-      // Add your logic here to handle adding the game to favorites
-      // For example, you can emit an event or call a Vuex action to update the favorites state
+    addToFavorites(gameId) {
+      BookmarkService.addBookmark(
+        JSON.parse(localStorage.getItem("user")).id,
+        gameId
+      );
     },
   },
 };
