@@ -44,17 +44,16 @@ export default {
         console.log(err);
       });
   },
-
-  //   getBookmarkById(GameId) {
-  //     apiClient
-  //       .post("/bookmarks/id", {
-  //           GameId: GameId,
-  //       })
-  //       .then((res) => {
-  //         GStore.animeDetails = res.data;
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   },
+  // getBookmarkById(gameId) {
+  //   apiClient
+  //     .post("/bookmarks/id", {
+  //         gameId: gameId,
+  //     })
+  //     .then((res) => {
+  //       GStore.gameDetails = res.data;
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // },
 };
