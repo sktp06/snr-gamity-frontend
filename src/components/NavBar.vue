@@ -21,14 +21,14 @@
       >
         <Field
           class="px-4 py-2 w-80"
-          type="input"
-          name="input"
+          type="text"
+          name="query"
+          v-model="searchQuery"
           placeholder="Search..."
         />
         <button
           class="flex items-center justify-center px-4 border-l"
           type="submit"
-          @click="onSearch"
         >
           <svg
             class="w-6 h-6 text-blue-300"
@@ -70,6 +70,7 @@
 <script>
 import AuthService from "@/services/AuthService.js";
 import SearchService from "@/services/SearchService.js";
+import SpellService from "@/services/SpellService.js";
 import { Form, Field } from "vee-validate";
 import * as yup from "yup";
 
@@ -82,11 +83,12 @@ export default {
   },
   data() {
     const schema = yup.object().shape({
-      input: yup.string(),
+      query: yup.string().required(),
     });
     return {
       schema,
       showMenu: false,
+      searchQuery: "", // Add searchQuery data property
     };
   },
   methods: {
@@ -94,9 +96,21 @@ export default {
       AuthService.logout();
       this.$router.push("/login");
     },
-    onSearch(input) {
-      console.log(input);
-      SearchService.search(input);
+    onSearch() {
+      const query = this.searchQuery; // Use the updated searchQuery property
+
+      SpellService.correction(query)
+        .then((res) => {
+          if (query !== res.data) {
+            alert("Maybe you mean: " + res.data);
+            return SearchService.search(res.data);
+          } else {
+            return SearchService.search(query);
+          }
+        })
+        .then(() => {
+          this.$router.push("/game-card");
+        });
     },
   },
 };
