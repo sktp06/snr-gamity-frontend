@@ -109,7 +109,7 @@ export default {
       AuthService.login(user)
         .then((res) => {
           console.log(res);
-          this.$router.push({ name: "home" });
+          this.$router.push({ name: "game-card" });
         })
         .catch((e) => {
           console.log(e);

@@ -3,6 +3,9 @@ import LoginView from "../views/LoginView.vue";
 import SignUpView from "../views/SignUpView.vue";
 import HomeView from "../views/HomeView.vue";
 import BookmarkView from "../views/BookmarkView.vue";
+import GameCardView from "../views/GameCardView.vue";
+import BookmarkService from "@/services/BookmarkService";
+// import UpComingGameView from "../views/UpComingGameView.vue";
 const routes = [
   {
     path: "/",
@@ -25,19 +28,37 @@ const routes = [
     path: "/bookmark",
     name: "bookmark",
     component: BookmarkView,
+    beforeEnter: () => {
+      BookmarkService.getbookmarkList(
+        JSON.parse(localStorage.getItem("user")).id
+      );
+    },
   },
+  { path: "/:pathMatch(.*)*", redirect: "/bookmark" },
+  {
+    path: "/game-card",
+    name: "game-card",
+    component: GameCardView,
+  },
+  { path: "/:pathMatch(.*)*", redirect: "/game-card" },
+  // {
+  //   path: "/upcoming",
+  //   name: "upcoming",
+  //   component: UpComingGameView,
+  // },
+  // { path: "/:pathMatch(.*)*", redirect: "/upcoming" },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
-  // scrollBehavior(to, from, savedPosition) {
-  //   if (savedPosition) {
-  //     return savedPosition;
-  //   } else {
-  //     return { top: 0 };
-  //   }
-  // },
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      return { top: 0 };
+    }
+  },
 });
 
 export default router;
