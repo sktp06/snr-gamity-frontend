@@ -3,57 +3,24 @@
     <div class="container mx-auto py-8">
       <div class="header flex justify-between mb-4">
         <h2 class="text-2xl font-bold">Game Library</h2>
-        <div>
-          <label for="genreFilter" class="text-gray-300 mr-2"
-            >Filter by Genre:</label
-          >
-          <select
-            id="genreFilter"
-            v-model="selectedGenre"
-            class="bg-gray-800 text-white py-1 px-2 rounded"
-          >
-            <option value="">All Genres</option>
-            <option v-for="genre in allGenres" :value="genre" :key="genre">
-              {{ genre }}
-            </option>
-          </select>
-        </div>
       </div>
-      <div
-        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"
-      >
-        <GameCard v-for="game in displayedGames" :key="game.id" :game="game" />
+      <div v-for="(value, index) in displayedGames" :key="index">
+        <h2 class="text-2xl font-bold">
+          {{ value.genre }}
+        </h2>
+        <Carousel :games="value.games" />
       </div>
     </div>
-    <!-- Pagination buttons -->
-    <!-- <div class="flex justify-center mb-8">
-      <button
-        @click="previousPage"
-        :disabled="currentPage === 1"
-        class="bg-red-700 text-white py-2 px-4 rounded mr-2"
-      >
-        Previous
-      </button>
-      <button
-        @click="nextPage"
-        :disabled="currentPage === totalPages"
-        class="bg-red-700 text-white py-2 px-4 rounded"
-      >
-        Next
-      </button>
-    </div> -->
   </div>
 </template>
 
 <script>
-// import Carousel from "@/components/Carousel.vue";
-import GameCard from "@/components/GameCard.vue";
+import Carousel from "@/components/Carousel.vue";
 import gameService from "@/services/gameService";
 
 export default {
   components: {
-    GameCard,
-    // Carousel,
+    Carousel,
   },
   data() {
     return {
@@ -64,32 +31,26 @@ export default {
     };
   },
   computed: {
-    totalPages() {
-      return Math.ceil(this.filteredGames.length / this.itemsPerPage);
-    },
-    filteredGames() {
-      if (this.selectedGenre === "") {
-        return this.games;
-      } else {
-        return this.games.filter((game) =>
-          game.genres.includes(this.selectedGenre)
-        );
-      }
-    },
-    displayedGames() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      const sortedGames = [...this.filteredGames].sort(
-        (a, b) => b.rating - a.rating
-      );
-      return sortedGames.slice(startIndex, endIndex);
-    },
     allGenres() {
       const allGenres = new Set();
       this.games.forEach((game) => {
         game.genres.forEach((genre) => allGenres.add(genre));
       });
       return Array.from(allGenres);
+    },
+
+    displayedGames() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      let kai = [];
+      this.allGenres.forEach((genre) => {
+        kai.push({
+          genre: genre,
+          games: this.filteredGames(genre).slice(startIndex, endIndex),
+        });
+      });
+      console.log(kai);
+      return kai;
     },
   },
   async mounted() {
@@ -101,21 +62,10 @@ export default {
     }
   },
   methods: {
-    // previousPage() {
-    //   if (this.currentPage > 1) {
-    //     this.currentPage--;
-    //   }
-    // },
-    // nextPage() {
-    //   if (this.currentPage < this.totalPages) {
-    //     this.currentPage++;
-    //   }
-    // },
+    filteredGames(genre) {
+      let kai = this.games.filter((game) => game.genres.includes(genre));
+      return kai.sort((a, b) => b.rating - a.rating);
+    },
   },
 };
 </script>
-
-<style scoped>
-/* Styles for the GameCardView component */
-/* ... your existing styles ... */
-</style>
