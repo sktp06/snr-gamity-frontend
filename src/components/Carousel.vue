@@ -1,7 +1,7 @@
 <template>
   <carousel :items-to-show="5.5">
     <slide v-for="(game, index) in games" :key="index">
-      <img :src="game.cover.url" alt="cover" class="w-full h-64 object-cover" />
+      <img :src="game.cover" alt="cover" class="w-full h-64 object-cover" />
     </slide>
     <template #addons>
       <navigation />
