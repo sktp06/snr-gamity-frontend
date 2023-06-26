@@ -26,7 +26,7 @@
       </div>
     </div>
     <!-- Pagination buttons -->
-    <div class="flex justify-center mb-8">
+    <!-- <div class="flex justify-center mb-8">
       <button
         @click="previousPage"
         :disabled="currentPage === 1"
@@ -41,17 +41,19 @@
       >
         Next
       </button>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
+// import Carousel from "@/components/Carousel.vue";
 import GameCard from "@/components/GameCard.vue";
 import gameService from "@/services/gameService";
 
 export default {
   components: {
     GameCard,
+    // Carousel,
   },
   data() {
     return {
@@ -99,16 +101,16 @@ export default {
     }
   },
   methods: {
-    previousPage() {
-      if (this.currentPage > 1) {
-        this.currentPage--;
-      }
-    },
-    nextPage() {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage++;
-      }
-    },
+    // previousPage() {
+    //   if (this.currentPage > 1) {
+    //     this.currentPage--;
+    //   }
+    // },
+    // nextPage() {
+    //   if (this.currentPage < this.totalPages) {
+    //     this.currentPage++;
+    //   }
+    // },
   },
 };
 </script>
