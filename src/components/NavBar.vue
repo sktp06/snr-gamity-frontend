@@ -9,6 +9,9 @@
       <router-link v-if="GStore.currentUser" to="/bookmark"
         >Bookmark</router-link
       >
+      <router-link v-if="GStore.currentUser" to="/upcoming-game"
+        >Up-Coming</router-link
+      >
     </div>
     <div
       v-if="GStore.currentUser"

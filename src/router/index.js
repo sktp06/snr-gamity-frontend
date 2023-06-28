@@ -5,7 +5,7 @@ import HomeView from "../views/HomeView.vue";
 import BookmarkView from "../views/BookmarkView.vue";
 import GameCardView from "../views/GameCardView.vue";
 import BookmarkService from "@/services/BookmarkService";
-// import UpComingGameView from "../views/UpComingGameView.vue";
+import UpComingGameView from "../views/UpComingGameView.vue";
 const routes = [
   {
     path: "/",
@@ -41,12 +41,12 @@ const routes = [
     component: GameCardView,
   },
   { path: "/:pathMatch(.*)*", redirect: "/game-card" },
-  // {
-  //   path: "/upcoming",
-  //   name: "upcoming",
-  //   component: UpComingGameView,
-  // },
-  // { path: "/:pathMatch(.*)*", redirect: "/upcoming" },
+  {
+    path: "/upcoming-game",
+    name: "upcoming",
+    component: UpComingGameView,
+  },
+  { path: "/:pathMatch(.*)*", redirect: "/upcoming-game" },
 ];
 
 const router = createRouter({

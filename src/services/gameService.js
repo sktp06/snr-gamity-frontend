@@ -10,13 +10,13 @@ export default {
       throw error;
     }
   },
-  async getGameGenres() {
-    try {
-      const response = await apiClient.get("/game/genre");
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching game genres:", error);
-      throw error;
-    }
-  },
+  // async getGameGenres() {
+  //   try {
+  //     const response = await apiClient.get("/game/genre");
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error("Error fetching game genres:", error);
+  //     throw error;
+  //   }
+  // },
 };
