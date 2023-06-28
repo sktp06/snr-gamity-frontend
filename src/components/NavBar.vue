@@ -1,6 +1,6 @@
 <template>
   <div
-    class="top-0 flex justify-between items-center px-3 md:px-6 w-full h-[60px] bg-pink-200"
+    class="top-0 flex justify-between items-center px-3 md:px-6 w-full h-[60px] bg-blue-200"
   >
     <div
       class="text-sm font-bold leading-relaxed i -2 whitespace-nowrap uppercase text-blue-900 gap-x-3 flex flex-row drop-shadow-lg shadow-blue-600/50"

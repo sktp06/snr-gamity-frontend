@@ -1,23 +1,33 @@
 <template>
   <div class="bg-gray-900 min-h-screen">
-    <h2 class="text-2xl font-bold text-white">Upcoming Games</h2>
-    <div class="flex items-center mb-4">
-      <label for="year" class="mr-2 text-white">Filter by Year:</label>
-      <select
-        id="year"
-        v-model="selectedYear"
-        @change="filterGamesByYear"
-        class="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white"
+    <div class="flex justify-between items-center px-4">
+      <h2
+        class="text-2xl font-bold text-white transform hover:-translate-y-1 hover:scale-105 transition duration-300"
       >
-        <option value="">All</option>
-        <option v-for="year in uniqueYears" :value="year" :key="year">
-          {{ formatYear(year) }}
-        </option>
-      </select>
+        Upcoming Games
+      </h2>
+      <div class="flex items-center">
+        <label for="year" class="mr-2 mt-4 mb-2 text-white"
+          >Filter by Year:</label
+        >
+        <select
+          id="year"
+          v-model="selectedYear"
+          @change="filterGamesByYear"
+          class="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white"
+        >
+          <option value="">All</option>
+          <option v-for="year in uniqueYears" :value="year" :key="year">
+            {{ formatYear(year) }}
+          </option>
+        </select>
+      </div>
     </div>
     <div class="flex flex-wrap -mx-4">
       <div v-for="game in filteredGames" :key="game.id" class="w-1/5 px-4">
-        <div class="bg-white">
+        <div
+          class="bg-white transform hover:-translate-y-1 hover:scale-105 transition duration-300 shadow-lg rounded-md"
+        >
           <GameCard :game="game" />
         </div>
       </div>
