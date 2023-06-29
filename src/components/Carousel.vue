@@ -1,8 +1,17 @@
 <template>
   <carousel :items-to-show="5.5">
-    <slide v-for="(game, index) in games" :key="index">
+    <slide
+      v-for="(game, index) in games"
+      :key="index"
+      @click="gameClicked(game)"
+    >
       <img :src="game.cover" alt="cover" class="w-full h-64 object-cover" />
     </slide>
+    <GameDetail
+      v-if="selectedGame"
+      :game="selectedGame"
+      @close="hideGameDetail"
+    />
     <template #addons>
       <navigation />
       <pagination />
@@ -13,6 +22,7 @@
 <script>
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
+import GameDetail from "@/components/GameDetail.vue";
 export default {
   name: "App",
   components: {
@@ -20,6 +30,12 @@ export default {
     Slide,
     Pagination,
     Navigation,
+    GameDetail,
+  },
+  data() {
+    return {
+      selectedGame: null,
+    };
   },
   props: {
     itemsToShow: {
@@ -30,6 +46,17 @@ export default {
     games: {
       default: [],
       required: true,
+    },
+  },
+  methods: {
+    gameClicked(game) {
+      this.$emit("game-clicked", game);
+    },
+    showGameDetail(game) {
+      this.selectedGame = game;
+    },
+    hideGameDetail() {
+      this.selectedGame = null;
     },
   },
 };
