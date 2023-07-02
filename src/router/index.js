@@ -6,6 +6,7 @@ import BookmarkView from "../views/BookmarkView.vue";
 import GameCardView from "../views/GameCardView.vue";
 import BookmarkService from "@/services/BookmarkService";
 import UpComingGameView from "../views/UpComingGameView.vue";
+import DataManagementView from "../views/DataManagementView.vue";
 const routes = [
   {
     path: "/",
@@ -47,6 +48,12 @@ const routes = [
     component: UpComingGameView,
   },
   { path: "/:pathMatch(.*)*", redirect: "/upcoming-game" },
+  {
+    path: "/data-management",
+    name: "data-management",
+    component: DataManagementView,
+  },
+  { path: "/:pathMatch(.*)*", redirect: "/data-management" },
 ];
 
 const router = createRouter({
