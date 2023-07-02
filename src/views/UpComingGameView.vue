@@ -6,6 +6,12 @@
       >
         Upcoming Games
       </h2>
+      <h2
+        v-if="selectedYear"
+        class="ml-2 mt-4 mb-2 font-bold text-xl text-white"
+      >
+        {{ formatYear(selectedYear) }}
+      </h2>
       <div class="flex items-center">
         <label for="year" class="mr-2 mt-4 mb-2 text-white"
           >Filter by Year:</label
@@ -17,7 +23,7 @@
           class="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white"
         >
           <option value="">All</option>
-          <option v-for="year in uniqueYears" :value="year" :key="year">
+          <option v-for="year in sortedUniqueYears" :value="year" :key="year">
             {{ formatYear(year) }}
           </option>
         </select>
@@ -60,8 +66,11 @@ export default {
           )
         ),
       ];
-      years.sort((a, b) => b - a); // Sort in descending order
       return years;
+    },
+    sortedUniqueYears() {
+      // Create a new sorted array in ascending order
+      return [...this.uniqueYears].sort((a, b) => a - b);
     },
     filteredGames() {
       // Apply the year filter on upcoming games

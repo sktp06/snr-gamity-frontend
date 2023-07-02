@@ -1,30 +1,38 @@
 <template>
   <div class="game-card border border-gray-300 p-4 mb-4 text-center">
-    <img :src="game.cover" alt="cover" class="w-full h-64 object-cover" />
-    <h2 class="text-lg font-bold">{{ game.name }}</h2>
-    <!-- <p class="mb-2">Rating: {{ game.rating }}</p>
-    <p class="mb-2">
-      Genres:
-      <span v-for="(genre, index) in game.genres" :key="index">
-        {{ genre }}
-        <span v-if="index !== game.genres.length - 1">, </span>
-      </span>
-    </p> -->
-    <p class="mb-2">Release Date: {{ game.release_dates }}</p>
-    <!-- <button
-      @click="addToFavorites(game.id)"
-      class="bg-blue-400 hover:bg-green-400 text-white font-bold py-2 px-4 rounded-full"
-    >
-      Add to Favourites
-    </button> -->
+    <img
+      :src="game.cover || defaultCover"
+      alt="cover"
+      class="w-full h-64 object-cover"
+    />
+    <h2 class="text-lg font-bold h-16 overflow-hidden line-clamp-2 mt-2">
+      {{ game.name }}
+    </h2>
+    <p class="mb-2">Release Date: {{ formattedReleaseDate }}</p>
   </div>
 </template>
 
 <script>
 import BookmarkService from "@/services/BookmarkService.js";
+import defaultCoverImage from "@/assets/no-image-available.png"; // Path to your default cover image
 
 export default {
   props: ["game"],
+  data() {
+    return {
+      defaultCover: defaultCoverImage,
+    };
+  },
+  computed: {
+    formattedReleaseDate() {
+      const releaseDate = new Date(this.game.release_dates);
+      const day = releaseDate.getDate();
+      const month = releaseDate.getMonth() + 1;
+      const year = releaseDate.getFullYear();
+
+      return `${day}-${month}-${year}`;
+    },
+  },
   mounted() {
     console.log(this.game); // Check the structure of the game object
   },
