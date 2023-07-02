@@ -5,14 +5,27 @@
     <div
       class="text-sm font-bold leading-relaxed i -2 whitespace-nowrap uppercase text-blue-900 gap-x-3 flex flex-row drop-shadow-lg shadow-blue-600/50"
     >
-      <router-link to="/game-card">Gamity</router-link>
-      <router-link v-if="GStore.currentUser" to="/bookmark"
+      <router-link
+        to="/game-card"
+        class="transform hover:-translate-y-0.5 focus:-translate-y-0.5 transition-all duration-300"
+        >Gamity</router-link
+      >
+      <router-link
+        v-if="GStore.currentUser && !isAdmin"
+        to="/bookmark"
+        class="transform hover:-translate-y-0.5 focus:-translate-y-0.5 transition-all duration-300"
         >Bookmark</router-link
       >
-      <router-link v-if="GStore.currentUser" to="/upcoming-game"
+      <router-link
+        v-if="GStore.currentUser"
+        to="/upcoming-game"
+        class="transform hover:-translate-y-0.5 focus:-translate-y-0.5 transition-all duration-300"
         >Up-Coming</router-link
       >
-      <router-link v-if="GStore.currentUser" to="/data-management"
+      <router-link
+        v-if="GStore.currentUser && isAdmin"
+        to="/data-management"
+        class="transform hover:-translate-y-0.5 focus:-translate-y-0.5 transition-all duration-300"
         >Data-Management</router-link
       >
     </div>
@@ -60,7 +73,7 @@
       class="flex flex-row items-center justify-center gap-x-[12px]"
       v-if="GStore.currentUser"
     >
-      <p class="text-white text-xs font-bold uppercase text-rose-700">
+      <p class="text-gray-900 text-xs font-bold uppercase text-rose-700">
         Username: {{ GStore.currentUser && GStore.currentUser.username }}
       </p>
       <button
@@ -94,8 +107,16 @@ export default {
     return {
       schema,
       showMenu: false,
-      searchQuery: "", // Add searchQuery data property
+      searchQuery: "",
     };
+  },
+  computed: {
+    isAdmin() {
+      // Assuming your user object has a "role" property indicating the user's role
+      return (
+        this.GStore.currentUser && this.GStore.currentUser.role === "admin"
+      );
+    },
   },
   methods: {
     handleLogout() {
