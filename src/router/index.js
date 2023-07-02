@@ -4,9 +4,10 @@ import SignUpView from "../views/SignUpView.vue";
 import HomeView from "../views/HomeView.vue";
 import BookmarkView from "../views/BookmarkView.vue";
 import GameCardView from "../views/GameCardView.vue";
-import BookmarkService from "@/services/BookmarkService";
 import UpComingGameView from "../views/UpComingGameView.vue";
 import DataManagementView from "../views/DataManagementView.vue";
+import ErrorPage from "../views/ErrorPage.vue";
+
 const routes = [
   {
     path: "/",
@@ -14,46 +15,45 @@ const routes = [
     component: HomeView,
   },
   {
+    path: "/404",
+    name: "404",
+    component: ErrorPage,
+  },
+  {
     path: "/login",
     name: "login",
     component: LoginView,
   },
-  { path: "/:pathMatch(.*)*", redirect: "/login" },
   {
     path: "/sign-up",
     name: "sign-up",
     component: SignUpView,
   },
-  { path: "/:pathMatch(.*)*", redirect: "/sign-up" },
   {
     path: "/bookmark",
     name: "bookmark",
     component: BookmarkView,
-    beforeEnter: () => {
-      BookmarkService.getbookmarkList(
-        JSON.parse(localStorage.getItem("user")).id
-      );
-    },
+    meta: { requiresAuth: true, allowedRoles: ["user"] },
   },
-  { path: "/:pathMatch(.*)*", redirect: "/bookmark" },
   {
     path: "/game-card",
     name: "game-card",
     component: GameCardView,
+    meta: { requiresAuth: true, allowedRoles: ["admin", "user"] },
   },
-  { path: "/:pathMatch(.*)*", redirect: "/game-card" },
   {
     path: "/upcoming-game",
     name: "upcoming",
     component: UpComingGameView,
+    meta: { requiresAuth: true, allowedRoles: ["admin", "user"] },
   },
-  { path: "/:pathMatch(.*)*", redirect: "/upcoming-game" },
   {
     path: "/data-management",
     name: "data-management",
     component: DataManagementView,
+    meta: { requiresAuth: true, allowedRoles: ["admin"] },
   },
-  { path: "/:pathMatch(.*)*", redirect: "/data-management" },
+  { path: "/:pathMatch(.*)*", redirect: "/login" },
 ];
 
 const router = createRouter({
@@ -66,6 +66,31 @@ const router = createRouter({
       return { top: 0 };
     }
   },
+});
+
+router.beforeEach((to, from, next) => {
+  const requiresAuth = to.matched.some((route) => route.meta.requiresAuth);
+  if (!requiresAuth) {
+    // Route doesn't require authentication, allow access
+    next();
+  } else {
+    // Route requires authentication
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+      // User not logged in, redirect to login page
+      next("/login");
+    } else {
+      // User logged in, check role
+      const allowedRoles = to.meta.allowedRoles;
+      if (allowedRoles.includes(user.role)) {
+        // User has the required role, allow access
+        next();
+      } else {
+        // User doesn't have the required role, redirect to login page
+        next("/404");
+      }
+    }
+  }
 });
 
 export default router;
