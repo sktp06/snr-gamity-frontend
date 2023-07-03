@@ -39,7 +39,7 @@
       >
         <h3 class="text-lg font-bold text-gray-800">All Games by Genre</h3>
         <div class="mt-4">
-          <canvas ref="genreChart" style="max-height: 300px"></canvas>
+          <canvas ref="genreChart" style="max-height: 500px"></canvas>
         </div>
       </div>
     </div>
