@@ -6,31 +6,9 @@
       >
         Upcoming Games
       </h2>
-      <h2
-        v-if="selectedYear"
-        class="ml-2 mt-4 mb-2 font-bold text-xl text-white"
-      >
-        {{ formatYear(selectedYear) }}
-      </h2>
-      <div class="flex items-center">
-        <label for="year" class="mr-2 mt-4 mb-2 text-white"
-          >Filter by Year:</label
-        >
-        <select
-          id="year"
-          v-model="selectedYear"
-          @change="filterGamesByYear"
-          class="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white"
-        >
-          <option value="">All</option>
-          <option v-for="year in sortedUniqueYears" :value="year" :key="year">
-            {{ formatYear(year) }}
-          </option>
-        </select>
-      </div>
     </div>
     <div class="flex flex-wrap -mx-4">
-      <div v-for="game in filteredGames" :key="game.id" class="w-1/5 px-4">
+      <div v-for="game in upcomingGames" :key="game.id" class="w-1/5 px-4">
         <div
           class="bg-white transform hover:-translate-y-1 hover:scale-105 transition duration-300 shadow-lg rounded-md ml-2 mr-2"
         >
@@ -53,37 +31,7 @@ export default {
     return {
       upcomingGames: [],
       error: null,
-      selectedYear: "", // Stores the selected year for filtering
     };
-  },
-  computed: {
-    uniqueYears() {
-      // Get unique years from the upcoming games
-      const years = [
-        ...new Set(
-          this.upcomingGames.map((game) =>
-            this.getYearFromReleaseDate(game.release_dates)
-          )
-        ),
-      ];
-      return years;
-    },
-    sortedUniqueYears() {
-      // Create a new sorted array in ascending order
-      return [...this.uniqueYears].sort((a, b) => a - b);
-    },
-    filteredGames() {
-      // Apply the year filter on upcoming games
-      if (this.selectedYear) {
-        return this.upcomingGames.filter(
-          (game) =>
-            this.getYearFromReleaseDate(game.release_dates).toString() ===
-            this.selectedYear
-        );
-      } else {
-        return this.upcomingGames;
-      }
-    },
   },
   mounted() {
     this.fetchUpcomingGames();
@@ -99,18 +47,27 @@ export default {
 
         this.upcomingGames = games.filter((game) => {
           if (game.release_dates) {
-            const releaseDate = new Date(game.release_dates);
-            const releaseYear = releaseDate.getFullYear();
-            const releaseMonth = releaseDate.getMonth() + 1;
+            const releaseDates = game.release_dates.map(
+              (date) => new Date(date)
+            );
+            const upcomingReleaseDates = releaseDates.filter((releaseDate) => {
+              const releaseYear = releaseDate.getFullYear();
+              const releaseMonth = releaseDate.getMonth() + 1;
 
-            // Check if the release year is greater than or equal to the current year
-            // and the release month is greater than the current month
-            if (releaseYear > currentYear) {
-              return true;
-            } else if (
-              releaseYear === currentYear &&
-              releaseMonth > currentMonth
-            ) {
+              // Check if the release year is greater than or equal to the current year
+              // and the release month is greater than the current month
+              if (releaseYear > currentYear) {
+                return true;
+              } else if (
+                releaseYear === currentYear &&
+                releaseMonth > currentMonth
+              ) {
+                return true;
+              }
+            });
+
+            if (upcomingReleaseDates.length > 0) {
+              game.release_dates = upcomingReleaseDates;
               return true;
             }
           }
@@ -119,8 +76,8 @@ export default {
 
         // Sort the upcoming games by release dates from closest to farthest
         this.upcomingGames.sort((a, b) => {
-          const releaseDateA = new Date(a.release_dates);
-          const releaseDateB = new Date(b.release_dates);
+          const releaseDateA = a.release_dates[0];
+          const releaseDateB = b.release_dates[0];
           return releaseDateA - releaseDateB;
         });
 
@@ -130,18 +87,6 @@ export default {
         this.upcomingGames = [];
         this.error = "Error fetching upcoming games. Please try again later.";
       }
-    },
-    getYearFromReleaseDate(releaseDate) {
-      const parts = releaseDate.split("-");
-      return parts[0];
-    },
-    formatYear(year) {
-      // Format the year as desired
-      return year;
-    },
-    filterGamesByYear() {
-      // Apply the selected year filter
-      // This will trigger the computed property 'filteredGames'
     },
   },
 };
