@@ -42,19 +42,18 @@ export default {
       });
       return Array.from(allGenres);
     },
-
     displayedGames() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
-      let kai = [];
+      let displayedGenres = [];
       this.allGenres.forEach((genre) => {
-        kai.push({
+        displayedGenres.push({
           genre: genre,
           games: this.filteredGames(genre).slice(startIndex, endIndex),
         });
       });
-      console.log(kai);
-      return kai;
+      console.log(displayedGenres);
+      return displayedGenres;
     },
   },
   async mounted() {
@@ -67,8 +66,10 @@ export default {
   },
   methods: {
     filteredGames(genre) {
-      let kai = this.games.filter((game) => game.genres.includes(genre));
-      return kai.sort((a, b) => b.rating - a.rating);
+      let filteredGames = this.games.filter((game) =>
+        game.genres.includes(genre)
+      );
+      return filteredGames.sort((a, b) => b.popularity - a.popularity);
     },
     showGameDetail(game) {
       this.selectedGame = game;
