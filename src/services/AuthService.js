@@ -22,4 +22,15 @@ export default {
     localStorage.removeItem("user");
     GStore.currentUser = null;
   },
+  register(user) {
+    return apiClient
+      .post("/auth/register", user)
+      .then((response) => {
+        console.log(response);
+        return Promise.resolve(response.data);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
 };

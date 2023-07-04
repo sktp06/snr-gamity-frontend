@@ -82,11 +82,12 @@ export default {
   },
   methods: {
     signup() {
+      // Renamed from "register" to "signup"
       const user = {
         username: this.username,
         password: this.password,
       };
-      AuthService.login(user)
+      AuthService.register(user) // Changed from AuthService.login(user) to AuthService.register(user)
         .then((response) => {
           // Handle successful signup
           console.log(response);
