@@ -20,7 +20,7 @@
         v-if="GStore.currentUser"
         to="/upcoming-game"
         class="transform hover:-translate-y-0.5 focus:-translate-y-0.5 transition-all duration-300"
-        >Up-Coming</router-link
+        >Upcoming</router-link
       >
       <router-link
         v-if="GStore.currentUser && isAdmin"

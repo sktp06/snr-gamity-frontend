@@ -9,6 +9,7 @@
       {{ game.name }}
     </h2>
     <p class="mb-2">Release Date: {{ formattedReleaseDate }}</p>
+    <p v-if="remainingDays" class="text-sm">In {{ remainingDays }} days</p>
   </div>
 </template>
 
@@ -26,11 +27,18 @@ export default {
   computed: {
     formattedReleaseDate() {
       const releaseDate = new Date(this.game.release_dates);
-      const day = releaseDate.getDate();
-      const month = releaseDate.getMonth() + 1;
-      const year = releaseDate.getFullYear();
-
-      return `${day}-${month}-${year}`;
+      return releaseDate.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+      });
+    },
+    remainingDays() {
+      const releaseDate = new Date(this.game.release_dates);
+      const today = new Date();
+      const differenceInTime = releaseDate.getTime() - today.getTime();
+      const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
+      return differenceInDays > 0 ? differenceInDays : null;
     },
   },
   mounted() {
