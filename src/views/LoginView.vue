@@ -6,7 +6,7 @@
           <div class="max-w-md mx-auto">
             <div class="bg-white shadow-md rounded-md p-8">
               <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">
-                Login
+                Sign In
               </h1>
               <Form @submit="handleLogin" :validation-schema="schema">
                 <div class="mb-6">
