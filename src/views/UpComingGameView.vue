@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-900 min-h-screen">
+  <div class="bg-gray-900 min-h-screen overflow-x-hidden">
     <div class="flex justify-between items-center px-4">
       <h2
         class="text-2xl font-bold text-white transform hover:-translate-y-1 hover:scale-105 transition duration-300"
@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="flex flex-wrap -mx-4">
-      <div v-for="game in filteredGames" :key="game.id" class="w-1/5 px-4">
+      <div v-for="game in filteredGames" :key="game.id" class="w-1/6 px-4">
         <div
           class="bg-white transform hover:-translate-y-1 hover:scale-105 transition duration-300 shadow-lg rounded-md ml-2 mr-2"
         >
