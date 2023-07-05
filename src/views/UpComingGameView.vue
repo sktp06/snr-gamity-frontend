@@ -1,11 +1,7 @@
 <template>
   <div class="bg-zinc-900 min-h-screen overflow-x-hidden">
-    <div class="flex justify-between items-center px-4">
-      <h2
-        class="text-2xl font-bold text-white transform hover:-translate-y-1 hover:scale-105 transition duration-300 mx-4"
-      >
-        Upcoming Games
-      </h2>
+    <div class="flex justify-between items-center px-4 py-6">
+      <h2 class="text-3xl text-white font-bold">Upcoming Games</h2>
       <h2
         v-if="selectedYear"
         class="ml-2 mt-4 mb-2 font-bold text-xl text-white"

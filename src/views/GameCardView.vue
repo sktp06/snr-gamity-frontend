@@ -1,24 +1,29 @@
 <template>
   <div class="bg-zinc-900 text-white min-h-screen overflow-x-hidden">
-    <div class="flex justify-between items-center px-4">
-      <h2
-        class="ml-4 text-2xl font-bold text-white mt-2 transform hover:-translate-y-1 hover:scale-105 transition duration-300"
-      >
-        Game Library
-      </h2>
+    <div class="flex justify-between items-center px-4 py-6">
+      <h2 class="text-3xl font-bold mt-2">Game Library</h2>
     </div>
-    <div class="container mx-auto py-8 ml-8">
-      <div v-for="(value, index) in displayedGames" :key="index">
-        <h2 class="text-2xl font-bold">{{ value.genre }}</h2>
+    <div class="container mx-auto py-8 px-4">
+      <div v-for="(value, index) in displayedGames" :key="index" class="mb-8">
+        <h2 class="text-2xl font-bold mb-4">{{ value.genre }}</h2>
         <Carousel :games="value.games" @game-clicked="showGameDetail" />
       </div>
-      <div v-if="selectedGame" class="game-popup">
+      <div
+        v-if="selectedGame"
+        class="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-black bg-opacity-80 z-10"
+      >
         <GameDetail :game="selectedGame" @close="hideGameDetail" />
-        <button class="close-button" @click="$emit('close')">Close</button>
+        <button
+          class="absolute top-4 right-4 text-white font-bold text-lg px-4 py-2 bg-red-600 rounded"
+          @click="$emit('close')"
+        >
+          Close
+        </button>
       </div>
     </div>
   </div>
 </template>
+
 <script>
 import Carousel from "@/components/Carousel.vue";
 import gameService from "@/services/gameService";
@@ -56,14 +61,12 @@ export default {
           games: this.filteredGames(genre).slice(startIndex, endIndex),
         });
       });
-      console.log(displayedGenres);
       return displayedGenres;
     },
   },
   async mounted() {
     try {
       this.games = await gameService.getGames();
-      console.log(this.games);
     } catch (error) {
       console.error("Error fetching games:", error);
     }
