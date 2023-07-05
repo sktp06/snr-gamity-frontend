@@ -1,64 +1,58 @@
 <template>
-  <div>
+  <div class="bg-gradient-to-r from-black to-gray-900">
     <main>
-      <section class="absolute w-full h-full">
-        <div
-          class="absolute top-0 w-full h-full bg-grey"
-          style="background-size: 100%; background-repeat: no-repeat"
-        ></div>
-        <div class="container mx-auto px-4 h-full">
-          <div class="flex content-center items-center justify-center h-full">
-            <div class="w-full lg:w-4/12 px-4">
-              <div
-                class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-purple-100 border-0"
-              >
-                <div class="rounded-t mb-0 px-6 py-6">
-                  <div class="text-center mb-3">
-                    <h1 class="text-gray-600 text-sm font-bold uppercase">
-                      Sign Up
-                    </h1>
-                  </div>
-                  <hr class="mt-6 border-b-1 border-gray" />
+      <section class="h-screen flex items-center">
+        <div class="container mx-auto px-4">
+          <div class="max-w-md mx-auto">
+            <div class="bg-white bg-opacity-40 shadow-md rounded-md p-8">
+              <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">
+                Sign Up
+              </h1>
+              <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
+                <div class="mb-6">
+                  <label
+                    for="username"
+                    class="block mb-1 text-gray-700 font-semibold"
+                  >
+                    Username
+                  </label>
+                  <input
+                    type="text"
+                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-gray-500"
+                    v-model="username"
+                    placeholder="Username"
+                  />
                 </div>
-                <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
-                  <div class="relative w-full mb-3">
-                    <label
-                      class="block uppercase text-gray-700 text-xs font-bold mb-2"
-                      for="grid-password"
-                      >Username</label
-                    >
-                    <input
-                      type="text"
-                      class="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
-                      v-model="username"
-                      placeholder="Username"
-                      style="transition: all 0.15s ease 0s"
-                    />
-                  </div>
-                  <div class="relative w-full mb-3">
-                    <label
-                      class="block uppercase text-gray-700 text-xs font-bold mb-2"
-                      for="grid-password"
-                      >Password</label
-                    >
-                    <input
-                      type="password"
-                      class="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
-                      v-model="password"
-                      placeholder="Password"
-                      style="transition: all 0.15s ease 0s"
-                    />
-                  </div>
-                  <div class="text-center mt-6">
-                    <button
-                      @click="signup"
-                      class="bg-purple-400 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full"
-                      type="submit"
-                      style="transition: all 0.15s ease 0s"
-                    >
-                      Sign Up
-                    </button>
-                  </div>
+                <div class="mb-6">
+                  <label
+                    for="password"
+                    class="block mb-1 text-gray-700 font-semibold"
+                  >
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-gray-500"
+                    v-model="password"
+                    placeholder="Password"
+                  />
+                </div>
+                <div>
+                  <button
+                    @click="signup"
+                    class="w-full bg-red-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-red-700 focus:outline-none"
+                    type="submit"
+                  >
+                    Sign Up
+                  </button>
+                </div>
+                <div class="mt-6 text-center">
+                  <p class="text-gray-600">
+                    Already have an account?
+                    <router-link to="/login" class="text-black font-semibold">
+                      Sign In
+                    </router-link>
+                  </p>
                 </div>
               </div>
             </div>
@@ -66,7 +60,6 @@
         </div>
       </section>
     </main>
-    <!-- <button @click="signup">Sign Up</button> -->
   </div>
 </template>
 
@@ -82,22 +75,29 @@ export default {
   },
   methods: {
     signup() {
-      // Renamed from "register" to "signup"
       const user = {
         username: this.username,
         password: this.password,
       };
-      AuthService.register(user) // Changed from AuthService.login(user) to AuthService.register(user)
+      AuthService.register(user)
         .then((response) => {
-          // Handle successful signup
           console.log(response);
-          this.$router.push("/login"); // Navigate to the login page
+          this.$router.push("/login");
         })
         .catch((error) => {
-          // Handle signup error
           console.error(error);
         });
     },
   },
 };
 </script>
+
+<style scoped>
+button:focus {
+  outline: none;
+}
+
+.bg-gradient-to-r {
+  background-image: linear-gradient(to right, #000000, #4a4a4a);
+}
+</style>

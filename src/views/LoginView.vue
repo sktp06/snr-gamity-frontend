@@ -1,80 +1,64 @@
 <template>
-  <div>
+  <div class="bg-gradient-to-r from-black to-gray-900">
     <main>
-      <section class="absolute w-full h-full">
-        <div
-          class="absolute top-0 w-full h-full bg-grey"
-          style="background-size: 100%; background-repeat: no-repeat"
-        ></div>
-        <div class="container mx-auto px-4 h-full">
-          <div class="flex content-center items-center justify-center h-full">
-            <div class="w-full lg:w-4/12 px-4">
-              <div
-                class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-purple-100 border-0"
-              >
-                <div class="rounded-t mb-0 px-6 py-6">
-                  <div class="text-center mb-3">
-                    <h1 class="text-gray-600 text-sm font-bold uppercase">
-                      Login
-                    </h1>
-                  </div>
-                  <hr class="mt-6 border-b-1 border-gray" />
+      <section class="h-screen flex items-center">
+        <div class="container mx-auto px-4">
+          <div class="max-w-md mx-auto">
+            <div class="bg-white shadow-md rounded-md p-8">
+              <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">
+                Login
+              </h1>
+              <Form @submit="handleLogin" :validation-schema="schema">
+                <div class="mb-6">
+                  <label
+                    for="username"
+                    class="block mb-1 text-gray-700 font-semibold"
+                  >
+                    Username
+                  </label>
+                  <Field
+                    name="username"
+                    type="text"
+                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-gray-500"
+                    placeholder="Username"
+                  />
+                  <ErrorMessage name="username" class="text-red-500 mt-2" />
                 </div>
-                <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
-                  <Form @submit="handleLogin" :validation-schema="schema">
-                    <div class="relative w-full mb-3">
-                      <label
-                        class="block uppercase text-gray-700 text-xs font-bold mb-2"
-                        for="grid-password"
-                        >Username</label
-                      ><Field
-                        name="username"
-                        type="text"
-                        class="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
-                        placeholder="Username"
-                        style="transition: all 0.15s ease 0s"
-                      />
-                      <ErrorMessage
-                        name="username"
-                        class="error-feedback text-red-500"
-                      />
-                    </div>
-                    <div class="relative w-full mb-3">
-                      <label
-                        class="block uppercase text-gray-700 text-xs font-bold mb-2"
-                        for="grid-password"
-                        >Password</label
-                      ><Field
-                        name="password"
-                        type="password"
-                        class="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
-                        placeholder="Password"
-                        style="transition: all 0.15s ease 0s"
-                      />
-                      <ErrorMessage
-                        name="password"
-                        class="error-feedback text-red-500"
-                      />
-                    </div>
-                    <div class="text-center mt-6">
-                      <button
-                        class="bg-purple-400 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full"
-                        type="submit"
-                        style="transition: all 0.15s ease 0s"
-                      >
-                        Sign In
-                      </button>
-                    </div>
-                    <div class="text-center mt-6">
-                      <div>
-                        <router-link to="/sign-up" class="text-white-300"
-                          >Don't have an account?</router-link
-                        >
-                      </div>
-                    </div>
-                  </Form>
+                <div class="mb-6">
+                  <label
+                    for="password"
+                    class="block mb-1 text-gray-700 font-semibold"
+                  >
+                    Password
+                  </label>
+                  <Field
+                    name="password"
+                    type="password"
+                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-gray-500"
+                    placeholder="Password"
+                  />
+                  <ErrorMessage name="password" class="text-red-500 mt-2" />
                 </div>
-              </div>
+                <div>
+                  <button
+                    class="w-full bg-red-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-red-700 focus:outline-none"
+                    type="submit"
+                  >
+                    Sign In
+                  </button>
+                </div>
+                <div class="mt-6 text-center">
+                  <p class="text-gray-600">
+                    Don't have an account?
+                    <router-link
+                      to="/sign-up"
+                      class="text-red-600 font-semibold"
+                    >
+                      Sign Up
+                    </router-link>
+                  </p>
+                </div>
+              </Form>
             </div>
           </div>
         </div>
@@ -82,10 +66,12 @@
     </main>
   </div>
 </template>
+
 <script>
 import { Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
 import AuthService from "@/services/AuthService.js";
+
 export default {
   name: "LoginView",
   components: {
@@ -118,3 +104,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+button:focus {
+  outline: none;
+}
+</style>
