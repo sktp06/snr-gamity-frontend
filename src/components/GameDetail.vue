@@ -7,10 +7,17 @@
       <!-- Additional game details if needed -->
     </div>
     <button class="close-button" @click="$emit('close')">Close</button>
+    <button
+      @click="addToFavorites(game.id)"
+      class="bg-blue-400 hover:bg-green-400 text-white font-bold py-2 px-4 rounded-full"
+    >
+      Add to Favourites
+    </button>
   </div>
 </template>
 
 <script>
+import BookmarkService from "@/services/BookmarkService.js";
 export default {
   props: {
     game: {
@@ -18,21 +25,26 @@ export default {
       required: true,
     },
   },
+  methods: {
+    addToFavorites(gameId) {
+      BookmarkService.addBookmark(
+        JSON.parse(localStorage.getItem("user")).id,
+        gameId,
+        console.log("Adding game to favorites:", gameId)
+      );
+    },
+  },
 };
 </script>
 
 <style scoped>
-.game-detail {
-  /* Add your styling for the game detail popup */
-}
-
 .game-popup {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 9999;
-  width: 80%;
+  width: 50%;
   background-color: #000;
   padding: 20px;
   border-radius: 10px;
