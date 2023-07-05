@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-900 min-h-screen">
+  <div class="bg-zinc-900 min-h-screen">
     <div class="flex justify-between items-center px-4">
       <h2
         class="text-2xl font-bold text-white mt-2 transform hover:-translate-y-1 hover:scale-105 transition duration-300"
