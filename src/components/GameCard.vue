@@ -11,9 +11,14 @@
       <h2 class="text-lg font-bold h-16 overflow-hidden line-clamp-2 mt-2">
         {{ game.name }}
       </h2>
-      <p class="text-gray-600 mb-2">Release Date: {{ formattedReleaseDate }}</p>
+      <div class="h-12">
+        <p class="mb-2 text-sm text-gray-600 overflow-hidden line-clamp-2">
+          {{ game.genres.length > 0 ? game.genres.join(", ") : "no genres" }}
+        </p>
+      </div>
+      <p class="text-gray-600 font-bold">{{ formattedReleaseDate }}</p>
       <p v-if="remainingDays" class="text-sm text-gray-500">
-        In {{ remainingDays }} days
+        In ( {{ remainingDays }} ) days
       </p>
     </div>
     <!-- <button @click="toggleFavorite(game.id)" class="favorite-button">
@@ -27,7 +32,12 @@ import defaultCoverImage from "@/assets/no-image-available.png";
 // import BookmarkService from "@/services/BookmarkService.js";
 
 export default {
-  props: ["game"],
+  props: {
+    game: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       defaultCover: defaultCoverImage,

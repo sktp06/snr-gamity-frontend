@@ -1,11 +1,7 @@
 <template>
   <div class="bg-zinc-900 min-h-screen">
-    <div class="flex justify-between items-center px-4">
-      <h2
-        class="text-2xl font-bold text-white mt-2 transform hover:-translate-y-1 hover:scale-105 transition duration-300"
-      >
-        Data Management
-      </h2>
+    <div class="flex justify-between items-center px-4 py-6">
+      <h2 class="text-3xl text-white font-bold mt-2">Data Management</h2>
     </div>
     <div class="mt-8 mx-4 grid">
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">

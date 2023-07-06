@@ -1,11 +1,7 @@
 <template>
   <div class="bg-zinc-900 min-h-screen overflow-x-hidden">
-    <div class="flex justify-between items-center px-4">
-      <h2
-        class="text-2xl font-bold text-white transform hover:-translate-y-1 hover:scale-105 transition duration-300 mx-4"
-      >
-        Upcoming Games
-      </h2>
+    <div class="flex justify-between items-center px-4 py-6">
+      <h2 class="text-3xl text-white font-bold">Upcoming Games</h2>
       <h2
         v-if="selectedYear"
         class="ml-2 mt-4 mb-2 font-bold text-xl text-white"
@@ -25,6 +21,20 @@
           <option value="">All</option>
           <option v-for="year in sortedUniqueYears" :value="year" :key="year">
             {{ formatYear(year) }}
+          </option>
+        </select>
+        <label for="genre" class="mr-2 mt-4 mb-2 text-white"
+          >Filter by Genre:</label
+        >
+        <select
+          id="genre"
+          v-model="selectedGenre"
+          @change="filterGamesByGenre"
+          class="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white mx-4"
+        >
+          <option value="">All</option>
+          <option v-for="genre in uniqueGenres" :value="genre" :key="genre">
+            {{ genre }}
           </option>
         </select>
       </div>
@@ -54,9 +64,20 @@ export default {
       upcomingGames: [],
       error: null,
       selectedYear: "", // Stores the selected year for filtering
+      selectedGenre: "", // Stores the selected genre for filtering
     };
   },
   computed: {
+    uniqueGenres() {
+      // Get unique genres from the upcoming games
+      const genres = new Set(
+        this.upcomingGames.reduce((acc, game) => {
+          acc.push(...game.genres);
+          return acc;
+        }, [])
+      );
+      return Array.from(genres);
+    },
     uniqueYears() {
       // Get unique years from the upcoming games
       const years = [
@@ -73,12 +94,22 @@ export default {
       return [...this.uniqueYears].sort((a, b) => a - b);
     },
     filteredGames() {
-      // Apply the year filter on upcoming games
-      if (this.selectedYear) {
+      // Apply the year and genre filters on upcoming games
+      if (this.selectedYear && this.selectedGenre) {
+        return this.upcomingGames.filter(
+          (game) =>
+            this.getYearFromReleaseDate(game.release_dates).toString() ===
+              this.selectedYear && game.genres.includes(this.selectedGenre)
+        );
+      } else if (this.selectedYear) {
         return this.upcomingGames.filter(
           (game) =>
             this.getYearFromReleaseDate(game.release_dates).toString() ===
             this.selectedYear
+        );
+      } else if (this.selectedGenre) {
+        return this.upcomingGames.filter((game) =>
+          game.genres.includes(this.selectedGenre)
         );
       } else {
         return this.upcomingGames;
@@ -141,6 +172,10 @@ export default {
     },
     filterGamesByYear() {
       // Apply the selected year filter
+      // This will trigger the computed property 'filteredGames'
+    },
+    filterGamesByGenre() {
+      // Apply the selected genre filter
       // This will trigger the computed property 'filteredGames'
     },
   },
