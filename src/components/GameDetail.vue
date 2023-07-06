@@ -3,9 +3,36 @@
     <img :src="game.cover" alt="Game Cover" class="game-image" />
     <div class="game-details">
       <h3>{{ game.name }}</h3>
-      <p>Rating: {{ game.rating }}</p>
-      <!-- Additional game details if needed -->
+      <p>
+        Release Date:
+        {{ game.release_dates[0] ? game.release_dates[0] : "no release date" }}
+      </p>
+      <p>
+        Genres:
+        {{ game.genres.length > 0 ? game.genres.join(", ") : "no genres" }}
+      </p>
+      <p>
+        rating:
+        {{ game.rating ? game.rating : "no rating" }}
+      </p>
+      <div>
+        <p>Time to beat:</p>
+        <ul>
+          <li>Story: {{ game.main_story }} hour(s)</li>
+          <li>Extra: {{ game.main_extra }} hour(s)</li>
+          <li>Completionist: {{ game.completionist }} hour(s)</li>
+        </ul>
+      </div>
+      <div>
+        <p>List of store(s):</p>
+        <ul>
+          <li v-for="store in game.websites" :key="store.id">
+            <a :href="store[0]" target="_blank">{{ store[1] }}</a>
+          </li>
+        </ul>
+      </div>
     </div>
+    <!-- Additional game details if needed -->
     <button class="close-button" @click="$emit('close')">Close</button>
     <button
       @click="addToFavorites(game.id)"
@@ -51,7 +78,7 @@ export default {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: start;
 }
 
 .game-popup img {
@@ -60,12 +87,12 @@ export default {
   object-fit: cover;
   border-radius: 10px;
   margin-bottom: 20px;
+  align-self: center;
 }
 
 .game-popup .game-details {
   display: flex;
   flex-direction: column;
-  align-items: center;
   color: #fff;
   margin-bottom: 20px;
 }
