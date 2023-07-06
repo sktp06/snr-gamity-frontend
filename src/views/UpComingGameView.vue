@@ -1,8 +1,8 @@
 <template>
-  <div class="bg-gray-900 min-h-screen">
+  <div class="bg-zinc-900 min-h-screen overflow-x-hidden">
     <div class="flex justify-between items-center px-4">
       <h2
-        class="text-2xl font-bold text-white transform hover:-translate-y-1 hover:scale-105 transition duration-300"
+        class="text-2xl font-bold text-white transform hover:-translate-y-1 hover:scale-105 transition duration-300 mx-4"
       >
         Upcoming Games
       </h2>
@@ -20,7 +20,7 @@
           id="year"
           v-model="selectedYear"
           @change="filterGamesByYear"
-          class="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white"
+          class="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white mx-4"
         >
           <option value="">All</option>
           <option v-for="year in sortedUniqueYears" :value="year" :key="year">
@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="flex flex-wrap -mx-4">
-      <div v-for="game in filteredGames" :key="game.id" class="w-1/5 px-4">
+      <div v-for="game in filteredGames" :key="game.id" class="w-1/6 px-4">
         <div
           class="bg-white transform hover:-translate-y-1 hover:scale-105 transition duration-300 shadow-lg rounded-md ml-2 mr-2"
         >

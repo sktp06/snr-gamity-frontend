@@ -1,87 +1,87 @@
 <template>
-  <div
-    class="top-0 flex justify-between items-center px-3 md:px-6 w-full h-[60px] bg-blue-200"
-  >
+  <div class="bg-black text-white">
     <div
-      class="text-sm font-bold leading-relaxed i -2 whitespace-nowrap uppercase text-blue-900 gap-x-3 flex flex-row drop-shadow-lg shadow-blue-600/50"
+      class="container mx-auto px-6 py-4 flex flex-wrap justify-between items-center"
     >
-      <router-link
-        to="/game-card"
-        class="transform hover:-translate-y-0.5 focus:-translate-y-0.5 transition-all duration-300"
-        >Gamity</router-link
-      >
-      <router-link
-        v-if="GStore.currentUser && !isAdmin"
-        to="/bookmark"
-        class="transform hover:-translate-y-0.5 focus:-translate-y-0.5 transition-all duration-300"
-        >Bookmark</router-link
-      >
-      <router-link
-        v-if="GStore.currentUser"
-        to="/upcoming-game"
-        class="transform hover:-translate-y-0.5 focus:-translate-y-0.5 transition-all duration-300"
-        >Upcoming</router-link
-      >
-      <router-link
-        v-if="GStore.currentUser && isAdmin"
-        to="/data-management"
-        class="transform hover:-translate-y-0.5 focus:-translate-y-0.5 transition-all duration-300"
-        >Data-Management</router-link
-      >
-    </div>
-    <div
-      v-if="GStore.currentUser"
-      class="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start"
-    >
-      <Form
-        @submit="onSearch"
-        :validation-schema="schema"
-        class="flex border-2 rounded h-9 ml-4"
-      >
-        <Field
-          class="px-4 py-2 w-80"
-          type="text"
-          name="query"
-          v-model="searchQuery"
-          placeholder="Search..."
-        />
-        <button
-          class="flex items-center justify-center px-4 border-l"
-          type="submit"
+      <div class="flex items-center">
+        <router-link to="/game-card" class="text-2xl font-bold mr-4">
+          Gamity
+        </router-link>
+        <router-link
+          v-if="GStore.currentUser && !isAdmin"
+          to="/bookmark"
+          class="transform hover:-translate-y-0.5 focus:-translate-y-0.5 transition-all duration-300 ml-4"
         >
-          <svg
-            class="w-6 h-6 text-blue-300"
-            fill="currentColor"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
+          Bookmark
+        </router-link>
+        <router-link
+          v-if="GStore.currentUser"
+          to="/upcoming-game"
+          class="transform hover:-translate-y-0.5 focus:-translate-y-0.5 transition-all duration-300 ml-4"
+        >
+          Upcoming
+        </router-link>
+        <router-link
+          v-if="GStore.currentUser && isAdmin"
+          to="/data-management"
+          class="transform hover:-translate-y-0.5 focus:-translate-y-0.5 transition-all duration-300 ml-4"
+        >
+          Data-Management
+        </router-link>
+      </div>
+      <div v-if="GStore.currentUser" class="flex items-center ml-4">
+        <Form @submit="onSearch" :validation-schema="schema" class="flex">
+          <Field
+            class="px-4 py-2 mr-2 rounded-l-lg"
+            type="text"
+            name="query"
+            v-model="searchQuery"
+            placeholder="Search..."
+          />
+          <button class="bg-red-600 px-4 py-2 rounded-r-lg" type="submit">
+            <svg
+              class="w-6 h-6 text-white"
+              fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"
+              />
+            </svg>
+          </button>
+        </Form>
+        <div class="ml-4 relative">
+          <button
+            class="bg-red-600 px-4 py-2 rounded uppercase text-sm font-bold"
+            @click="showMenu = !showMenu"
           >
-            <path
-              d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"
-            />
-          </svg>
-        </button>
-      </Form>
-    </div>
-    <button
-      v-if="!GStore.currentUser && $route.name != 'login'"
-      @click="$router.push('login')"
-      class="bg-white text-gray-800 active:bg-gray-100 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 m-3 animate-bounce"
-    >
-      Login
-    </button>
-    <div
-      class="flex flex-row items-center justify-center gap-x-[12px]"
-      v-if="GStore.currentUser"
-    >
-      <p class="text-gray-900 text-xs font-bold uppercase text-rose-700">
-        Username: {{ GStore.currentUser && GStore.currentUser.username }}
-      </p>
-      <button
-        @click="handleLogout"
-        class="bg-white text-gray-800 active:bg-gray-100 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3"
-      >
-        Logout
-      </button>
+            {{ GStore.currentUser && GStore.currentUser.username }}
+            <svg
+              class="w-4 h-4 text-white inline-block ml-1"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div
+            v-if="showMenu"
+            class="absolute right-0 mt-2 w-48 rounded bg-white shadow-lg z-20"
+          >
+            <button
+              @click="handleLogout"
+              class="block w-full text-center px-4 py-2 text-sm font-bold text-gray-800 hover:bg-gray-100"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -142,3 +142,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+button:focus {
+  outline: none;
+}
+
+.container {
+  flex-wrap: nowrap;
+}
+</style>
