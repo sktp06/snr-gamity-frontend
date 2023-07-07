@@ -1,29 +1,28 @@
 <template>
-  <div class="bg-gray-900 text-white min-h-screen">
-    <div class="container mx-auto py-8">
-      <div class="header flex justify-between m-4">
-        <h2 class="text-2xl font-bold">Game Library</h2>
-      </div>
-      <div v-for="(value, index) in displayedGenres" :key="index">
-        <h2 class="text-2xl font-bold">{{ value.genre }}</h2>
-        <Carousel
-          :games="value.games"
-          @game-clicked="showGameDetail"
-          :items-to-show="5.5"
-        />
-        <button class="see-more" @click="toggleGenrePopup(value.genre)">
-          {{ expandedGenres.includes(value.genre) ? "See Less" : "See More" }}
-        </button>
-        <div v-if="expandedGenres.includes(value.genre)">
-          <div class="genre-popup" @click.self="hideGenrePopup">
-            <div
-              v-for="(game, index) in filteredGames(value.genre).slice(0, 30)"
-              :key="index"
-            >
-              <div class="game-item" @click="showGameDetail(game)">
-                <img :src="game.cover" alt="Game Cover" class="game-image" />
-                <h3>{{ game.name }}</h3>
-              </div>
+  <div class="bg-zinc-900 text-white min-h-screen">
+    <div class="flex justify-between items-center px-4 py-6">
+      <h2 class="text-3xl text-white font-bold mt-2">Game Library</h2>
+    </div>
+    <div v-for="(value, index) in displayedGenres" :key="index">
+      <h2 class="text-2xl font-bold mx-4 my-2">{{ value.genre }}</h2>
+      <Carousel
+        :games="value.games"
+        @game-clicked="showGameDetail"
+        :items-to-show="5.5"
+        class="mx-4"
+      />
+      <button class="see-more mx-4" @click="toggleGenrePopup(value.genre)">
+        {{ expandedGenres.includes(value.genre) ? "See Less" : "See More" }}
+      </button>
+      <div v-if="expandedGenres.includes(value.genre)">
+        <div class="genre-popup" @click.self="hideGenrePopup">
+          <div
+            v-for="(game, index) in filteredGames(value.genre).slice(0, 30)"
+            :key="index"
+          >
+            <div class="game-item" @click="showGameDetail(game)">
+              <img :src="game.cover" alt="Game Cover" class="game-image" />
+              <h3>{{ game.name }}</h3>
             </div>
           </div>
         </div>

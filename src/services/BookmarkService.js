@@ -3,18 +3,24 @@ import GStore from "@/store";
 
 export default {
   addBookmark(userId, gameId) {
-    return apiClient
+    apiClient
       .post("/bookmarks/add", {
         userId: userId,
         gameId: gameId,
       })
       .then((res) => {
-        alert(res.data.message);
-        return res.data; // Return the response data
+        if (res && res.data) {
+          alert(res.data.message);
+        } else {
+          alert("Unexpected response from the server.");
+        }
       })
       .catch((err) => {
-        alert(err.response.data.message);
-        throw err; // Rethrow the error
+        if (err && err.response && err.response.data) {
+          alert(err.response.data.message);
+        } else {
+          alert("An error occurred while adding the bookmark.");
+        }
       });
   },
   removeBookmark(userId, gameId) {
@@ -28,7 +34,6 @@ export default {
         location.reload();
       })
       .catch((err) => {
-        console.log(err);
         alert(err.response.data.message);
       });
   },
@@ -39,21 +44,11 @@ export default {
       })
       .then((res) => {
         GStore.bookmarks = res.data.games;
+        return res.data; // Return the response data
       })
       .catch((err) => {
         console.log(err);
+        throw err; // Rethrow the error
       });
   },
-  // getBookmarkById(gameId) {
-  //   apiClient
-  //     .post("/bookmarks/id", {
-  //         gameId: gameId,
-  //     })
-  //     .then((res) => {
-  //       GStore.gameDetails = res.data;
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // },
 };

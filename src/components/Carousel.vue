@@ -1,34 +1,34 @@
 <template>
-  <carousel :items-to-show="5.5">
+  <carousel :items-to-show="6.5" :items-to-scroll="7">
     <slide
       v-for="(game, index) in games"
       :key="index"
       @click="gameClicked(game)"
     >
-      <img :src="game.cover" alt="cover" class="w-full h-64 object-cover" />
+      <img
+        :src="game.cover"
+        alt="cover"
+        class="w-full h-64 object-cover mx-1 rounded-md"
+      />
     </slide>
     <GameDetail
       v-if="selectedGame"
       :game="selectedGame"
       @close="hideGameDetail"
     />
-    <template #addons>
-      <navigation />
-      <pagination />
-    </template>
+    <template #addons> <navigation class="carousel__icon" /> </template>
   </carousel>
 </template>
 
 <script>
 import "vue3-carousel/dist/carousel.css";
-import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
+import { Carousel, Slide, Navigation } from "vue3-carousel";
 import GameDetail from "@/components/GameDetail.vue";
 export default {
   name: "App",
   components: {
     Carousel,
     Slide,
-    Pagination,
     Navigation,
     GameDetail,
   },
@@ -40,7 +40,6 @@ export default {
   props: {
     itemsToShow: {
       type: Number,
-      default: 5.5,
       required: false,
     },
     games: {
@@ -65,7 +64,7 @@ export default {
 <style>
 .carousel__icon {
   color: white !important;
-  font-size: 2rem !important;
+  font-size: 5 rem !important;
 }
 .img {
   width: 100%;
