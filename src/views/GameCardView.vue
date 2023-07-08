@@ -14,19 +14,29 @@
       <button class="see-more mx-4" @click="toggleGenrePopup(value.genre)">
         {{ expandedGenres.includes(value.genre) ? "See Less" : "See More" }}
       </button>
-      <div v-if="expandedGenres.includes(value.genre)">
-        <div class="genre-popup" @click.self="hideGenrePopup">
-          <div
-            v-for="(game, index) in filteredGames(value.genre).slice(0, 30)"
-            :key="index"
-          >
-            <div class="game-item" @click="showGameDetail(game)">
-              <img :src="game.cover" alt="Game Cover" class="game-image" />
-              <h3>{{ game.name }}</h3>
+      <div
+        v-if="expandedGenres.includes(value.genre)"
+        class="genre-popup"
+        @click.self="hideGenrePopup"
+      >
+        <div class="popup-content">
+          <button class="close-button" @click="hideGenrePopup">Close</button>
+          <div class="game-grid">
+            <div
+              v-for="(game, gameIndex) in filteredGames(value.genre).slice(
+                30,
+                60
+              )"
+              :key="gameIndex"
+              class="game-item"
+              @click="showGameDetail(game)"
+            >
+              <img :src="game.cover" :alt="game.name" class="game-image" />
             </div>
           </div>
         </div>
       </div>
+
       <div
         v-if="selectedGame"
         class="game-popup"
@@ -50,7 +60,6 @@
               class="game-item"
             >
               <img :src="game.cover" alt="Game Cover" class="game-image" />
-              <h3 class="game-title">{{ game.name }}</h3>
             </div>
           </div>
           <button class="close-button" @click="hideSeeMorePopup">Close</button>
@@ -154,21 +163,28 @@ export default {
 
 .genre-popup {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 9999;
-  width: 50%;
-  max-width: 800px;
-  background-color: #000;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.9);
   display: flex;
-  flex-wrap: wrap;
+  align-items: flex-start;
   justify-content: center;
-  align-items: center;
-  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.popup-content {
+  position: relative;
+  width: 90vw;
+  height: 90vh;
+  max-width: 1000px;
+  max-height: 1000px;
+  overflow-y: auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-gap: 10px;
 }
 
 .genre-popup.show-popup {
@@ -177,10 +193,27 @@ export default {
   transition: opacity 0.3s, visibility 0.3s;
 }
 .genre-popup .game-item {
-  width: calc(16.666% - 20px);
+  width: calc(
+    16.666% - 20px
+  ); /* Adjust the width calculation based on your needs */
+  height: calc(
+    20% - 20px
+  ); /* Adjust the height calculation based on your needs */
   margin: 10px;
   cursor: pointer;
   transition: transform 0.3s;
+}
+.genre-popup .game-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+  gap: 10px; /* Add a gap between the game images */
+}
+
+.genre-popup .game-item {
+  width: calc(25% - 10px);
+  height: fit-content; /* Adjust the width calculation based on your needs */
 }
 
 .genre-popup .game-item:hover {
@@ -190,7 +223,7 @@ export default {
 .genre-popup .game-image {
   width: 100%;
   height: auto;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 10px;
 }
 
@@ -219,36 +252,34 @@ export default {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  max-width: 800px;
   width: 90%;
-  max-height: 90%;
-  overflow: auto;
-}
-
-.see-more-popup .game-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-gap: 20px;
+  max-height: 90vh; /* Limit the maximum height of the popup to 90% of the viewport height */
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Center the game items horizontally */
+  align-items: center; /* Center the game items vertically */
 }
 
 .see-more-popup .game-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 200px; /* Adjust the width of each game item based on your needs */
+  height: 200px; /* Set the height equal to the width to make the popup square */
+  margin-right: 20px; /* Adjust the spacing between game items based on your needs */
+  margin-bottom: 20px; /* Adjust the spacing between game items based on your needs */
 }
 
 .see-more-popup .game-image {
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: cover;
   border-radius: 10px;
-  margin-bottom: 10px;
 }
 
 .see-more-popup .game-title {
   font-size: 16px;
   text-align: center;
   color: #fff;
+  margin-top: 10px;
 }
 
 .close-button {
@@ -271,4 +302,12 @@ export default {
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 9998;
 }
+/* .game-item {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+} */
 </style>
