@@ -3,11 +3,11 @@
     <div class="flex justify-between items-center px-4 py-6">
       <h2 class="text-3xl text-white font-bold mt-2">My List</h2>
     </div>
-    <div class="grid grid-cols-2 gap-16 md:grid-cols-5 mx-4">
+    <div class="grid grid-cols-2 gap-10 md:grid-cols-5 mx-4">
       <div
         v-for="game in GStore.bookmarks"
         :key="game.id"
-        class="relative rounded-lg shadow-md overflow-hidden hover:shadow-lg border border-amber-200"
+        class="relative rounded-lg shadow-md overflow-hidden hover:shadow-lg border border-amber-200 mb-4"
         style="height: 280px; width: 230px"
       >
         <img
