@@ -42,7 +42,7 @@
     <div class="flex flex-wrap -mx-4">
       <div v-for="game in filteredGames" :key="game.id" class="w-1/6 px-4">
         <div
-          class="bg-white transform hover:-translate-y-1 hover:scale-105 transition duration-300 shadow-lg rounded-md ml-2 mr-2"
+          class="bg-white transform transition duration-300 shadow-lg rounded-md ml-2 mr-2"
         >
           <GameCard :game="game" />
         </div>
