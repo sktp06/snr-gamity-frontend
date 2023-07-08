@@ -1,40 +1,44 @@
 <template>
-  <div class="flex flex-col items-center">
-    <h5
-      class="mb-2 text-2xl font-bold tracking-tight text-pink-800 text-center mt-5"
-    >
-      My Favourites Lists
-    </h5>
-
-    <div
-      v-for="item in GStore.bookmarks"
-      :key="item.id"
-      class="flex flex-col items-center bg-white border rounded-lg shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-yellow-700 dark:bg-yellow-200 mt-8 w-[500px]"
-    >
-      <img
-        :src="item.cover"
-        alt="image"
-        class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-l-lg"
-      />
-      <div class="flex m-auto">
-        <div
-          class="flex flex-col justify-between p-4 leading-normal items-center"
-        >
-          <p class="mb-3 font-normal text-black-400">Game ID: {{ item.id }}</p>
-          <p class="mb-3 font-normal text-black-400">
-            Game Name: {{ item.name }}
-          </p>
-        </div>
-      </div>
-      <button
-        @click="handleRemove(item.id)"
-        class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+  <div class="bg-zinc-900 min-h-screen">
+    <div class="flex justify-between items-center px-4 py-6">
+      <h2 class="text-3xl text-white font-bold mt-2">My List</h2>
+    </div>
+    <div class="grid grid-cols-2 gap-16 md:grid-cols-5 mx-4">
+      <div
+        v-for="game in GStore.bookmarks"
+        :key="game.id"
+        class="relative rounded-lg shadow-md overflow-hidden hover:shadow-lg border border-amber-200"
+        style="height: 280px; width: 230px"
       >
-        Remove
-      </button>
+        <img
+          :src="game.cover"
+          alt="image"
+          class="object-cover w-full h-full transform transition-transform hover:scale-105"
+        />
+        <button
+          @click="removeFromFavorite(game.id)"
+          class="absolute top-2 right-2 p-4 text-white hover:text-red-500 transition-colors duration-300"
+        >
+          <svg
+            class="h-10 w-10"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 </template>
+
 <script>
 import BookmarkService from "@/services/BookmarkService.js";
 
@@ -42,12 +46,27 @@ export default {
   name: "bookmark-page",
   inject: ["GStore"],
   methods: {
-    handleRemove(gameId) {
+    removeFromFavorite(gameId) {
+      console.log("Remove game from favorites:", gameId);
       BookmarkService.removeBookmark(
-        JSON.parse(localStorage.getItem("user")).id,
+        JSON.parse(localStorage.getItem("user")).user_id,
         gameId
       );
     },
+    getBookmarks() {
+      BookmarkService.getbookmarkList(
+        JSON.parse(localStorage.getItem("user")).user_id
+      )
+        .then((games) => {
+          this.GStore.bookmarks = games;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
+  mounted() {
+    this.getBookmarks(); // Fetch the bookmarked games when the component is mounted
   },
 };
 </script>

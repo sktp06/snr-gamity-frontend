@@ -38,13 +38,13 @@ export default {
       });
   },
   getbookmarkList(userId) {
-    apiClient
+    return apiClient
       .post("/bookmarks/", {
         userId: userId,
       })
       .then((res) => {
         GStore.bookmarks = res.data.games;
-        return res.data; // Return the response data
+        return res.data.games; // Return the games data
       })
       .catch((err) => {
         console.log(err);
