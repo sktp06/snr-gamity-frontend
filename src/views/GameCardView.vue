@@ -147,10 +147,10 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 9999;
+  z-index: 9997;
   background-color: rgba(0, 0, 0, 0.9);
   display: flex;
-  align-items: flex-start;
+  /* align-items: flex-start; */
   justify-content: center;
 }
 
@@ -168,9 +168,9 @@ export default {
 }
 
 .genre-popup.show-popup {
-  opacity: 1;
+  /* opacity: 1;
   visibility: visible;
-  transition: opacity 0.3s, visibility 0.3s;
+  transition: opacity 0.3s, visibility 0.3s; */
 }
 .genre-popup .game-item {
   width: calc(

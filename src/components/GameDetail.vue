@@ -4,10 +4,14 @@
       <img :src="game.cover" alt="Game Cover" class="game-image rounded-lg" />
     </div>
     <div class="game-details">
-      <h3 class="text-2xl font-bold mb-4">{{ game.name }}</h3>
+      <h3 class="text-2xl font-bold mb-4 capitalize">{{ game.name }}</h3>
+      <p class="mb-2">
+        <span class="font-bold">Description:</span>
+        {{ game.summary }}
+      </p>
       <p class="mb-2">
         <span class="font-bold">Release Date:</span>
-        {{ game.release_dates[0] ? game.release_dates[0] : "No release date" }}
+        {{ game.release_dates[1] ? game.release_dates[0] : "No release date" }}
       </p>
       <p class="mb-2">
         <span class="font-bold">Genres:</span>
@@ -103,12 +107,16 @@ export default {
 .image-container {
   width: 40%;
   margin-right: 20px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .game-image {
   width: 100%;
-  height: auto;
-  object-fit: cover;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 10px;
 }
 
 .game-details {
