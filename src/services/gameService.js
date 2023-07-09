@@ -13,7 +13,7 @@ export default {
   async getGameStatistics() {
     try {
       const response = await apiClient.get("/game/stat");
-      return response.data;
+      return response.data.content; // Return the content object from the response
     } catch (error) {
       console.error("Error fetching game statistics:", error);
       throw error;

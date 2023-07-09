@@ -20,6 +20,9 @@
           <p class="text-xl font-semibold text-gray-900">
             {{ gameStatistics?.update_date }}
           </p>
+          <p class="mt-3 text-gray-900">
+            <strong>Details:</strong> Lasted fetching game data
+          </p>
         </div>
         <div
           class="bg-slate-300 rounded-lg shadow-md p-6 transform hover:-translate-y-1 hover:scale-102 transition duration-300"
@@ -59,7 +62,10 @@ export default {
       this.gameStatistics = await gameService.getGameStatistics();
       console.log(this.gameStatistics);
 
-      this.createGenreChart();
+      if (this.gameStatistics) {
+        await this.$nextTick(); // Wait for Vue to update the DOM
+        this.createGenreChart();
+      }
     } catch (error) {
       console.error("Error fetching game statistics:", error);
     }
