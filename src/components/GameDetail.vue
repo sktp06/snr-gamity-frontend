@@ -13,11 +13,19 @@
       </div>
       <p class="mb-2 text-justify">
         <span class="font-bold">Description:</span>
-        {{ game.summary }}
+        {{ game.unclean_summary }}
       </p>
       <p class="mb-2">
         <span class="font-bold">Release Date:</span>
-        {{ game.release_dates[1] ? game.release_dates[0] : "No release date" }}
+        {{
+          game.release_dates
+            ? formatDate(game.release_dates) + getReleaseStatus(game)
+            : "No release date"
+        }}
+      </p>
+      <p v-if="!hasReleased(game)" class="mb-2">
+        <span class="font-bold">Remaining Days:</span>
+        {{ getRemainingDays(game) }}
       </p>
       <p class="mb-2">
         <span class="font-bold">Genres:</span>
@@ -25,7 +33,15 @@
       </p>
       <p class="mb-4">
         <span class="font-bold">Rating:</span>
-        {{ game.rating ? game.rating : "No rating" }}
+        {{ game.rating ? Math.round(game.rating) : "No rating" }}
+      </p>
+      <p class="mb-4">
+        <span class="font-bold">Aggregate Rating:</span>
+        {{
+          game.aggregated_rating
+            ? Math.round(game.aggregated_rating)
+            : "No rating"
+        }}
       </p>
       <div>
         <p class="font-bold mb-2">Time to Beat:</p>
@@ -62,9 +78,8 @@
         Add to Favorites
       </button>
     </div>
-    <!-- Additional game details if needed -->
     <button
-      class="close-button bg-gray-200 text-gray-400 font-bold py-2 px-4 rounded-full mt-4"
+      class="close-button bg-gray-200 text-gray-500 font-bold py-2 px-4 rounded-full mt-4"
       @click="$emit('close')"
     >
       Close
@@ -89,6 +104,65 @@ export default {
         gameId
       );
     },
+    formatDate(dateString) {
+      const options = { year: "numeric", month: "long", day: "numeric" };
+      const date = new Date(dateString);
+      return date.toLocaleDateString(undefined, options);
+    },
+    hasReleased(game) {
+      if (!game.release_dates) {
+        return false;
+      }
+
+      const releaseDate = new Date(game.release_dates);
+      const today = new Date();
+      return today >= releaseDate;
+    },
+
+    getReleaseStatus(game) {
+      if (!game.release_dates) {
+        return "";
+      }
+
+      const releaseDate = new Date(game.release_dates);
+      const today = new Date();
+      const differenceInTime = releaseDate.getTime() - today.getTime();
+      const differenceInDays = Math.floor(
+        differenceInTime / (1000 * 3600 * 24)
+      );
+
+      if (differenceInDays > 0) {
+        return ` (In ${differenceInDays} day${
+          differenceInDays > 1 ? "s" : ""
+        })`;
+      } else if (differenceInDays < 0) {
+        const differenceInMonths = Math.abs(Math.floor(differenceInDays / 30));
+        const differenceInYears = Math.floor(differenceInMonths / 12);
+        const remainingMonths = differenceInMonths % 12;
+
+        if (differenceInYears > 0) {
+          if (remainingMonths > 0) {
+            return ` (${differenceInYears} year${
+              differenceInYears > 1 ? "s" : ""
+            } and ${remainingMonths} month${
+              remainingMonths > 1 ? "s" : ""
+            } ago)`;
+          } else {
+            return ` (${differenceInYears} year${
+              differenceInYears > 1 ? "s" : ""
+            } ago)`;
+          }
+        } else if (remainingMonths > 0) {
+          return ` (${remainingMonths} month${
+            remainingMonths > 1 ? "s" : ""
+          } ago)`;
+        } else {
+          return " (Just Released)";
+        }
+      } else {
+        return " (Released today)";
+      }
+    },
   },
 };
 </script>
@@ -102,7 +176,7 @@ export default {
   z-index: 9999;
   width: 80%;
   max-width: 600px;
-  background-color: #fff;
+  background-color: #ffffff;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
@@ -164,6 +238,6 @@ export default {
 }
 
 .close-button:hover {
-  background-color: #d1d5db; /* Add grey background on hover */
+  background-color: #c1c2c4; /* Add grey background on hover */
 }
 </style>
