@@ -64,7 +64,7 @@
                 <div>
                   <button
                     type="submit"
-                    class="w-full bg-red-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-red-700 focus:outline-none"
+                    class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-indigo-700 focus:outline-none"
                   >
                     Sign Up
                   </button>

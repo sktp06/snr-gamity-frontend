@@ -52,7 +52,7 @@
                     Don't have an account?
                     <router-link
                       to="/sign-up"
-                      class="text-red-600 font-semibold"
+                      class="text-indigo-600 font-semibold"
                     >
                       Sign Up
                     </router-link>
