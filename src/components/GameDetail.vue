@@ -1,11 +1,17 @@
 <template>
   <div class="game-popup">
-    <div class="image-container">
-      <img :src="game.cover" alt="Game Cover" class="game-image rounded-lg" />
-    </div>
     <div class="game-details">
-      <h3 class="text-2xl font-bold mb-4 capitalize">{{ game.name }}</h3>
-      <p class="mb-2">
+      <h3 class="mb-2text-2xl font-bold mb-4 capitalize text-center">
+        {{ game.name }}
+      </h3>
+      <div class="image-container">
+        <img
+          :src="game.cover"
+          alt="Game Cover"
+          class="game-image rounded-lg mb-2"
+        />
+      </div>
+      <p class="mb-2 text-justify">
         <span class="font-bold">Description:</span>
         {{ game.summary }}
       </p>
@@ -22,7 +28,7 @@
         {{ game.rating ? game.rating : "No rating" }}
       </p>
       <div>
-        <p class="font-bold mb-2">Time to beat:</p>
+        <p class="font-bold mb-2">Time to Beat:</p>
         <ul class="mb-4">
           <li>
             <span class="font-bold">Story:</span> {{ game.main_story }} hour(s)
@@ -58,7 +64,7 @@
     </div>
     <!-- Additional game details if needed -->
     <button
-      class="close-button bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full mt-4"
+      class="close-button bg-gray-200 text-gray-400 font-bold py-2 px-4 rounded-full mt-4"
       @click="$emit('close')"
     >
       Close
@@ -102,20 +108,35 @@ export default {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: start;
+  overflow-y: auto;
+  max-height: 80vh;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.game-popup::-webkit-scrollbar {
+  width: 8px; /* Set the width of the scrollbar */
+}
+
+.game-popup::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 4px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.game-popup::-webkit-scrollbar-track {
+  background-color: #edf2f7; /* Set the color of the scrollbar track */
 }
 
 .image-container {
-  width: 40%;
-  margin-right: 20px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
 }
 
 .game-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+  width: 50%;
+  height: 50%;
   border-radius: 10px;
 }
 
@@ -138,5 +159,11 @@ export default {
 .close-button {
   cursor: pointer;
   padding: 10px 20px;
+  background-color: transparent;
+  transition: background-color 0.3s;
+}
+
+.close-button:hover {
+  background-color: #d1d5db; /* Add grey background on hover */
 }
 </style>
