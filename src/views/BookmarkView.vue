@@ -8,19 +8,31 @@
         v-for="game in GStore.bookmarks"
         :key="game.id"
         class="relative rounded-lg shadow-md overflow-hidden hover:shadow-lg border border-amber-200 mb-4"
-        style="height: 280px; width: 230px"
+        style="height: 300px; width: 230px"
       >
-        <img
-          :src="game.cover"
-          alt="image"
-          class="object-cover w-full h-full transform transition-transform hover:scale-105"
-        />
+        <div class="h-250px relative">
+          <img
+            :src="game.cover"
+            alt="image"
+            class="object-cover w-full h-full transform transition-transform hover:scale-105"
+            style="z-index: 0"
+          />
+          <div
+            v-if="remainingDays(game) !== null && isRecentlyReleased(game)"
+            class="absolute bottom-0 left-0 right-0 p-4 bg-black bg-opacity-80"
+          >
+            <p class="text-white text-center font-bold text-lg">
+              In ({{ remainingDays(game) }}) days until the game's release
+            </p>
+          </div>
+        </div>
         <button
           @click="removeFromFavorite(game.id)"
           class="absolute top-2 right-2 p-4 text-white hover:text-red-500 transition-colors duration-300"
+          style="z-index: 1"
         >
           <svg
-            class="h-10 w-10"
+            class="h-5 w-5"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -63,6 +75,23 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    remainingDays(game) {
+      const releaseDate = new Date(game.release_dates);
+      const today = new Date();
+      const differenceInTime = releaseDate.getTime() - today.getTime();
+      const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
+      return differenceInDays > 0 ? differenceInDays : null;
+    },
+  },
+  computed: {
+    isRecentlyReleased() {
+      const oneMonthInMilliseconds = 30 * 24 * 60 * 60 * 1000; // Assuming one month is 30 days
+      const now = new Date();
+      return (game) => {
+        const releaseDate = new Date(game.release_dates);
+        return now - releaseDate <= oneMonthInMilliseconds;
+      };
     },
   },
   mounted() {

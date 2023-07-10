@@ -4,7 +4,7 @@
       class="container mx-auto px-6 py-4 flex flex-wrap justify-between items-center"
     >
       <div class="flex items-center">
-        <router-link to="/game-card" class="text-2xl font-bold mr-4">
+        <router-link to="/home" class="text-2xl font-bold mr-4">
           Gamity
         </router-link>
         <router-link
