@@ -25,7 +25,10 @@
           <button class="close-button" @click="hideGenrePopup">Close</button>
           <div class="game-grid">
             <div
-              v-for="(game, gameIndex) in filteredGames(value.genre)"
+              v-for="(game, gameIndex) in filteredGames(value.genre).slice(
+                51,
+                80
+              )"
               :key="gameIndex"
               class="game-item"
               @click="showGameDetail(game)"
