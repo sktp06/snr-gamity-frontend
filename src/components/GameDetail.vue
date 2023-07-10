@@ -73,9 +73,13 @@
       </div>
       <button
         @click="addToFavorites(game.id)"
-        class="bg-blue-500 hover:bg-green-500 text-white font-bold py-2 px-4 rounded-full"
+        :class="{
+          'bg-blue-500 hover:bg-green-500': !isFavorite,
+          'bg-red-500 hover:bg-yellow-500': isFavorite,
+        }"
+        class="text-white font-bold py-2 px-4 rounded-full"
       >
-        Add to Favorites
+        {{ isFavorite ? "Remove from Favorites" : "Add to Favorites" }}
       </button>
     </div>
     <button
@@ -96,13 +100,34 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      isFavorite: false, // Track if the game is already a favorite
+    };
+  },
   methods: {
     addToFavorites(gameId) {
-      console.log("Adding game to favorites:", gameId);
-      BookmarkService.addBookmark(
-        JSON.parse(localStorage.getItem("user")).user_id,
-        gameId
-      );
+      const userId = JSON.parse(localStorage.getItem("user")).user_id;
+
+      if (this.isFavorite) {
+        BookmarkService.removeBookmark(userId, gameId)
+          .then(() => {
+            console.log("Removed game from favorites:", gameId);
+            this.isFavorite = false;
+          })
+          .catch((error) => {
+            console.log("Error removing game from favorites:", error);
+          });
+      } else {
+        BookmarkService.addBookmark(userId, gameId)
+          .then(() => {
+            console.log("Added game to favorites:", gameId);
+            this.isFavorite = true;
+          })
+          .catch((error) => {
+            console.log("Error adding game to favorites:", error);
+          });
+      }
     },
     formatDate(dateString) {
       const options = { year: "numeric", month: "long", day: "numeric" };

@@ -3,7 +3,7 @@ import GStore from "@/store";
 
 export default {
   addBookmark(userId, gameId) {
-    apiClient
+    return apiClient
       .post("/bookmarks/add", {
         userId: userId,
         gameId: gameId,
@@ -24,7 +24,7 @@ export default {
       });
   },
   removeBookmark(userId, gameId) {
-    apiClient
+    return apiClient
       .post("/bookmarks/remove", {
         userId: userId,
         gameId: gameId,
