@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-black text-white">
+  <div class="bg-gradient-to-r from-black to-gray-900 text-white">
     <div
       class="container mx-auto px-6 py-4 flex flex-wrap justify-between items-center"
     >
@@ -38,7 +38,7 @@
             v-model="searchQuery"
             placeholder="Search..."
           />
-          <button class="bg-red-600 px-4 py-2 rounded-r-lg" type="submit">
+          <button class="bg-indigo-600 px-4 py-2 rounded-r-lg" type="submit">
             <svg
               class="w-6 h-6 text-white"
               fill="currentColor"
@@ -53,7 +53,7 @@
         </Form>
         <div class="ml-4 relative">
           <button
-            class="bg-red-600 px-4 py-2 rounded uppercase text-sm font-bold"
+            class="bg-indigo-600 px-4 py-2 rounded uppercase text-sm font-bold"
             @click="showMenu = !showMenu"
           >
             {{ GStore.currentUser && GStore.currentUser.username }}
@@ -71,11 +71,11 @@
           </button>
           <div
             v-if="showMenu"
-            class="absolute right-0 mt-2 w-48 rounded bg-white shadow-lg z-20"
+            class="absolute right-0 mt-2 w-36 rounded bg-white shadow-lg z-20"
           >
             <button
               @click="handleLogout"
-              class="block w-full text-center px-4 py-2 text-sm font-bold text-gray-800 hover:bg-gray-100"
+              class="block w-full text-center px-2 py-2 text-sm font-bold text-gray-800 rounded hover:bg-gray-100"
             >
               Logout
             </button>

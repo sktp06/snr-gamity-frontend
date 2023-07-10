@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "../views/LoginView.vue";
 import SignUpView from "../views/SignUpView.vue";
-import HomeView from "../views/HomeView.vue";
 import BookmarkView from "../views/BookmarkView.vue";
 import GameCardView from "../views/GameCardView.vue";
 import UpComingGameView from "../views/UpComingGameView.vue";
@@ -9,11 +8,6 @@ import DataManagementView from "../views/DataManagementView.vue";
 import ErrorPage from "../views/ErrorPage.vue";
 
 const routes = [
-  {
-    path: "/",
-    name: "home",
-    component: HomeView,
-  },
   {
     path: "/404",
     name: "404",
@@ -36,7 +30,7 @@ const routes = [
     meta: { requiresAuth: true, allowedRoles: ["user"] },
   },
   {
-    path: "/game-card",
+    path: "/home",
     name: "game-card",
     component: GameCardView,
     meta: { requiresAuth: true, allowedRoles: ["admin", "user"] },

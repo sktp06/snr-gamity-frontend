@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gradient-to-r from-black to-gray-900">
+  <div class="bg-gradient-to-r from-black to-gray-800">
     <main>
       <section class="h-screen flex items-center">
         <div class="container mx-auto px-4">
@@ -16,7 +16,7 @@
                 <div class="mb-6">
                   <label
                     for="username"
-                    class="block mb-1 text-gray-700 font-semibold"
+                    class="block mb-1 text-black-700 font-semibold"
                   >
                     Username
                   </label>
@@ -32,7 +32,7 @@
                 <div class="mb-6">
                   <label
                     for="password"
-                    class="block mb-1 text-gray-700 font-semibold"
+                    class="block mb-1 text-black-700 font-semibold"
                   >
                     Password
                   </label>
@@ -48,7 +48,7 @@
                 <div class="mb-6">
                   <label
                     for="confirmPassword"
-                    class="block mb-1 text-gray-700 font-semibold"
+                    class="block mb-1 text-black-700 font-semibold"
                   >
                     Confirm Password
                   </label>
@@ -139,9 +139,5 @@ export default {
 <style scoped>
 button:focus {
   outline: none;
-}
-
-.bg-gradient-to-r {
-  background-image: linear-gradient(to right, #000000, #4a4a4a);
 }
 </style>
