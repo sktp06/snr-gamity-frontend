@@ -22,12 +22,20 @@
       <p v-if="remainingDays" class="text-sm text-gray-500">
         In ( {{ remainingDays }} ) days
       </p>
+      <button
+        @click="toggleFavorite(game.id)"
+        class="favorite-button"
+        :class="{ 'text-red-500': isFavorite, 'full-heart': isFavorite }"
+      >
+        <i :class="['fa', isFavorite ? 'fas' : 'far', 'fa-heart']"></i>
+      </button>
     </div>
   </div>
 </template>
 
 <script>
 import defaultCoverImage from "@/assets/no-image-available.png";
+import BookmarkService from "@/services/BookmarkService.js";
 
 export default {
   props: {
@@ -59,5 +67,53 @@ export default {
       return differenceInDays > 0 ? differenceInDays : null;
     },
   },
+  methods: {
+    toggleFavorite(gameId) {
+      const userId = JSON.parse(localStorage.getItem("user")).user_id;
+
+      if (this.isFavorite) {
+        BookmarkService.removeBookmark(userId, gameId)
+          .then(() => {
+            console.log("Removed game from favorites:", gameId);
+            this.isFavorite = false;
+          })
+          .catch((error) => {
+            console.log("Error removing game from favorites:", error);
+          });
+      } else {
+        BookmarkService.addBookmark(userId, gameId)
+          .then(() => {
+            console.log("Added game to favorites:", gameId);
+            this.isFavorite = true;
+          })
+          .catch((error) => {
+            console.log("Error adding game to favorites:", error);
+          });
+      }
+    },
+  },
 };
 </script>
+
+<style>
+.favorite-button {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background-color: transparent;
+  color: red;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  transition: color 0.3s ease-in-out;
+}
+
+.favorite-button:hover {
+  color: darkred;
+}
+
+.full-heart {
+  color: red;
+}
+</style>

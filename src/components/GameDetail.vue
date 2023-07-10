@@ -74,10 +74,16 @@
       <button
         @click="addToFavorites(game.id)"
         :class="{
-          'bg-blue-500 hover:bg-green-500': !isFavorite,
-          'bg-red-500 hover:bg-yellow-500': isFavorite,
+          'bg-gray-500 hover:bg-gray-900': isFavorite,
+          'bg-red-500 hover:bg-red-900': !isFavorite,
         }"
-        class="text-white font-bold py-2 px-4 rounded-full"
+        class="text-white font-bold py-2 px-4 rounded-full mt-4"
+        :style="{
+          'background-color': isFavorite ? 'gray' : 'red',
+          hover: {
+            'background-color': isFavorite ? 'grey' : 'green',
+          },
+        }"
       >
         {{ isFavorite ? "Remove from Favorites" : "Add to Favorites" }}
       </button>
