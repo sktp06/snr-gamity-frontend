@@ -21,13 +21,14 @@
         @click.self="hideGenrePopup"
       >
         <div class="popup-content">
-          <h2 class="genre-title">{{ value.genre }}</h2>
           <button class="close-button" @click="hideGenrePopup">Close</button>
           <div class="game-grid">
+            <!-- <h2 class="genre-title">{{ value.genre }}</h2> -->
+            <!-- Moved above the div block -->
             <div
               v-for="(game, gameIndex) in filteredGames(value.genre).slice(
-                51,
-                80
+                0,
+                100
               )"
               :key="gameIndex"
               class="game-item"
@@ -159,18 +160,6 @@ export default {
   justify-content: center;
 }
 
-.game-popup::-webkit-scrollbar-track {
-  background-color: #edf2f7;
-}
-
-.game-popup::-webkit-scrollbar-thumb {
-  background-color: #a0aec0;
-  border-radius: 10px;
-}
-
-.game-popup::-webkit-scrollbar-thumb:hover {
-  background-color: #718096;
-}
 .popup-content {
   position: relative;
   width: 90vw;
@@ -203,8 +192,13 @@ export default {
 }
 
 .genre-popup .game-item {
-  width: calc(25% - 10px);
-  height: fit-content; /* Adjust the width calculation based on your needs */
+  width: calc(
+    20% - 10px
+  ); /* Adjust the width calculation based on your needs */
+  height: fit-content; /* Adjust the height calculation based on your needs */
+  margin: 10px;
+  cursor: pointer;
+  transition: transform 0.3s;
 }
 
 .genre-popup .game-item:hover {
