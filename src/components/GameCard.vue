@@ -8,7 +8,9 @@
       class="w-full h-64 object-cover rounded-t-lg"
     />
     <div class="p-4">
-      <h2 class="text-lg font-bold h-16 overflow-hidden line-clamp-2 mt-2">
+      <h2
+        class="text-lg font-bold h-16 overflow-hidden line-clamp-2 mt-2 capitalize"
+      >
         {{ game.name }}
       </h2>
       <div class="h-12">

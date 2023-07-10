@@ -139,6 +139,8 @@ export default {
 <style>
 .game-popup {
   width: 50%;
+  scrollbar-width: thin;
+  scrollbar-color: #a0aec0 #edf2f7;
 }
 
 .genre-popup {
@@ -154,6 +156,18 @@ export default {
   justify-content: center;
 }
 
+.game-popup::-webkit-scrollbar-track {
+  background-color: #edf2f7;
+}
+
+.game-popup::-webkit-scrollbar-thumb {
+  background-color: #a0aec0;
+  border-radius: 10px;
+}
+
+.game-popup::-webkit-scrollbar-thumb:hover {
+  background-color: #718096;
+}
 .popup-content {
   position: relative;
   width: 90vw;
@@ -165,12 +179,6 @@ export default {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   grid-gap: 10px;
-}
-
-.genre-popup.show-popup {
-  /* opacity: 1;
-  visibility: visible;
-  transition: opacity 0.3s, visibility 0.3s; */
 }
 .genre-popup .game-item {
   width: calc(
@@ -234,12 +242,24 @@ export default {
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 9998;
 }
-/* .game-item {
-  width: 200px;
-  height: 200px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 10px;
-} */
+.genre-popup .popup-content {
+  /* Other existing styles */
+
+  /* Customize the scroll bar style */
+  scrollbar-width: thin;
+  scrollbar-color: #a0aec0 #edf2f7;
+}
+
+.genre-popup .popup-content::-webkit-scrollbar-track {
+  background-color: #edf2f7;
+}
+
+.genre-popup .popup-content::-webkit-scrollbar-thumb {
+  background-color: #a0aec0;
+  border-radius: 10px;
+}
+
+.genre-popup .popup-content::-webkit-scrollbar-thumb:hover {
+  background-color: #718096;
+}
 </style>
