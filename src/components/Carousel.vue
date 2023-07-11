@@ -6,7 +6,7 @@
       @click="gameClicked(game)"
     >
       <img
-        :src="game.cover"
+        :src="game.cover || defaultCover"
         alt="cover"
         class="w-full h-64 object-cover mx-1 rounded-md"
       />
@@ -24,6 +24,8 @@
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Navigation } from "vue3-carousel";
 import GameDetail from "@/components/GameDetail.vue";
+import defaultCoverImage from "@/assets/no-image-available.png";
+
 export default {
   name: "App",
   components: {
@@ -35,6 +37,7 @@ export default {
   data() {
     return {
       selectedGame: null,
+      defaultCover: defaultCoverImage,
     };
   },
   props: {

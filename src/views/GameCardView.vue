@@ -99,7 +99,7 @@ export default {
   methods: {
     filteredGames(genre) {
       let filtered = this.games.filter((game) => game.genres.includes(genre));
-      return filtered.sort((a, b) => b.rating - a.rating);
+      return filtered.sort((a, b) => b.popularity - a.popularity);
     },
     showGameDetail(game) {
       this.selectedGame = game;

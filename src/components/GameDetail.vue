@@ -6,7 +6,7 @@
       </h3>
       <div class="image-container">
         <img
-          :src="game.cover"
+          :src="game.cover || defaultCover"
           alt="Game Cover"
           class="game-image rounded-lg mb-2"
         />
@@ -99,6 +99,8 @@
 
 <script>
 import BookmarkService from "@/services/BookmarkService.js";
+import defaultCoverImage from "@/assets/no-image-available.png";
+
 export default {
   props: {
     game: {
@@ -109,6 +111,7 @@ export default {
   data() {
     return {
       isFavorite: false, // Track if the game is already a favorite
+      defaultCover: defaultCoverImage,
     };
   },
   methods: {
