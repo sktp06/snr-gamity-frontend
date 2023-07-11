@@ -23,13 +23,17 @@
             : "No release date"
         }}
       </p>
-      <p v-if="!hasReleased(game)" class="mb-2">
+      <!-- <p v-if="!hasReleased(game)" class="mb-2">
         <span class="font-bold">Remaining Days:</span>
-        {{ getRemainingDays(game) }}
-      </p>
+        {{ getRemainingDays(game) }} Days
+      </p> -->
       <p class="mb-2">
         <span class="font-bold">Genres:</span>
-        {{ game.genres.length > 0 ? game.genres.join(", ") : "No genres" }}
+        {{
+          game.genres && game.genres.length > 0
+            ? game.genres.join(", ")
+            : "No genres"
+        }}
       </p>
       <p class="mb-4">
         <span class="font-bold">Rating:</span>
