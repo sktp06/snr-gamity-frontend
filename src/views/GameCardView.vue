@@ -242,9 +242,14 @@ export default {
 .genre-popup .popup-content {
   /* Other existing styles */
 
-  /* Customize the scroll bar style */
-  scrollbar-width: thin;
-  scrollbar-color: #a0aec0 #edf2f7;
+  /* Hide the scrollbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none;
+}
+
+.genre-popup .popup-content::-webkit-scrollbar {
+  display: none;
 }
 
 .genre-popup .popup-content::-webkit-scrollbar-track {
