@@ -16,7 +16,15 @@
             alt="image"
             class="object-cover w-full h-full transform transition-transform hover:scale-105"
             style="z-index: 0"
+            @click="selectedGame = game"
           />
+          <div v-if="selectedGame" class="game-popup">
+            <div class="overlay"></div>
+            <GameDetail :game="selectedGame" @close="selectedGame = null" />
+            <button class="close-button" @click="selectedGame = null">
+              Close
+            </button>
+          </div>
           <div
             v-if="remainingDays(game) !== null && isRecentlyReleased(game)"
             class="absolute bottom-0 left-0 right-0 p-4 bg-black bg-opacity-80"
@@ -53,17 +61,33 @@
 
 <script>
 import BookmarkService from "@/services/BookmarkService.js";
+import GameDetail from "@/components/GameDetail.vue";
 
 export default {
   name: "bookmark-page",
   inject: ["GStore"],
+  components: {
+    GameDetail,
+  },
+  data() {
+    return {
+      selectedGame: null,
+    };
+  },
   methods: {
     removeFromFavorite(gameId) {
       console.log("Remove game from favorites:", gameId);
       BookmarkService.removeBookmark(
         JSON.parse(localStorage.getItem("user")).user_id,
         gameId
-      );
+      )
+        .then(() => {
+          this.getBookmarks();
+          this.selectedGame = null; // Set selectedGame to null after removing from favorites
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     getBookmarks() {
       BookmarkService.getbookmarkList(
