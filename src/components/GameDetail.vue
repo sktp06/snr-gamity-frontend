@@ -223,7 +223,8 @@ export default {
 }
 
 .game-popup::-webkit-scrollbar {
-  width: 8px; /* Set the width of the scrollbar */
+  width: 0;
+  display: none;
 }
 
 .game-popup::-webkit-scrollbar-thumb {
