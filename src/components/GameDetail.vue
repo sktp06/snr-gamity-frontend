@@ -197,6 +197,17 @@ export default {
         return " (Released today)";
       }
     },
+    getRemainingDays(game) {
+      if (!game.release_dates) {
+        return 0;
+      }
+
+      const releaseDate = new Date(game.release_dates);
+      const today = new Date();
+      const differenceInTime = releaseDate.getTime() - today.getTime();
+      const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
+      return differenceInDays;
+    },
   },
 };
 </script>

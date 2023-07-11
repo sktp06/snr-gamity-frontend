@@ -2,6 +2,27 @@
   <div class="bg-zinc-900 text-white min-h-screen">
     <div class="flex justify-between items-center px-4 py-6">
       <h2 class="text-3xl text-white font-bold mt-2">Game Library</h2>
+      <div class="relative inline-block">
+        <select
+          class="block appearance-none bg-zinc-800 text-white px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:bg-zinc-700"
+          v-model="sortingOption"
+        >
+          <option value="popularity">Popularity</option>
+          <option value="rating">Rating</option>
+          <option value="release_dates">New</option>
+        </select>
+        <div
+          class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white"
+        >
+          <svg
+            class="fill-current h-4 w-4"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+          >
+            <path d="M10 12l-6-6 1.5-1.5L10 9.8l4.5-4.3L16 6l-6 6z"></path>
+          </svg>
+        </div>
+      </div>
     </div>
     <div v-for="(value, index) in displayedGenres" :key="index">
       <h2 class="text-2xl font-bold mx-4 my-2">{{ value.genre }}</h2>
@@ -72,6 +93,7 @@ export default {
       expandedGenres: [],
       showSeeMore: false,
       seeMoreIndex: null,
+      sortingOption: "popularity",
     };
   },
   computed: {
@@ -85,7 +107,18 @@ export default {
     displayedGenres() {
       return this.allGenres.map((genre) => ({
         genre,
-        games: this.filteredGames(genre).slice(0, this.itemsPerGenre),
+        games: this.filteredGames(genre)
+          .sort((a, b) => {
+            if (this.sortingOption === "popularity") {
+              return b.popularity - a.popularity;
+            } else if (this.sortingOption === "rating") {
+              return b.rating - a.rating;
+            } else if (this.sortingOption === "release_dates") {
+              return new Date(b.release_dates) - new Date(a.release_dates);
+            }
+            return 0;
+          })
+          .slice(0, this.itemsPerGenre),
       }));
     },
   },
@@ -98,8 +131,20 @@ export default {
   },
   methods: {
     filteredGames(genre) {
-      let filtered = this.games.filter((game) => game.genres.includes(genre));
-      return filtered.sort((a, b) => b.popularity - a.popularity);
+      const currentYear = new Date().getFullYear();
+
+      let filtered = this.games.filter((game) => {
+        return (
+          game.genres.includes(genre) &&
+          new Date(game.release_dates).getFullYear() <= currentYear
+        );
+      });
+
+      if (this.sortingOption !== "release_dates") {
+        filtered = filtered.sort((a, b) => b.popularity - a.popularity);
+      }
+
+      return filtered;
     },
     showGameDetail(game) {
       this.selectedGame = game;
@@ -242,9 +287,14 @@ export default {
 .genre-popup .popup-content {
   /* Other existing styles */
 
-  /* Customize the scroll bar style */
-  scrollbar-width: thin;
-  scrollbar-color: #a0aec0 #edf2f7;
+  /* Hide the scrollbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none;
+}
+
+.genre-popup .popup-content::-webkit-scrollbar {
+  display: none;
 }
 
 .genre-popup .popup-content::-webkit-scrollbar-track {
