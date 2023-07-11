@@ -9,6 +9,7 @@
         :key="game.id"
         class="relative rounded-lg shadow-md overflow-hidden hover:shadow-lg border border-amber-200 mb-4"
         style="height: 300px; width: 230px"
+        @click="showGameDetail(game)"
       >
         <div class="h-250px relative">
           <img
@@ -48,15 +49,31 @@
         </button>
       </div>
     </div>
+    <div v-if="selectedGame" class="game-popup">
+      <div class="overlay"></div>
+      <div class="popup-content">
+        <GameDetail :game="selectedGame" @close="hideGameDetail" />
+        <button class="close-button" @click="hideGameDetail">Close</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import BookmarkService from "@/services/BookmarkService.js";
+import GameDetail from "@/components/GameDetail.vue";
 
 export default {
   name: "bookmark-page",
   inject: ["GStore"],
+  components: {
+    GameDetail,
+  },
+  data() {
+    return {
+      selectedGame: null,
+    };
+  },
   methods: {
     removeFromFavorite(gameId) {
       console.log("Remove game from favorites:", gameId);
@@ -83,6 +100,20 @@ export default {
       const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
       return differenceInDays > 0 ? differenceInDays : null;
     },
+    showGameDetail(game) {
+      this.selectedGame = game;
+      this.disableScroll();
+    },
+    hideGameDetail() {
+      this.selectedGame = null;
+      this.enableScroll();
+    },
+    disableScroll() {
+      document.body.style.overflow = "hidden";
+    },
+    enableScroll() {
+      document.body.style.overflow = "";
+    },
   },
   computed: {
     isRecentlyReleased() {
@@ -99,3 +130,46 @@ export default {
   },
 };
 </script>
+
+<style>
+.game-popup {
+  width: 50%;
+  scrollbar-width: thin;
+  scrollbar-color: #a0aec0 #edf2f7;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9998;
+}
+
+.popup-content {
+  position: relative;
+  width: 90vw;
+  height: 90vh;
+  max-width: 1000px;
+  max-height: 1000px;
+  overflow-y: auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-gap: 10px;
+}
+
+.close-button {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #fff;
+  font-size: 20px;
+}
+</style>
