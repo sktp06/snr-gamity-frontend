@@ -30,7 +30,7 @@
         </router-link>
       </div>
       <div v-if="GStore.currentUser" class="flex items-center ml-4">
-        <Form @submit="onSearch" :validation-schema="schema" class="flex">
+        <!-- <Form @submit="onSearch" :validation-schema="schema" class="flex">
           <Field
             class="px-4 py-2 mr-2 rounded-l-lg"
             type="text"
@@ -50,7 +50,7 @@
               />
             </svg>
           </button>
-        </Form>
+        </Form> -->
         <div class="ml-4 relative">
           <button
             class="bg-indigo-600 px-4 py-2 rounded uppercase text-sm font-bold"
@@ -90,15 +90,15 @@
 import AuthService from "@/services/AuthService.js";
 import SearchService from "@/services/SearchService.js";
 import SpellService from "@/services/SpellService.js";
-import { Form, Field } from "vee-validate";
+// import { Form, Field } from "vee-validate";
 import * as yup from "yup";
 
 export default {
   inject: ["GStore"],
   name: "navbar-component",
   components: {
-    Form,
-    Field,
+    // Form,
+    // Field,
   },
   data() {
     const schema = yup.object().shape({
