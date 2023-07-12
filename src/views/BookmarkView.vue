@@ -50,7 +50,6 @@
             <button
               @click="removeFromFavorite(game.id)"
               class="absolute top-2 right-2 p-4 text-white hover:text-red-500 transition-colors duration-300"
-              style="z-index: 9999"
             >
               <svg
                 class="h-5 w-5"
