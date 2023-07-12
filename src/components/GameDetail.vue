@@ -79,6 +79,7 @@
         </ul>
       </div>
       <button
+        v-if="!hideAddToFavoritesButton"
         @click="addToFavorites(game.id)"
         :class="{
           'bg-gray-500 hover:bg-gray-900': isFavorite,
@@ -113,6 +114,10 @@ export default {
     game: {
       type: Object,
       required: true,
+    },
+    hideAddToFavoritesButton: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

@@ -26,10 +26,16 @@
             />
             <div v-if="selectedGame" class="game-popup">
               <div class="overlay"></div>
-              <GameDetail :game="selectedGame" @close="selectedGame = null" />
-              <button class="close-button" @click="selectedGame = null">
-                Close
-              </button>
+              <div class="popup-content">
+                <GameDetail
+                  :game="selectedGame"
+                  @close="hideGameDetail"
+                  :hide-add-to-favorites-button="true"
+                />
+                <button class="close-button" @click="hideGameDetail">
+                  Close
+                </button>
+              </div>
             </div>
             <div
               v-if="remainingDays(game) !== null && isRecentlyReleased(game)"
@@ -68,7 +74,11 @@
     <div v-if="selectedGame" class="game-popup">
       <div class="overlay"></div>
       <div class="popup-content">
-        <GameDetail :game="selectedGame" @close="hideGameDetail" />
+        <GameDetail
+          :game="selectedGame"
+          @close="hideGameDetail"
+          :hide-add-to-favorites-button="true"
+        />
         <button class="close-button" @click="hideGameDetail">Close</button>
       </div>
     </div>
