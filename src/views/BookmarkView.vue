@@ -11,50 +11,58 @@
         style="height: 300px; width: 230px"
         @click="showGameDetail(game)"
       >
-        <div class="h-250px relative">
-          <img
-            :src="game.cover"
-            alt="image"
-            class="object-cover w-full h-full transform transition-transform hover:scale-105"
-            style="z-index: 0"
-            @click="selectedGame = game"
-          />
-          <div v-if="selectedGame" class="game-popup">
-            <div class="overlay"></div>
-            <GameDetail :game="selectedGame" @close="selectedGame = null" />
-            <button class="close-button" @click="selectedGame = null">
-              Close
+        <div
+          class="relative rounded-lg shadow-md overflow-hidden hover:shadow-lg border border-amber-200 mb-4"
+          style="height: 300px; width: 230px"
+          @click="showGameDetail(game)"
+        >
+          <div class="h-250px relative">
+            <img
+              :src="game.cover"
+              alt="image"
+              class="object-cover w-full h-full transform transition-transform hover:scale-105"
+              style="z-index: 0"
+              @click="selectedGame = game"
+            />
+            <div v-if="selectedGame" class="game-popup">
+              <div class="overlay"></div>
+              <GameDetail :game="selectedGame" @close="selectedGame = null" />
+              <button class="close-button" @click="selectedGame = null">
+                Close
+              </button>
+            </div>
+            <div
+              v-if="remainingDays(game) !== null && isRecentlyReleased(game)"
+              class="absolute bottom-0 left-0 right-0 p-4 bg-black bg-opacity-80"
+            >
+              <p class="text-white text-center font-bold text-lg">
+                In ({{ remainingDays(game) }}) days until the game's release
+              </p>
+            </div>
+          </div>
+          <div class="remove-favorite-container" style="z-index: 9999">
+            <button
+              @click="removeFromFavorite(game.id)"
+              class="absolute top-2 right-2 p-4 text-white hover:text-red-500 transition-colors duration-300"
+              style="z-index: 9999"
+            >
+              <svg
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
             </button>
           </div>
-          <div
-            v-if="remainingDays(game) !== null && isRecentlyReleased(game)"
-            class="absolute bottom-0 left-0 right-0 p-4 bg-black bg-opacity-80"
-          >
-            <p class="text-white text-center font-bold text-lg">
-              In ({{ remainingDays(game) }}) days until the game's release
-            </p>
-          </div>
         </div>
-        <button
-          @click="removeFromFavorite(game.id)"
-          class="absolute top-2 right-2 p-4 text-white hover:text-red-500 transition-colors duration-300"
-          style="z-index: 1"
-        >
-          <svg
-            class="h-5 w-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
       </div>
     </div>
     <div v-if="selectedGame" class="game-popup">
@@ -80,11 +88,13 @@ export default {
   data() {
     return {
       selectedGame: null,
+      isRemovingFromFavorites: false,
     };
   },
   methods: {
     removeFromFavorite(gameId) {
-      console.log("Remove game from favorites:", gameId);
+      this.isRemovingFromFavorites = true; // Set the flag before removing from favorites
+
       BookmarkService.removeBookmark(
         JSON.parse(localStorage.getItem("user")).user_id,
         gameId
@@ -95,6 +105,9 @@ export default {
         })
         .catch((err) => {
           console.log(err);
+        })
+        .finally(() => {
+          this.isRemovingFromFavorites = false; // Reset the flag after the removal process is complete
         });
     },
     getBookmarks() {
@@ -116,8 +129,10 @@ export default {
       return differenceInDays > 0 ? differenceInDays : null;
     },
     showGameDetail(game) {
-      this.selectedGame = game;
-      this.disableScroll();
+      if (game.id !== this.selectedGame?.id && !this.isRemovingFromFavorites) {
+        this.selectedGame = game;
+        this.disableScroll();
+      }
     },
     hideGameDetail() {
       this.selectedGame = null;
@@ -160,7 +175,7 @@ export default {
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 9998;
+  z-index: 9997;
 }
 
 .popup-content {

@@ -37,7 +37,7 @@
       </p>
       <p class="mb-4">
         <span class="font-bold">Rating:</span>
-        {{ game.rating ? Math.round(game.rating) : "No rating" }}
+        {{ game.store_rating ? Math.round(game.store_rating) : "No rating" }}
       </p>
       <p class="mb-4">
         <span class="font-bold">Aggregate Rating:</span>
@@ -51,14 +51,17 @@
         <p class="font-bold mb-2">Time to Beat:</p>
         <ul class="mb-4">
           <li>
-            <span class="font-bold">Story:</span> {{ game.main_story }} hour(s)
+            <span class="font-bold">Story:</span>
+            {{ game.main_story ? game.main_story : "--" }} hour(s)
           </li>
           <li>
-            <span class="font-bold">Extra:</span> {{ game.main_extra }} hour(s)
+            <span class="font-bold">Extra:</span>
+            {{ game.main_extra ? game.main_extra : "--" }} hour(s)
           </li>
           <li>
             <span class="font-bold">Completionist:</span>
-            {{ game.completionist }} hour(s)
+            {{ game.completionist ? game.completionist : "--" }}
+            hour(s)
           </li>
         </ul>
       </div>
