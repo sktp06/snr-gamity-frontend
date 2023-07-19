@@ -31,12 +31,12 @@ const routes = [
   },
   {
     path: "/home",
-    name: "game-card",
+    name: "home",
     component: GameCardView,
     meta: { requiresAuth: true, allowedRoles: ["admin", "user"] },
   },
   {
-    path: "/upcoming-game",
+    path: "/upcoming",
     name: "upcoming",
     component: UpComingGameView,
     meta: { requiresAuth: true, allowedRoles: ["admin", "user"] },
