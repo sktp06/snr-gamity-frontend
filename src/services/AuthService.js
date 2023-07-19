@@ -27,9 +27,11 @@ export default {
       .post("/auth/register", user)
       .then((response) => {
         console.log(response);
+        alert(response.data.message);
         return Promise.resolve(response.data);
       })
       .catch((error) => {
+        alert(error.response.data.message);
         return Promise.reject(error);
       });
   },
