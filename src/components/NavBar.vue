@@ -16,7 +16,7 @@
         </router-link>
         <router-link
           v-if="GStore.currentUser"
-          to="/upcoming-game"
+          to="/upcoming"
           class="transform hover:-translate-y-0.5 focus:-translate-y-0.5 transition-all duration-300 ml-4"
         >
           Upcoming
@@ -136,7 +136,7 @@ export default {
           }
         })
         .then(() => {
-          this.$router.push("/game-card");
+          this.$router.push("/home");
         });
     },
   },

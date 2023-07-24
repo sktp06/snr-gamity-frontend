@@ -40,7 +40,11 @@
       </div>
     </div>
     <div class="flex flex-wrap -mx-4">
-      <div v-for="game in filteredGames" :key="game.id" class="w-1/6 px-4">
+      <div
+        v-for="game in filteredGames"
+        :key="game.id"
+        class="w-1/3 px-4 md:w-1/6"
+      >
         <div
           class="bg-white transform transition duration-300 shadow-lg rounded-md ml-2 mr-2"
         >

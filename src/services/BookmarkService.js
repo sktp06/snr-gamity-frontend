@@ -47,6 +47,7 @@ export default {
         return res.data.games; // Return the games data
       })
       .catch((err) => {
+        alert(err.response.data.message);
         console.log(err);
         throw err; // Rethrow the error
       });
