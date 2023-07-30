@@ -70,8 +70,8 @@
         </div>
       </div>
     </div>
+    <div v-if="selectedGame" class="overlay" @click="hideGameDetail"></div>
     <div v-if="selectedGame" class="game-popup">
-      <div class="overlay"></div>
       <div class="popup-content">
         <GameDetail
           :game="selectedGame"

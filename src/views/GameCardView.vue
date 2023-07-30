@@ -66,7 +66,7 @@
         class="game-popup"
         :class="{ 'show-popup': selectedGame }"
       >
-        <div class="overlay"></div>
+        <div v-if="selectedGame" class="overlay" @click="hideGameDetail"></div>
         <GameDetail :game="selectedGame" @close="hideGameDetail" />
         <button class="close-button" @click="hideGameDetail">Close</button>
       </div>
