@@ -14,6 +14,7 @@ export default {
         return Promise.resolve(response.data);
       })
       .catch((error) => {
+        alert(error.response.data.message);
         return Promise.reject(error);
       });
   },

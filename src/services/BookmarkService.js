@@ -11,15 +11,11 @@ export default {
       .then((res) => {
         if (res && res.data) {
           alert(res.data.message);
-        } else {
-          alert("Unexpected response from the server.");
         }
       })
       .catch((err) => {
         if (err && err.response && err.response.data) {
           alert(err.response.data.message);
-        } else {
-          alert("An error occurred while adding the bookmark.");
         }
       });
   },

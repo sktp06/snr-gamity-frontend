@@ -71,6 +71,7 @@
           </button>
           <div
             v-if="showMenu"
+            @click="showMenu = false"
             class="absolute right-0 mt-2 w-36 rounded bg-white shadow-lg z-20"
           >
             <button
