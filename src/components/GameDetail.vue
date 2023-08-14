@@ -11,6 +11,23 @@
           class="game-image rounded-lg mb-2"
         />
       </div>
+      <button
+        v-if="!hideAddToFavoritesButton"
+        @click="addToFavorites(game.id)"
+        :class="{
+          'bg-gray-500 hover:bg-gray-900': isFavorite,
+          'bg-red-500 hover:bg-red-900': !isFavorite,
+        }"
+        class="text-white font-bold py-2 px-4 rounded-full mt-4"
+        :style="{
+          'background-color': isFavorite ? 'gray' : 'red',
+          hover: {
+            'background-color': isFavorite ? 'grey' : 'green',
+          },
+        }"
+      >
+        {{ isFavorite ? "Remove from Favorites" : "Add to Favorites" }}
+      </button>
       <p class="mb-2 text-justify">
         <span class="font-bold">Description:</span>
         {{ game.unclean_summary }}
@@ -74,23 +91,6 @@
           </li>
         </ul>
       </div>
-      <button
-        v-if="!hideAddToFavoritesButton"
-        @click="addToFavorites(game.id)"
-        :class="{
-          'bg-gray-500 hover:bg-gray-900': isFavorite,
-          'bg-red-500 hover:bg-red-900': !isFavorite,
-        }"
-        class="text-white font-bold py-2 px-4 rounded-full mt-4"
-        :style="{
-          'background-color': isFavorite ? 'gray' : 'red',
-          hover: {
-            'background-color': isFavorite ? 'grey' : 'green',
-          },
-        }"
-      >
-        {{ isFavorite ? "Remove from Favorites" : "Add to Favorites" }}
-      </button>
     </div>
     <button
       class="close-button bg-gray-200 text-gray-500 font-bold py-2 px-4 rounded-full mt-4"
