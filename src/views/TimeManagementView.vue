@@ -1,10 +1,11 @@
 <template>
-  <form>
+  <form ref="searchForm">
     <label
       for="default-search"
       class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-      >Search</label
     >
+      Search
+    </label>
     <div class="mt-5 relative">
       <div
         class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
@@ -35,14 +36,31 @@
         required
       />
     </div>
-    <ul
-      v-if="searchResults.length > 0 && searchQuery"
-      class="mt-2 border border-gray-300 rounded-lg bg-white overflow-y-auto max-h-48"
-    >
-      <li v-for="result in visibleResults" :key="result.id" class="p-2">
-        {{ result.name }}
-      </li>
-    </ul>
+    <transition name="fade">
+      <ul
+        v-if="visibleResults.length > 0"
+        class="mt-2 border border-gray-300 rounded-lg bg-white overflow-y-auto max-h-48 shadow"
+      >
+        <li
+          v-for="result in sortedVisibleResults"
+          :key="result.id"
+          class="p-3 flex items-center space-x-4 hover:bg-gray-100 cursor-pointer"
+          @click="handleGameClick(result.name)"
+        >
+          <img
+            :src="result.cover"
+            alt="Game Cover"
+            class="w-12 h-12 rounded-lg object-cover"
+          />
+          <div class="flex-1">
+            <p class="text-sm font-semibold capitalize">{{ result.name }}</p>
+            <p class="text-xs text-gray-600">
+              Rating: {{ result.aggregated_rating }}
+            </p>
+          </div>
+        </li>
+      </ul>
+    </transition>
   </form>
 </template>
 
@@ -56,6 +74,13 @@ export default {
       searchResults: [],
       visibleResults: [],
     };
+  },
+  computed: {
+    sortedVisibleResults() {
+      return this.visibleResults
+        .slice()
+        .sort((a, b) => b.aggregated_rating - a.aggregated_rating);
+    },
   },
   methods: {
     async handleSearchInput() {
@@ -77,8 +102,32 @@ export default {
         console.error("Error handling search input:", error);
       }
     },
+    handleGameClick(gameName) {
+      this.searchQuery = gameName;
+      this.visibleResults = []; // Clear search results when clicking a game name
+    },
+    handleOutsideClick(event) {
+      if (!this.$refs.searchForm.contains(event.target)) {
+        this.visibleResults = [];
+      }
+    },
+  },
+  mounted() {
+    document.addEventListener("click", this.handleOutsideClick);
+  },
+  beforeUnmount() {
+    document.removeEventListener("click", this.handleOutsideClick);
   },
 };
 </script>
 
-<style></style>
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
