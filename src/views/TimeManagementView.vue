@@ -71,13 +71,95 @@
       <p>Completionist: {{ selectedGame.completionist }}</p>
       <div class="mt-4">
         <label class="block text-sm font-medium text-gray-700"
-          >Select Play Date</label
+          >Select Game Mode</label
+        >
+        <select v-model="selectedGameMode" class="mt-1 block w-full rounded-md">
+          <option value="mainStory">
+            Main Story : {{ selectedGame.main_story }} hr
+          </option>
+          <option value="mainExtra">
+            Main Extra : {{ selectedGame.main_extra }} hr
+          </option>
+          <option value="completionist">
+            Completionist : {{ selectedGame.completionist }} hr
+          </option>
+          <!-- Add more options as needed -->
+        </select>
+      </div>
+      <div class="mt-4">
+        <label class="block text-sm font-medium text-gray-700"
+          >Select Mode</label
+        >
+        <div class="mt-1 flex space-x-4">
+          <button
+            @click="selectedMode = 'default'"
+            :class="{
+              'bg-blue-500 text-white': selectedMode === 'default',
+              'bg-gray-200 text-gray-700': selectedMode !== 'default',
+            }"
+            class="px-4 py-2 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+          >
+            Default
+          </button>
+          <button
+            @click="selectedMode = 'manual'"
+            :class="{
+              'bg-blue-500 text-white': selectedMode === 'manual',
+              'bg-gray-200 text-gray-700': selectedMode !== 'manual',
+            }"
+            class="px-4 py-2 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+          >
+            Manual
+          </button>
+        </div>
+      </div>
+
+      <!-- Start Date -->
+      <div class="mt-4">
+        <label class="block text-sm font-medium text-gray-700"
+          >Select Start Date</label
         >
         <input
+          v-model="startDate"
           type="date"
-          v-model="playDate"
+          :min="getCurrentDate()"
           class="mt-1 block w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
         />
+      </div>
+
+      <!-- End Date (conditional) -->
+      <div v-if="selectedMode === 'manual'" class="mt-4">
+        <label class="block text-sm font-medium text-gray-700"
+          >Select End Date</label
+        >
+        <input
+          v-model="endDate"
+          type="date"
+          :min="startDate"
+          class="mt-1 block w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+        />
+      </div>
+      <!-- Select Hours (conditional) -->
+      <div v-if="selectedMode === 'default'" class="mt-4">
+        <label class="block text-sm font-medium text-gray-700"
+          >Select Hours</label
+        >
+        <select v-model="selectedHour" class="mt-1 block w-full rounded-md">
+          <option v-for="hour in hours" :key="hour" :value="hour">
+            {{ hour }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Select Minutes (conditional) -->
+      <div v-if="selectedMode === 'default'" class="mt-4">
+        <label class="block text-sm font-medium text-gray-700"
+          >Select Minutes</label
+        >
+        <select v-model="selectedMinute" class="mt-1 block w-full rounded-md">
+          <option value="0">0</option>
+          <option value="30">30</option>
+        </select>
       </div>
     </div>
   </div>
@@ -93,8 +175,18 @@ export default {
       searchResults: [],
       visibleResults: [],
       selectedGame: null,
-      playDate: "",
+      startDate: "",
+      entDate: "",
+      selectedGameMode: "mainStory",
+      selectedMode: "default",
+      hours: Array.from({ length: 24 }, (_, i) => i), // Array of hours from 0 to 23
+      selectedHour: 3, // Initialize to 0
+      selectedMinute: 0, // Initialize to 30 (meaning 30 minutes)
     };
+  },
+  created() {
+    // Set the startDate to today's date
+    this.startDate = this.getCurrentDate();
   },
   computed: {
     sortedVisibleResults() {
@@ -135,6 +227,36 @@ export default {
         this.visibleResults = this.searchResults.slice(0, 20);
       }
     },
+    getCurrentDate() {
+      const today = new Date();
+      const year = today.getFullYear();
+      let month = today.getMonth() + 1;
+      if (month < 10) {
+        month = "0" + month;
+      }
+      let day = today.getDate();
+      if (day < 10) {
+        day = "0" + day;
+      }
+      return `${year}-${month}-${day}`;
+    },
+
+    startDateChanged(newValue) {
+      // Reset endDate if it's less than startDate
+      if (this.endDate < newValue) {
+        this.endDate = newValue;
+      }
+    },
+    endDateChanged(newValue) {
+      // Ensure endDate is not less than startDate
+      if (newValue < this.startDate) {
+        this.endDate = this.startDate;
+      }
+    },
+  },
+  watch: {
+    startDate: "startDateChanged",
+    endDate: "endDateChanged",
   },
 };
 </script>
