@@ -50,4 +50,20 @@ export default {
         throw err; // Rethrow the error
       });
   },
+  recommendGames(userId) {
+    return apiClient
+      .post("/bookmarks/recommend", {
+        userId: userId,
+      })
+      .then((res) => {
+        if (res && res.data) {
+          return res.data.recommended_games;
+        }
+      })
+      .catch((err) => {
+        Swal.fire("Error", err.response.data.message, "error");
+        console.log(err);
+        throw err;
+      });
+  },
 };
