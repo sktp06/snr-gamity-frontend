@@ -137,6 +137,7 @@
           type="date"
           :min="startDate"
           class="mt-1 block w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+          @input="checkCanShowPreview"
         />
       </div>
       <!-- Select Hours (conditional) -->
@@ -151,7 +152,6 @@
         </select>
       </div>
 
-      <!-- Select Minutes (conditional) -->
       <div v-if="selectedMode === 'default'" class="mt-4">
         <label class="block text-sm font-medium text-gray-700"
           >Select Minutes</label
@@ -160,6 +160,46 @@
           <option value="0">0</option>
           <option value="30">30</option>
         </select>
+      </div>
+      <!-- Show Preview Button (conditional) -->
+      <div class="mt-4">
+        <button
+          v-if="selectedMode === 'manual'"
+          @click="showPreview"
+          :disabled="!canShowPreview"
+          :class="{
+            'bg-blue-500 text-white': canShowPreview,
+            'bg-gray-300 text-gray-600 cursor-not-allowed': !canShowPreview,
+          }"
+          class="px-4 py-2 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+        >
+          Show Preview
+        </button>
+        <button
+          v-else
+          @click="showDefaultPreview"
+          :disabled="!canShowDefaultPreview"
+          :class="{
+            'bg-blue-500 text-white': canShowDefaultPreview,
+            'bg-gray-300 text-gray-600 cursor-not-allowed':
+              !canShowDefaultPreview,
+          }"
+          class="px-4 py-2 rounded-md bg-blue-500 text-white focus:outline-none focus:ring focus:ring-blue-300"
+        >
+          Show Preview
+        </button>
+      </div>
+      <!-- Display Playtime Details (conditional) -->
+      <div v-if="selectedMode === 'default' && showPreviewDetails" class="mt-4">
+        <h4 class="text-md font-medium text-gray-700">Playtime Details</h4>
+        <ul class="mt-2 space-y-2">
+          <li v-for="(playtime, index) in playtimeDetails" :key="index">
+            Day {{ playtime.day }} : {{ playtime.date }}, play
+            {{ playtime.hours }} hours and {{ playtime.minutes }} minutes
+            remaining ({{ playtime.remainingHours }} hours and
+            {{ playtime.remainingMinutes }} minutes)
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -179,9 +219,12 @@ export default {
       entDate: "",
       selectedGameMode: "mainStory",
       selectedMode: "default",
-      hours: Array.from({ length: 24 }, (_, i) => i), // Array of hours from 0 to 23
+      hours: Array.from({ length: 24 }, (_, i) => i),
       selectedHour: 3, // Initialize to 0
-      selectedMinute: 0, // Initialize to 30 (meaning 30 minutes)
+      selectedMinute: 0,
+      canShowPreview: false,
+      canShowDefaultPreview: false,
+      playtimeDetails: [], // Initialize to 30 (meaning 30 minutes)
     };
   },
   created() {
@@ -253,10 +296,99 @@ export default {
         this.endDate = this.startDate;
       }
     },
+    checkCanShowPreview() {
+      if (this.selectedMode === "manual") {
+        this.canShowPreview = !!this.endDate;
+      } else {
+        this.canShowPreview = true;
+      }
+    },
+    checkCanShowDefaultPreview() {
+      if (this.selectedMode === "default") {
+        this.canShowDefaultPreview =
+          !!this.selectedHour || !!this.selectedMinute;
+      } else {
+        this.canShowDefaultPreview = false;
+      }
+    },
+    // Function to show the preview (you can replace this with your actual preview logic)
+    showPreview() {
+      console.log("Showing preview...");
+    },
+    showDefaultPreview() {
+      // Calculate minutes based on selectedGameMode
+      let minutesInSelectedMode = 0;
+      if (this.selectedGameMode === "mainStory") {
+        minutesInSelectedMode = this.selectedGame.main_story * 60;
+      } else if (this.selectedGameMode === "mainExtra") {
+        minutesInSelectedMode = this.selectedGame.main_extra * 60;
+      } else if (this.selectedGameMode === "completionist") {
+        minutesInSelectedMode = this.selectedGame.completionist * 60;
+      }
+
+      // Calculate total minutes
+      const totalMinutes =
+        minutesInSelectedMode + this.selectedHour * 60 + this.selectedMinute;
+
+      // Calculate end date
+      const endDate = new Date(this.startDate);
+      endDate.setMinutes(endDate.getMinutes() + totalMinutes);
+
+      this.playtimeDetails = []; // Reset playtime details for each day
+      let remainingMinutes = totalMinutes;
+
+      // Calculate and format the preview details for each day
+      for (let day = 1; remainingMinutes > 0; day++) {
+        const dayMinutes = Math.min(remainingMinutes, 24 * 60);
+        const dayHours = Math.floor(dayMinutes / 60);
+        const dayMinutesRemaining = dayMinutes % 60;
+
+        const remainingHours = Math.floor(remainingMinutes / 60);
+        const remainingMinutesRemaining = remainingMinutes % 60;
+
+        const currentDate = new Date(this.startDate);
+        currentDate.setDate(currentDate.getDate() + day - 1);
+
+        this.playtimeDetails.push({
+          day: day,
+          date: currentDate.toLocaleDateString(),
+          playHours: dayHours,
+          playMinutes: dayMinutesRemaining,
+          remainingHours: remainingHours,
+          remainingMinutes: remainingMinutesRemaining,
+        });
+
+        remainingMinutes -= dayMinutes;
+      }
+
+      this.showPreviewDetails = true; // Show the playtime details section
+      console.log("Preview:", endDate.toDateString()); // Display the end date in a readable format
+      console.log("selectedGameMode:", minutesInSelectedMode);
+      console.log("selectedHour:", this.selectedHour);
+      console.log("selectedMinute:", this.selectedMinute);
+    },
   },
   watch: {
-    startDate: "startDateChanged",
-    endDate: "endDateChanged",
+    startDate(newValue) {
+      this.startDateChanged(newValue);
+      this.checkCanShowPreview();
+      this.checkCanShowDefaultPreview(); // Add this line
+    },
+    endDate(newValue) {
+      this.endDateChanged(newValue);
+      this.checkCanShowPreview();
+      this.checkCanShowDefaultPreview(); // Add this line
+    },
+    selectedMode() {
+      this.checkCanShowPreview();
+      this.checkCanShowDefaultPreview(); // Add this line
+    },
+    selectedHour() {
+      this.checkCanShowDefaultPreview();
+    },
+    selectedMinute() {
+      this.checkCanShowDefaultPreview();
+    },
   },
 };
 </script>
