@@ -1,5 +1,6 @@
 import apiClient from "./AxiosClient";
 import GStore from "@/store";
+import Swal from "sweetalert2";
 
 export default {
   addBookmark(userId, gameId) {
@@ -10,12 +11,12 @@ export default {
       })
       .then((res) => {
         if (res && res.data) {
-          alert(res.data.message);
+          Swal.fire("Success", res.data.message, "success");
         }
       })
       .catch((err) => {
         if (err && err.response && err.response.data) {
-          alert(err.response.data.message);
+          Swal.fire("Error", err.response.data.message, "error");
         }
       });
   },
@@ -26,11 +27,12 @@ export default {
         gameId: gameId,
       })
       .then((res) => {
-        alert(res.data.message);
-        location.reload();
+        Swal.fire("Success", res.data.message, "success").then(() => {
+          location.reload();
+        });
       })
       .catch((err) => {
-        alert(err.response.data.message);
+        Swal.fire("Error", err.response.data.message, "error");
       });
   },
   getbookmarkList(userId) {
@@ -43,9 +45,25 @@ export default {
         return res.data.games; // Return the games data
       })
       .catch((err) => {
-        alert(err.response.data.message);
+        Swal.fire("Error", err.response.data.message, "error");
         console.log(err);
         throw err; // Rethrow the error
+      });
+  },
+  recommendGames(userId) {
+    return apiClient
+      .post("/bookmarks/recommend", {
+        userId: userId,
+      })
+      .then((res) => {
+        if (res && res.data) {
+          return res.data.recommended_games;
+        }
+      })
+      .catch((err) => {
+        Swal.fire("Error", err.response.data.message, "error");
+        console.log(err);
+        throw err;
       });
   },
 };
