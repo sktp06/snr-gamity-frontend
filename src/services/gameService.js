@@ -10,6 +10,15 @@ export default {
       throw error;
     }
   },
+  async get_clean_gameplay() {
+    try {
+      const response = await apiClient.get("/game/clean_data");
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching games:", error);
+      throw error;
+    }
+  },
   async getGameStatistics() {
     try {
       const response = await apiClient.get("/game/stat");

@@ -247,7 +247,7 @@ export default {
           return;
         }
 
-        const games = await gameService.getGames();
+        const games = await gameService.get_clean_gameplay();
         this.searchResults = games.filter((game) =>
           game.name.toLowerCase().includes(this.searchQuery.toLowerCase())
         );
@@ -403,3 +403,6 @@ export default {
   opacity: 0;
 }
 </style>
+
+
+
