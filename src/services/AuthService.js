@@ -1,20 +1,23 @@
+import Swal from "sweetalert2";
 import apiClient from "@/services/AxiosClient.js";
 import GStore from "@/store";
 
 export default {
   login(user) {
-    console.log(user);
     return apiClient
       .post("/auth/", user)
       .then((response) => {
-        console.log(response);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
         GStore.currentUser = response.data.user;
         return Promise.resolve(response.data);
       })
       .catch((error) => {
-        alert(error.response.data.message);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.response.data.message,
+        });
         return Promise.reject(error);
       });
   },
@@ -27,12 +30,19 @@ export default {
     return apiClient
       .post("/auth/register", user)
       .then((response) => {
-        console.log(response);
-        alert(response.data.message);
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: response.data.message,
+        });
         return Promise.resolve(response.data);
       })
       .catch((error) => {
-        alert(error.response.data.message);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.response.data.message,
+        });
         return Promise.reject(error);
       });
   },

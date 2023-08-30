@@ -1,67 +1,89 @@
+import Swal from "sweetalert2";
 import apiClient from "./AxiosClient";
 import GStore from "@/store";
 
 export default {
-  addBookmark(userId, gameId) {
-    return apiClient
-      .post("/bookmarks/add", {
+  async addBookmark(userId, gameId) {
+    try {
+      const res = await apiClient.post("/bookmarks/add", {
         userId: userId,
         gameId: gameId,
-      })
-      .then((res) => {
-        if (res && res.data) {
-          alert("Success: " + res.data.message); // Use standard JavaScript alert
-        }
-      })
-      .catch((err) => {
-        if (err && err.response && err.response.data) {
-          alert("Error: " + err.response.data.message); // Use standard JavaScript alert
-        }
       });
+
+      if (res && res.data) {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: res.data.message,
+        });
+      }
+    } catch (err) {
+      if (err && err.response && err.response.data) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Error: " + err.response.data.message,
+        });
+      }
+    }
   },
-  removeBookmark(userId, gameId) {
-    return apiClient
-      .post("/bookmarks/remove", {
+  async removeBookmark(userId, gameId) {
+    try {
+      const res = await apiClient.post("/bookmarks/remove", {
         userId: userId,
         gameId: gameId,
-      })
-      .then((res) => {
-        alert("Success: " + res.data.message); // Use standard JavaScript alert
-        location.reload();
-      })
-      .catch((err) => {
-        alert("Error: " + err.response.data.message); // Use standard JavaScript alert
       });
+
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: res.data.message,
+      });
+
+      location.reload();
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Error: " + err.response.data.message,
+      });
+    }
   },
-  getbookmarkList(userId) {
-    return apiClient
-      .post("/bookmarks/", {
+  async getbookmarkList(userId) {
+    try {
+      const res = await apiClient.post("/bookmarks/", {
         userId: userId,
-      })
-      .then((res) => {
-        GStore.bookmarks = res.data.games;
-        return res.data.games; // Return the games data
-      })
-      .catch((err) => {
-        alert("Error: " + err.response.data.message); // Use standard JavaScript alert
-        console.log(err);
-        throw err; // Rethrow the error
       });
+
+      GStore.bookmarks = res.data.games;
+      return res.data.games;
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Error: " + err.response.data.message,
+      });
+      console.log(err);
+      throw err;
+    }
   },
-  recommendGames(userId) {
-    return apiClient
-      .post("/bookmarks/recommend", {
+  async recommendGames(userId) {
+    try {
+      const res = await apiClient.post("/bookmarks/recommend", {
         userId: userId,
-      })
-      .then((res) => {
-        if (res && res.data) {
-          return res.data.recommended_games;
-        }
-      })
-      .catch((err) => {
-        alert("Error: " + err.response.data.message); // Use standard JavaScript alert
-        console.log(err);
-        throw err;
       });
+
+      if (res && res.data) {
+        return res.data.recommended_games;
+      }
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Error: " + err.response.data.message,
+      });
+      console.log(err);
+      throw err;
+    }
   },
 };
