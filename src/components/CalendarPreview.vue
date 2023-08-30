@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-overlay">
+  <div class="modal-overlay" v-if="show">
     <div class="modal-content">
       <div class="text-center font-bold">
         <h3>Preview Calendar</h3>
@@ -18,18 +18,29 @@ export default {
   components: { FullCalendar },
   props: {
     show: Boolean,
+    eventData: Array,
   },
   data() {
     return {
       calendarOptions: {
         plugins: [dayGridPlugin],
         initialView: "dayGridMonth",
-        fixedWeekCount: false, // Allow variable number of weeks in the month view
-        // Other calendar options...
+        fixedWeekCount: false,
+        events: this.generateEvents(), // Use a method to generate events
       },
     };
   },
   methods: {
+    generateEvents() {
+      return this.eventData.map((event) => {
+        return {
+          title: `Gaming time: ${Math.floor(event.hours)} hrs ${Math.round(
+            event.minutes
+          )} mins`,
+          start: event.date,
+        };
+      });
+    },
     closeModal() {
       this.$emit("close");
     },

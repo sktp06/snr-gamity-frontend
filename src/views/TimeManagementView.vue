@@ -100,8 +100,13 @@
         <button @click="openCalendar" type="button">Confirm</button>
       </div>
     </div>
+    <!--Pass the calendarEventData to the CalendarPreview component and use it to create events: -->
     <div v-if="showCalendar">
-      <CalendarPreview :show="showCalendar" @close="closeCalendar" />
+      <CalendarPreview
+        :show="showCalendar"
+        :eventData="calendarEventData"
+        @close="closeCalendar"
+      />
     </div>
   </div>
 </template>
@@ -159,7 +164,42 @@ export default {
       );
     },
     openCalendar() {
+      // Make sure selectedGameMode corresponds to the correct property in selectedGame
+      const selectedGameModeMap = {
+        mainStory: "main_story",
+        mainExtra: "main_extra",
+        completionist: "completionist",
+      };
+
+      if (!(this.selectedGameMode in selectedGameModeMap)) {
+        console.error("Invalid selectedGameMode");
+        return;
+      }
+
+      const totalHours =
+        this.selectedGame[selectedGameModeMap[this.selectedGameMode]];
+
+      const startDate = this.date[0];
+      const endDate = this.date[1];
+
+      const diffInDays =
+        Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+      const hoursPerDay = totalHours / diffInDays;
+
+      const eventData = [];
+      let currentDate = new Date(startDate);
+      for (let i = 0; i < diffInDays; i++) {
+        eventData.push({
+          date: currentDate,
+          hours: hoursPerDay,
+          minutes: (hoursPerDay % 1) * 60,
+        });
+        currentDate = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
+      }
+      console.log("Generated eventData:", eventData);
+
       this.showCalendar = true;
+      this.calendarEventData = eventData;
     },
     closeCalendar() {
       this.showCalendar = false;
