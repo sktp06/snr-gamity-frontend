@@ -1,6 +1,5 @@
 import apiClient from "@/services/AxiosClient.js";
 import GStore from "@/store";
-import Swal from "sweetalert2";
 
 export default {
   login(user) {
@@ -12,11 +11,10 @@ export default {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
         GStore.currentUser = response.data.user;
-        Swal.fire("Success", "Logged in successfully!", "success");
         return Promise.resolve(response.data);
       })
       .catch((error) => {
-        Swal.fire("Error", error.response.data.message, "error");
+        alert(error.response.data.message);
         return Promise.reject(error);
       });
   },
@@ -24,18 +22,17 @@ export default {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     GStore.currentUser = null;
-    Swal.fire("Success", "Logged out successfully!", "success");
   },
   register(user) {
     return apiClient
       .post("/auth/register", user)
       .then((response) => {
         console.log(response);
-        Swal.fire("Success", response.data.message, "success");
+        alert(response.data.message);
         return Promise.resolve(response.data);
       })
       .catch((error) => {
-        Swal.fire("Error", error.response.data.message, "error");
+        alert(error.response.data.message);
         return Promise.reject(error);
       });
   },
