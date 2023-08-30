@@ -28,6 +28,13 @@
         >
           Data-Management
         </router-link>
+        <router-link
+          v-if="GStore.currentUser && !isAdmin"
+          to="/time-management"
+          class="transform hover:-translate-y-0.5 focus:-translate-y-0.5 transition-all duration-300 ml-4"
+        >
+          Time-management
+        </router-link>
       </div>
       <div v-if="GStore.currentUser" class="flex items-center ml-4">
         <!-- <Form @submit="onSearch" :validation-schema="schema" class="flex">

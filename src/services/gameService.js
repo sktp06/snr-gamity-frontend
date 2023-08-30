@@ -10,12 +10,30 @@ export default {
       throw error;
     }
   },
+  async get_clean_gameplay() {
+    try {
+      const response = await apiClient.get("/game/clean_data");
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching games:", error);
+      throw error;
+    }
+  },
   async getGameStatistics() {
     try {
       const response = await apiClient.get("/game/stat");
       return response.data.content; // Return the content object from the response
     } catch (error) {
       console.error("Error fetching game statistics:", error);
+      throw error;
+    }
+  },
+  async searchGames(query) {
+    try {
+      const response = await apiClient.post("/game/search", { query });
+      return response.data;
+    } catch (error) {
+      console.error("Error searching games:", error);
       throw error;
     }
   },

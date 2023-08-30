@@ -5,6 +5,7 @@ import BookmarkView from "../views/BookmarkView.vue";
 import GameCardView from "../views/GameCardView.vue";
 import UpComingGameView from "../views/UpComingGameView.vue";
 import DataManagementView from "../views/DataManagementView.vue";
+import TimeManagementView from "../views/TimeManagementView.vue";
 import ErrorPage from "../views/ErrorPage.vue";
 
 const routes = [
@@ -40,6 +41,12 @@ const routes = [
     name: "upcoming",
     component: UpComingGameView,
     meta: { requiresAuth: true, allowedRoles: ["admin", "user"] },
+  },
+  {
+    path: "/time-management",
+    name: "time-management",
+    component: TimeManagementView,
+    meta: { requiresAuth: true, allowedRoles: ["user"] },
   },
   {
     path: "/data-management",
