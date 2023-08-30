@@ -27,11 +27,24 @@ export default {
         plugins: [dayGridPlugin],
         initialView: "dayGridMonth",
         fixedWeekCount: false,
+        initialDate: this.calculateInitialDate(), // Set initial date based on events
         events: this.generateEvents(),
       },
     };
   },
   methods: {
+    calculateInitialDate() {
+      // Find the earliest event date in the eventData array
+      if (this.eventData.length > 0) {
+        const earliestEvent = this.eventData.reduce((earliest, event) => {
+          return event.date < earliest.date ? event : earliest;
+        });
+        return earliestEvent.date;
+      } else {
+        // If there are no events, default to the current date
+        return new Date();
+      }
+    },
     generateEvents() {
       return this.eventData.map((event) => {
         return {

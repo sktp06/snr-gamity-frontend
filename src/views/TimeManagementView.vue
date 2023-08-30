@@ -105,6 +105,7 @@
       <CalendarPreview
         :show="showCalendar"
         :eventData="calendarEventData"
+        :initialDate="calendarInitialDate"
         @close="closeCalendar"
       />
     </div>
@@ -197,6 +198,10 @@ export default {
         currentDate = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
       }
       console.log("Generated eventData:", eventData);
+
+      // Set the initial date for FullCalendar view
+      const initialDate = startDate; // Use the start date of events
+      this.calendarInitialDate = initialDate; // Save the initial date to the data
 
       this.showCalendar = true;
       this.calendarEventData = eventData;
