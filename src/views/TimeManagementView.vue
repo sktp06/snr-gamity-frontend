@@ -83,153 +83,47 @@
           <option value="completionist">
             Completionist : {{ selectedGame.completionist }} hr
           </option>
-          <!-- Add more options as needed -->
         </select>
       </div>
       <div class="mt-4">
         <label class="block text-sm font-medium text-gray-700"
-          >Select Mode</label
+          >Select Time Range</label
         >
-        <div class="mt-1 flex space-x-4">
-          <button
-            @click="selectedMode = 'default'"
-            :class="{
-              'bg-blue-500 text-white': selectedMode === 'default',
-              'bg-gray-200 text-gray-700': selectedMode !== 'default',
-            }"
-            class="px-4 py-2 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-          >
-            Default
-          </button>
-          <button
-            @click="selectedMode = 'manual'"
-            :class="{
-              'bg-blue-500 text-white': selectedMode === 'manual',
-              'bg-gray-200 text-gray-700': selectedMode !== 'manual',
-            }"
-            class="px-4 py-2 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-          >
-            Manual
-          </button>
-        </div>
-      </div>
-
-      <!-- Start Date -->
-      <div class="mt-4">
-        <label class="block text-sm font-medium text-gray-700"
-          >Select Start Date</label
-        >
-        <input
-          v-model="startDate"
-          type="date"
-          :min="getCurrentDate()"
-          class="mt-1 block w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+        <VueDatePicker
+          v-model="date"
+          range
+          :minDate="new Date()"
+          :enable-time-picker="false"
         />
       </div>
-
-      <!-- End Date (conditional) -->
-      <div v-if="selectedMode === 'manual'" class="mt-4">
-        <label class="block text-sm font-medium text-gray-700"
-          >Select End Date</label
-        >
-        <input
-          v-model="endDate"
-          type="date"
-          :min="startDate"
-          class="mt-1 block w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
-          @input="checkCanShowPreview"
-        />
+      <div>
+        <button @click="openCalendar" type="button">Confirm</button>
       </div>
-      <!-- Select Hours (conditional) -->
-      <div v-if="selectedMode === 'default'" class="mt-4">
-        <label class="block text-sm font-medium text-gray-700"
-          >Select Hours</label
-        >
-        <select v-model="selectedHour" class="mt-1 block w-full rounded-md">
-          <option v-for="hour in hours" :key="hour" :value="hour">
-            {{ hour }}
-          </option>
-        </select>
-      </div>
-
-      <div v-if="selectedMode === 'default'" class="mt-4">
-        <label class="block text-sm font-medium text-gray-700"
-          >Select Minutes</label
-        >
-        <select v-model="selectedMinute" class="mt-1 block w-full rounded-md">
-          <option value="0">0</option>
-          <option value="30">30</option>
-        </select>
-      </div>
-      <!-- Show Preview Button (conditional) -->
-      <div class="mt-4">
-        <button
-          v-if="selectedMode === 'manual'"
-          @click="showPreview"
-          :disabled="!canShowPreview"
-          :class="{
-            'bg-blue-500 text-white': canShowPreview,
-            'bg-gray-300 text-gray-600 cursor-not-allowed': !canShowPreview,
-          }"
-          class="px-4 py-2 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-        >
-          Show Preview
-        </button>
-        <button
-          v-else
-          @click="showDefaultPreview"
-          :disabled="!canShowDefaultPreview"
-          :class="{
-            'bg-blue-500 text-white': canShowDefaultPreview,
-            'bg-gray-300 text-gray-600 cursor-not-allowed':
-              !canShowDefaultPreview,
-          }"
-          class="px-4 py-2 rounded-md bg-blue-500 text-white focus:outline-none focus:ring focus:ring-blue-300"
-        >
-          Show Preview
-        </button>
-      </div>
-      <!-- Display Playtime Details (conditional) -->
-      <div v-if="selectedMode === 'default' && showPreviewDetails" class="mt-4">
-        <h4 class="text-md font-medium text-gray-700">Playtime Details</h4>
-        <ul class="mt-2 space-y-2">
-          <li v-for="(playtime, index) in playtimeDetails" :key="index">
-            Day {{ playtime.day }} : {{ playtime.date }}, play
-            {{ playtime.hours }} hours and {{ playtime.minutes }} minutes
-            remaining ({{ playtime.remainingHours }} hours and
-            {{ playtime.remainingMinutes }} minutes)
-          </li>
-        </ul>
-      </div>
+    </div>
+    <div v-if="showCalendar">
+      <CalendarPreview :show="showCalendar" @close="closeCalendar" />
     </div>
   </div>
 </template>
 
 <script>
 import gameService from "@/services/gameService";
+import VueDatePicker from "@vuepic/vue-datepicker";
+import CalendarPreview from "@/components/CalendarPreview.vue";
+import "@vuepic/vue-datepicker/dist/main.css";
 
 export default {
+  components: { VueDatePicker, CalendarPreview },
   data() {
     return {
       searchQuery: "",
       searchResults: [],
       visibleResults: [],
       selectedGame: null,
-      startDate: "",
-      entDate: "",
       selectedGameMode: "mainStory",
-      selectedMode: "default",
-      hours: Array.from({ length: 24 }, (_, i) => i),
-      selectedHour: 3, // Initialize to 0
-      selectedMinute: 0,
-      canShowPreview: false,
-      canShowDefaultPreview: false,
-      playtimeDetails: [], // Initialize to 30 (meaning 30 minutes)
+      date: null,
+      showCalendar: false,
     };
-  },
-  created() {
-    // Set the startDate to today's date
-    this.startDate = this.getCurrentDate();
   },
   computed: {
     sortedVisibleResults() {
@@ -252,7 +146,6 @@ export default {
           game.name.toLowerCase().includes(this.searchQuery.toLowerCase())
         );
 
-        // Limit the visible results to a maximum of 20
         this.visibleResults = this.searchResults.slice(0, 20);
       } catch (error) {
         console.error("Error handling search input:", error);
@@ -265,129 +158,11 @@ export default {
         (game) => game.name === gameName
       );
     },
-    handleInputFocus() {
-      if (this.searchQuery && this.searchResults.length > 0) {
-        this.visibleResults = this.searchResults.slice(0, 20);
-      }
+    openCalendar() {
+      this.showCalendar = true;
     },
-    getCurrentDate() {
-      const today = new Date();
-      const year = today.getFullYear();
-      let month = today.getMonth() + 1;
-      if (month < 10) {
-        month = "0" + month;
-      }
-      let day = today.getDate();
-      if (day < 10) {
-        day = "0" + day;
-      }
-      return `${year}-${month}-${day}`;
-    },
-
-    startDateChanged(newValue) {
-      // Reset endDate if it's less than startDate
-      if (this.endDate < newValue) {
-        this.endDate = newValue;
-      }
-    },
-    endDateChanged(newValue) {
-      // Ensure endDate is not less than startDate
-      if (newValue < this.startDate) {
-        this.endDate = this.startDate;
-      }
-    },
-    checkCanShowPreview() {
-      if (this.selectedMode === "manual") {
-        this.canShowPreview = !!this.endDate;
-      } else {
-        this.canShowPreview = true;
-      }
-    },
-    checkCanShowDefaultPreview() {
-      if (this.selectedMode === "default") {
-        this.canShowDefaultPreview =
-          !!this.selectedHour || !!this.selectedMinute;
-      } else {
-        this.canShowDefaultPreview = false;
-      }
-    },
-    // Function to show the preview (you can replace this with your actual preview logic)
-    showPreview() {
-      console.log("Showing preview...");
-    },
-    showDefaultPreview() {
-      // Calculate minutes based on selectedGameMode
-      let minutesInSelectedMode = 0;
-      if (this.selectedGameMode === "mainStory") {
-        minutesInSelectedMode = this.selectedGame.main_story * 60;
-      } else if (this.selectedGameMode === "mainExtra") {
-        minutesInSelectedMode = this.selectedGame.main_extra * 60;
-      } else if (this.selectedGameMode === "completionist") {
-        minutesInSelectedMode = this.selectedGame.completionist * 60;
-      }
-
-      // Calculate total minutes
-      const totalMinutes =
-        minutesInSelectedMode + this.selectedHour * 60 + this.selectedMinute;
-
-      // Calculate end date
-      const endDate = new Date(this.startDate);
-      endDate.setMinutes(endDate.getMinutes() + totalMinutes);
-
-      this.playtimeDetails = []; // Reset playtime details for each day
-      let remainingMinutes = totalMinutes;
-
-      // Calculate and format the preview details for each day
-      for (let day = 1; remainingMinutes > 0; day++) {
-        const dayMinutes = Math.min(remainingMinutes, 24 * 60);
-        const dayHours = Math.floor(dayMinutes / 60);
-        const dayMinutesRemaining = dayMinutes % 60;
-
-        const remainingHours = Math.floor(remainingMinutes / 60);
-        const remainingMinutesRemaining = remainingMinutes % 60;
-
-        const currentDate = new Date(this.startDate);
-        currentDate.setDate(currentDate.getDate() + day - 1);
-
-        this.playtimeDetails.push({
-          day: day,
-          date: currentDate.toLocaleDateString(),
-          playHours: dayHours,
-          playMinutes: dayMinutesRemaining,
-          remainingHours: remainingHours,
-          remainingMinutes: remainingMinutesRemaining,
-        });
-
-        remainingMinutes -= dayMinutes;
-      }
-
-      this.showPreviewDetails = true; // Show the playtime details section
-      console.log("Preview:", endDate.toDateString()); // Display the end date in a readable format
-      console.log("selectedGameMode:", minutesInSelectedMode);
-      console.log("selectedHour:", this.selectedHour);
-      console.log("selectedMinute:", this.selectedMinute);
-    },
-  },
-  watch: {
-    startDate(newValue) {
-      this.startDateChanged(newValue);
-      this.checkCanShowPreview();
-      this.checkCanShowDefaultPreview(); // Add this line
-    },
-    endDate(newValue) {
-      this.endDateChanged(newValue);
-      this.checkCanShowPreview();
-      this.checkCanShowDefaultPreview(); // Add this line
-    },
-    selectedMode() {
-      this.checkCanShowPreview();
-      this.checkCanShowDefaultPreview(); // Add this line
-    },
-    selectedHour() {
-      this.checkCanShowDefaultPreview();
-    },
-    selectedMinute() {
-      this.checkCanShowDefaultPreview();
+    closeCalendar() {
+      this.showCalendar = false;
     },
   },
 };
@@ -403,6 +178,3 @@ export default {
   opacity: 0;
 }
 </style>
-
-
-

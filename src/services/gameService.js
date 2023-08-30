@@ -28,4 +28,13 @@ export default {
       throw error;
     }
   },
+  async searchGames(query) {
+    try {
+      const response = await apiClient.post("/game/search", { query });
+      return response.data;
+    } catch (error) {
+      console.error("Error searching games:", error);
+      throw error;
+    }
+  },
 };
