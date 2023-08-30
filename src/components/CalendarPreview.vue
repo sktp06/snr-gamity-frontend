@@ -38,6 +38,7 @@ export default {
             event.minutes
           )} mins`,
           start: event.date,
+          allDay: true,
         };
       });
     },
