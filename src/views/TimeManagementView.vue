@@ -97,7 +97,14 @@
         />
       </div>
       <div>
-        <button @click="openCalendar" type="button">Confirm</button>
+        <button
+          class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mt-3"
+          @click="openCalendar"
+          :disabled="isButtonDisabled"
+          type="button"
+        >
+          Confirm
+        </button>
       </div>
     </div>
     <!--Pass the calendarEventData to the CalendarPreview component and use it to create events: -->
@@ -136,6 +143,9 @@ export default {
       return this.visibleResults
         .slice()
         .sort((a, b) => b.aggregated_rating - a.aggregated_rating);
+    },
+    isButtonDisabled() {
+      return !this.date || this.date.length < 2;
     },
   },
   methods: {

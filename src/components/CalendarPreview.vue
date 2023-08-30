@@ -5,8 +5,22 @@
         <h3>Preview Calendar</h3>
       </div>
       <FullCalendar :options="calendarOptions" class="calendar" />
-      <button @click="downloadICS">Download as .ics</button>
-      <button @click="closeModal" class="close-button">Close</button>
+      <div class="buttons-container">
+        <button
+          class="bg-white mt-3 hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow flex items-center"
+          @click="downloadICS"
+        >
+          <svg
+            class="fill-current w-4 h-4 mr-2"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+          >
+            <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
+          </svg>
+          <span>Download</span>
+        </button>
+        <button @click="closeModal" class="close-button">Close</button>
+      </div>
     </div>
   </div>
 </template>
@@ -127,7 +141,28 @@ export default {
   flex: 1; /* Let the calendar take up the remaining space */
   height: 80%; /* Adjust the height of the calendar */
 }
+.buttons-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px; /* Add some space between buttons and content */
+}
 
+.buttons-container button {
+  margin-top: 10px; /* Add some space between buttons */
+}
+
+.buttons-container button.flex {
+  flex-direction: row; /* Display icon and text in a row */
+  justify-content: center; /* Center contents horizontally */
+  align-items: center; /* Center contents vertically */
+}
+
+.buttons-container button .svg-icon {
+  width: 1rem; /* Set the width of the icon */
+  height: 1rem; /* Set the height of the icon */
+  margin-right: 0.5rem; /* Add some spacing between icon and text */
+}
 .close-button {
   margin-top: 10px;
 }
