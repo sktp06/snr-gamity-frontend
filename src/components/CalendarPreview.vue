@@ -5,6 +5,7 @@
         <h3>Preview Calendar</h3>
       </div>
       <FullCalendar :options="calendarOptions" class="calendar" />
+      <button @click="downloadICS">Download as .ics</button>
       <button @click="closeModal" class="close-button">Close</button>
     </div>
   </div>
@@ -26,7 +27,7 @@ export default {
         plugins: [dayGridPlugin],
         initialView: "dayGridMonth",
         fixedWeekCount: false,
-        events: this.generateEvents(), // Use a method to generate events
+        events: this.generateEvents(),
       },
     };
   },
@@ -41,6 +42,41 @@ export default {
           allDay: true,
         };
       });
+    },
+    downloadICS() {
+      const { events } = this.calendarOptions;
+      const icsContent = this.generateICSContent(events);
+      const blob = new Blob([icsContent], { type: "text/plain;charset=utf-8" });
+      const fileName = "gaming.ics";
+
+      if (window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveBlob(blob, fileName);
+      } else {
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = fileName;
+        link.click();
+        URL.revokeObjectURL(link.href);
+      }
+    },
+    generateICSContent(events) {
+      let icsContent = "BEGIN:VCALENDAR\nVERSION:2.0\n";
+
+      for (const event of events) {
+        const formattedStartDate = event.start.toISOString();
+        const formattedEndDate = new Date(event.start);
+        formattedEndDate.setHours(23, 59, 0); // Set end time to 11:59 PM
+        const eventTitle = event.title || "Event";
+
+        icsContent += `BEGIN:VEVENT\n`;
+        icsContent += `DTSTART:${formattedStartDate}\n`;
+        icsContent += `DTEND:${formattedEndDate.toISOString()}\n`; // Set end time
+        icsContent += `SUMMARY:${eventTitle}\n`;
+        icsContent += `END:VEVENT\n`;
+      }
+
+      icsContent += "END:VCALENDAR\n";
+      return icsContent;
     },
     closeModal() {
       this.$emit("close");
