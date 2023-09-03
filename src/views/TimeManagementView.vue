@@ -74,9 +74,9 @@
         <h3 class="text-lg font-semibold capitalize">
           {{ selectedGame.name }}
         </h3>
-        <p>Main Story: {{ selectedGame.main_story }}</p>
-        <p>Main Extra: {{ selectedGame.main_extra }}</p>
-        <p>Completionist: {{ selectedGame.completionist }}</p>
+        <p>Main Story: {{ formatTime(selectedGame.main_story) }}</p>
+        <p>Main Extra: {{ formatTime(selectedGame.main_extra) }}</p>
+        <p>Completionist: {{ formatTime(selectedGame.completionist) }}</p>
         <div class="mt-4">
           <label class="block text-sm font-medium text-gray-700"
             >Select Game Mode</label
@@ -86,13 +86,13 @@
             class="mt-1 block w-full rounded-md border border-gray-300 bg-white"
           >
             <option value="mainStory">
-              Main Story : {{ selectedGame.main_story }} hr
+              Main Story : {{ formatTime(selectedGame.main_story) }}
             </option>
             <option value="mainExtra">
-              Main Extra : {{ selectedGame.main_extra }} hr
+              Main Extra : {{ formatTime(selectedGame.main_extra) }}
             </option>
             <option value="completionist">
-              Completionist : {{ selectedGame.completionist }} hr
+              Completionist : {{ formatTime(selectedGame.completionist) }}
             </option>
           </select>
         </div>
@@ -270,6 +270,24 @@ export default {
     },
   },
   methods: {
+    formatTime(decimalHours) {
+      if (decimalHours < 0) {
+        return "Invalid";
+      }
+
+      // Calculate hours and minutes
+      const hours = Math.floor(decimalHours);
+      const minutes = Math.round((decimalHours - hours) * 60);
+
+      // Construct the formatted string
+      let formattedTime = `${hours} hours`;
+
+      if (minutes > 0) {
+        formattedTime += `, ${minutes} minutes`;
+      }
+
+      return formattedTime;
+    },
     async handleSearchInput() {
       try {
         if (this.searchQuery === "") {
