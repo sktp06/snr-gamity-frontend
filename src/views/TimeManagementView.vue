@@ -106,7 +106,31 @@
           </button>
         </div>
       </div>
-
+      <div class="mt-4" v-if="dateMode === 'range'">
+        <label class="block text-sm font-medium text-gray-700"
+          >Select Days</label
+        >
+        <div class="flex mt-2">
+          <input type="checkbox" v-model="selectedDays.sunday" class="mr-2" />
+          <label class="mr-4">Sunday</label>
+          <input type="checkbox" v-model="selectedDays.monday" class="mr-2" />
+          <label class="mr-4">Monday</label>
+          <input type="checkbox" v-model="selectedDays.tuesday" class="mr-2" />
+          <label class="mr-4">Tuesday</label>
+          <input
+            type="checkbox"
+            v-model="selectedDays.wednesday"
+            class="mr-2"
+          />
+          <label class="mr-4">Wednesday</label>
+          <input type="checkbox" v-model="selectedDays.thursday" class="mr-2" />
+          <label class="mr-4">Thursday</label>
+          <input type="checkbox" v-model="selectedDays.friday" class="mr-2" />
+          <label class="mr-4">Friday</label>
+          <input type="checkbox" v-model="selectedDays.saturday" class="mr-2" />
+          <label>Saturday</label>
+        </div>
+      </div>
       <div class="mt-4">
         <label class="block text-sm font-medium text-gray-700"
           >Select Date</label
@@ -160,6 +184,15 @@ export default {
       date: null,
       showCalendar: false,
       dateMode: "range",
+      selectedDays: {
+        sunday: false,
+        monday: false,
+        tuesday: false,
+        wednesday: false,
+        thursday: false,
+        friday: false,
+        saturday: false,
+      },
     };
   },
   computed: {
@@ -220,19 +253,40 @@ export default {
         const startDate = this.date[0];
         const endDate = this.date[1];
 
-        const diffInDays =
-          Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
-        const hoursPerDay = totalHours / diffInDays;
+        // Define a map for days of the week
+        const daysOfWeek = {
+          sunday: 0,
+          monday: 1,
+          tuesday: 2,
+          wednesday: 3,
+          thursday: 4,
+          friday: 5,
+          saturday: 6,
+        };
 
-        let currentDate = new Date(startDate);
-        for (let i = 0; i < diffInDays; i++) {
-          eventData.push({
-            date: currentDate,
-            hours: hoursPerDay,
-            minutes: (hoursPerDay % 1) * 60,
-          });
-          currentDate = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
+        const selectedDates = [];
+
+        // Iterate through selectedDays object to find the selected days
+        for (const day in this.selectedDays) {
+          if (this.selectedDays[day]) {
+            // Calculate the date for the selected day within the chosen date range
+            const selectedDate = new Date(startDate);
+            while (selectedDate <= endDate) {
+              if (selectedDate.getDay() === daysOfWeek[day]) {
+                selectedDates.push(new Date(selectedDate));
+              }
+              selectedDate.setDate(selectedDate.getDate() + 1);
+            }
+          }
         }
+
+        selectedDates.forEach((selectedDate) => {
+          eventData.push({
+            date: selectedDate,
+            hours: totalHours,
+            minutes: 0,
+          });
+        });
       } else if (this.dateMode === "single" && Array.isArray(this.date)) {
         // Handle multiple selected dates in single date mode
         this.date.forEach((selectedDate) => {
@@ -246,8 +300,6 @@ export default {
         console.error("Invalid date mode or date format");
         return;
       }
-
-      console.log("Generated eventData:", eventData);
 
       // Set the initial date for FullCalendar view
       const initialDate =
