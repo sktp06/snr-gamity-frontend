@@ -204,6 +204,37 @@ export default {
     isButtonDisabled() {
       return !this.date || this.date.length < 2;
     },
+    selectedDates() {
+      if (this.dateMode === "range") {
+        const startDate = this.date[0];
+        const endDate = this.date[1];
+        const daysOfWeek = {
+          sunday: 0,
+          monday: 1,
+          tuesday: 2,
+          wednesday: 3,
+          thursday: 4,
+          friday: 5,
+          saturday: 6,
+        };
+        const selectedDates = [];
+        for (const day in this.selectedDays) {
+          if (this.selectedDays[day]) {
+            const selectedDate = new Date(startDate);
+            while (selectedDate <= endDate) {
+              if (selectedDate.getDay() === daysOfWeek[day]) {
+                selectedDates.push(new Date(selectedDate));
+              }
+              selectedDate.setDate(selectedDate.getDate() + 1);
+            }
+          }
+        }
+        return selectedDates;
+      } else if (this.dateMode === "single" && Array.isArray(this.date)) {
+        return this.date;
+      }
+      return [];
+    },
   },
   methods: {
     async handleSearchInput() {
@@ -232,7 +263,6 @@ export default {
       );
     },
     openCalendar() {
-      // Make sure selectedGameMode corresponds to the correct property in selectedGame
       const selectedGameModeMap = {
         mainStory: "main_story",
         mainExtra: "main_extra",
@@ -249,67 +279,36 @@ export default {
 
       const eventData = [];
 
-      if (this.dateMode === "range") {
+      if (this.selectedDates.length > 0) {
+        this.selectedDates.forEach((selectedDate) => {
+          eventData.push({
+            date: selectedDate,
+            hours: totalHours,
+            minutes: 0,
+          });
+        });
+      } else if (this.dateMode === "range" && Array.isArray(this.date)) {
         const startDate = this.date[0];
         const endDate = this.date[1];
-
-        // Define a map for days of the week
-        const daysOfWeek = {
-          sunday: 0,
-          monday: 1,
-          tuesday: 2,
-          wednesday: 3,
-          thursday: 4,
-          friday: 5,
-          saturday: 6,
-        };
-
-        const selectedDates = [];
-
-        // Iterate through selectedDays object to find the selected days
-        for (const day in this.selectedDays) {
-          if (this.selectedDays[day]) {
-            // Calculate the date for the selected day within the chosen date range
-            const selectedDate = new Date(startDate);
-            while (selectedDate <= endDate) {
-              if (selectedDate.getDay() === daysOfWeek[day]) {
-                selectedDates.push(new Date(selectedDate));
-              }
-              selectedDate.setDate(selectedDate.getDate() + 1);
-            }
-          }
+        const currentDate = new Date(startDate);
+        while (currentDate <= endDate) {
+          eventData.push({
+            date: new Date(currentDate),
+            hours: totalHours,
+            minutes: 0,
+          });
+          currentDate.setDate(currentDate.getDate() + 1);
         }
-
-        selectedDates.forEach((selectedDate) => {
-          eventData.push({
-            date: selectedDate,
-            hours: totalHours,
-            minutes: 0,
-          });
-        });
-      } else if (this.dateMode === "single" && Array.isArray(this.date)) {
-        // Handle multiple selected dates in single date mode
-        this.date.forEach((selectedDate) => {
-          eventData.push({
-            date: selectedDate,
-            hours: totalHours,
-            minutes: 0,
-          });
-        });
       } else {
         console.error("Invalid date mode or date format");
         return;
       }
-
-      // Set the initial date for FullCalendar view
       const initialDate =
-        this.dateMode === "range" ? this.date[0] : this.date[0]; // Use the start date of events
-      this.calendarInitialDate = initialDate; // Save the initial date to the data
-
+        this.dateMode === "range" ? this.date[0] : this.date[0];
+      this.calendarInitialDate = initialDate;
       this.showCalendar = true;
       this.calendarEventData = eventData;
     },
-
     changeDateMode(mode) {
       this.date = null;
       this.dateMode = mode;
