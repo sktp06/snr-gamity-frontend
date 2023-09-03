@@ -87,11 +87,34 @@
       </div>
       <div class="mt-4">
         <label class="block text-sm font-medium text-gray-700"
-          >Select Time Range</label
+          >Select Date Mode</label
+        >
+        <div class="flex mt-2">
+          <button
+            class="flex-1 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+            :class="{ 'bg-blue-500 text-white': dateMode === 'range' }"
+            @click="changeDateMode('range')"
+          >
+            Date Range
+          </button>
+          <button
+            class="flex-1 ml-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+            :class="{ 'bg-blue-500 text-white': dateMode === 'single' }"
+            @click="changeDateMode('single')"
+          >
+            Single Date
+          </button>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <label class="block text-sm font-medium text-gray-700"
+          >Select Date</label
         >
         <VueDatePicker
           v-model="date"
-          range
+          :range="dateMode === 'range'"
+          :multi-dates="dateMode === 'single'"
           :minDate="new Date()"
           :enable-time-picker="false"
         />
@@ -136,6 +159,7 @@ export default {
       selectedGameMode: "mainStory",
       date: null,
       showCalendar: false,
+      dateMode: "range",
     };
   },
   computed: {
@@ -190,31 +214,53 @@ export default {
       const totalHours =
         this.selectedGame[selectedGameModeMap[this.selectedGameMode]];
 
-      const startDate = this.date[0];
-      const endDate = this.date[1];
-
-      const diffInDays =
-        Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
-      const hoursPerDay = totalHours / diffInDays;
-
       const eventData = [];
-      let currentDate = new Date(startDate);
-      for (let i = 0; i < diffInDays; i++) {
-        eventData.push({
-          date: currentDate,
-          hours: hoursPerDay,
-          minutes: (hoursPerDay % 1) * 60,
+
+      if (this.dateMode === "range") {
+        const startDate = this.date[0];
+        const endDate = this.date[1];
+
+        const diffInDays =
+          Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+        const hoursPerDay = totalHours / diffInDays;
+
+        let currentDate = new Date(startDate);
+        for (let i = 0; i < diffInDays; i++) {
+          eventData.push({
+            date: currentDate,
+            hours: hoursPerDay,
+            minutes: (hoursPerDay % 1) * 60,
+          });
+          currentDate = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
+        }
+      } else if (this.dateMode === "single" && Array.isArray(this.date)) {
+        // Handle multiple selected dates in single date mode
+        this.date.forEach((selectedDate) => {
+          eventData.push({
+            date: selectedDate,
+            hours: totalHours,
+            minutes: 0,
+          });
         });
-        currentDate = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
+      } else {
+        console.error("Invalid date mode or date format");
+        return;
       }
+
       console.log("Generated eventData:", eventData);
 
       // Set the initial date for FullCalendar view
-      const initialDate = startDate; // Use the start date of events
+      const initialDate =
+        this.dateMode === "range" ? this.date[0] : this.date[0]; // Use the start date of events
       this.calendarInitialDate = initialDate; // Save the initial date to the data
 
       this.showCalendar = true;
       this.calendarEventData = eventData;
+    },
+
+    changeDateMode(mode) {
+      this.date = null;
+      this.dateMode = mode;
     },
     closeCalendar() {
       this.showCalendar = false;
