@@ -204,6 +204,7 @@ import gameService from "@/services/gameService";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import CalendarPreview from "@/components/CalendarPreview.vue";
 import "@vuepic/vue-datepicker/dist/main.css";
+import Swal from "sweetalert2";
 
 export default {
   components: { VueDatePicker, CalendarPreview },
@@ -327,6 +328,9 @@ export default {
 
       const totalHours =
         this.selectedGame[selectedGameModeMap[this.selectedGameMode]];
+      const totalMinutes = Math.round(
+        (totalHours - Math.floor(totalHours)) * 60
+      );
 
       const eventData = [];
 
@@ -334,19 +338,39 @@ export default {
         this.selectedDates.forEach((selectedDate) => {
           eventData.push({
             date: selectedDate,
-            hours: totalHours,
-            minutes: 0,
+            hours: Math.floor(totalHours / this.selectedDates.length),
+            minutes: Math.round(totalMinutes / this.selectedDates.length),
           });
         });
       } else if (this.dateMode === "range" && Array.isArray(this.date)) {
         const startDate = this.date[0];
         const endDate = this.date[1];
         const currentDate = new Date(startDate);
+        const dayCount = this.calculateDayCount(startDate, endDate);
+
+        // Define a minimum day threshold based on total game time
+        let minimumDaysRequired = 3; // Default minimum days
+        if (totalHours >= 24) {
+          minimumDaysRequired = Math.ceil(totalHours / 24);
+        }
+
+        if (dayCount < minimumDaysRequired) {
+          Swal.fire({
+            icon: "error",
+            title: "Insufficient Days Selected",
+            text: `You must select at least ${minimumDaysRequired} days for this game time.`,
+          });
+          return;
+        }
+
+        const hoursPerDay = Math.floor(totalHours / dayCount);
+        const minutesPerDay = Math.round(totalMinutes / dayCount);
+
         while (currentDate <= endDate) {
           eventData.push({
             date: new Date(currentDate),
-            hours: totalHours,
-            minutes: 0,
+            hours: hoursPerDay,
+            minutes: minutesPerDay,
           });
           currentDate.setDate(currentDate.getDate() + 1);
         }
@@ -354,11 +378,17 @@ export default {
         console.error("Invalid date mode or date format");
         return;
       }
+
       const initialDate =
         this.dateMode === "range" ? this.date[0] : this.date[0];
       this.calendarInitialDate = initialDate;
       this.showCalendar = true;
       this.calendarEventData = eventData;
+    },
+
+    calculateDayCount(startDate, endDate) {
+      const oneDay = 24 * 60 * 60 * 1000; // One day in milliseconds
+      return Math.round(Math.abs((endDate - startDate) / oneDay)) + 1;
     },
     clearSelection() {
       this.date = null;
