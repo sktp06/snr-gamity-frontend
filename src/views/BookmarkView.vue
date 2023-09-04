@@ -9,41 +9,29 @@
         :key="game.id"
         class="relative rounded-lg shadow-md overflow-hidden hover:shadow-lg border border-amber-200 mb-4"
         style="height: 300px; width: 230px"
-        @click="showGameDetail(game)"
+        @click="showBookmarkGameDetail(game)"
       >
+        <!-- Bookmark Game Card -->
         <div class="h-250px relative">
           <img
             :src="game.cover"
             alt="image"
             class="object-cover w-full h-full transform transition-transform hover:scale-105"
             style="z-index: 0"
-            @click="selectedGame = game"
           />
-          <div v-if="selectedGame" class="game-popup">
-            <div class="overlay"></div>
-            <div class="popup-content">
-              <GameDetail
-                :game="selectedGame"
-                @close="hideGameDetail"
-                :hide-add-to-favorites-button="true"
-              />
-              <button class="close-button" @click="hideGameDetail">
-                Close
-              </button>
-            </div>
-          </div>
-          <div
-            v-if="remainingDays(game) !== null && isRecentlyReleased(game)"
-            class="absolute bottom-0 left-0 right-0 p-4 bg-black bg-opacity-80"
-          >
-            <p class="text-white text-center font-bold text-lg">
-              In ({{ remainingDays(game) }}) days until the game's release
-            </p>
-          </div>
         </div>
+        <div
+          v-if="remainingDays(game) !== null && isRecentlyReleased(game)"
+          class="absolute bottom-0 left-0 right-0 p-4 bg-black bg-opacity-80"
+        >
+          <p class="text-white text-center font-bold text-lg">
+            In ({{ remainingDays(game) }}) days until the game's release
+          </p>
+        </div>
+        <!-- Bookmark Game Details Button -->
         <div class="remove-favorite-container" style="z-index: 9999">
           <button
-            @click="removeFromFavorite(game.id)"
+            @click="showBookmarkGameDetail(game)"
             class="absolute top-2 right-2 p-4 text-white hover:text-red-500 transition-colors duration-300"
           >
             <svg
@@ -68,37 +56,25 @@
     <div class="flex justify-between items-center px-4 py-6">
       <h2 class="text-3xl text-white font-bold mt-2">Recommended Game:</h2>
     </div>
-
     <!-- Carousel for Recommended Games -->
     <carousel :items-to-show="6.5" :items-to-scroll="7">
       <slide
         v-for="(game, index) in recommendedGames"
         :key="index"
-        @click="showGameDetail(game)"
+        @click="showRecommendedGameDetail(game)"
       >
         <div
           class="relative rounded-lg shadow-md overflow-hidden hover:shadow-lg border border-amber-200 mb-4"
           style="height: 300px; width: 230px"
         >
-          <img
-            :src="game.cover"
-            alt="image"
-            class="object-cover w-full h-full transform transition-transform hover:scale-105"
-            style="z-index: 0"
-            @click="selectedGame = game"
-          />
-          <div v-if="selectedGame" class="game-popup">
-            <div class="overlay"></div>
-            <div class="popup-content">
-              <GameDetail
-                :game="selectedGame"
-                @close="hideGameDetail"
-                :hide-add-to-favorites-button="true"
-              />
-              <button class="close-button" @click="hideGameDetail">
-                Close
-              </button>
-            </div>
+          <!-- Recommended Game Card -->
+          <div class="h-250px relative">
+            <img
+              :src="game.cover"
+              alt="image"
+              class="object-cover w-full h-full transform transition-transform hover:scale-105"
+              style="z-index: 0"
+            />
           </div>
           <div
             v-if="remainingDays(game) !== null && isRecentlyReleased(game)"
@@ -108,41 +84,63 @@
               In ({{ remainingDays(game) }}) days until the game's release
             </p>
           </div>
-        </div>
-
-        <div class="remove-favorite-container" style="z-index: 9999">
-          <button
-            @click="removeFromFavorite(game.id)"
-            class="absolute top-2 right-2 p-4 text-white hover:text-red-500 transition-colors duration-300"
-          >
-            <svg
-              class="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+          <!-- Recommended Game Details Button -->
+          <div class="remove-favorite-container" style="z-index: 9999">
+            <button
+              @click="showRecommendedGameDetail(game)"
+              class="absolute top-2 right-2 p-4 text-white hover:text-red-500 transition-colors duration-300"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
+              <svg
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       </slide>
     </carousel>
-
-    <div v-if="selectedGame" class="overlay" @click="hideGameDetail"></div>
-    <div v-if="selectedGame" class="game-popup">
+    <!-- Bookmark Game Details -->
+    <div
+      v-if="selectedBookmarkGame"
+      class="overlay"
+      @click="hideGameDetail"
+    ></div>
+    <div v-if="selectedBookmarkGame" class="game-popup">
       <div class="popup-content">
         <GameDetail
-          :game="selectedGame"
+          :game="selectedBookmarkGame"
           @close="hideGameDetail"
           :hide-add-to-favorites-button="true"
         />
         <button class="close-button" @click="hideGameDetail">Close</button>
+      </div>
+    </div>
+    <!-- Recommended Game Details -->
+    <div
+      v-if="selectedRecommendedGame"
+      class="overlay"
+      @click="hideRecommendedGameDetail"
+    ></div>
+    <div v-if="selectedRecommendedGame" class="game-popup">
+      <div class="popup-content">
+        <GameDetail
+          :game="selectedRecommendedGame"
+          @close="hideRecommendedGameDetail"
+          :hide-add-to-favorites-button="true"
+        />
+        <button class="close-button" @click="hideRecommendedGameDetail">
+          Close
+        </button>
       </div>
     </div>
   </div>
@@ -152,7 +150,7 @@
 import BookmarkService from "@/services/BookmarkService.js";
 import GameDetail from "@/components/GameDetail.vue";
 import "vue3-carousel/dist/carousel.css"; // Import carousel CSS
-import { Carousel, Slide } from "vue3-carousel"; // Import Carousel and Slid
+import { Carousel, Slide } from "vue3-carousel"; // Import Carousel and Slide
 
 export default {
   name: "bookmark-page",
@@ -164,7 +162,8 @@ export default {
   },
   data() {
     return {
-      selectedGame: null,
+      selectedBookmarkGame: null,
+      selectedRecommendedGame: null,
       isRemovingFromFavorites: false,
       recommendedGames: [],
     };
@@ -179,7 +178,7 @@ export default {
       )
         .then(() => {
           this.getBookmarks();
-          this.selectedGame = null; // Set selectedGame to null after removing from favorites
+          this.selectedBookmarkGame = null; // Set selectedBookmarkGame to null after removing from favorites
         })
         .catch((err) => {
           console.log(err);
@@ -217,14 +216,30 @@ export default {
       const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
       return differenceInDays > 0 ? differenceInDays : null;
     },
-    showGameDetail(game) {
-      if (game.id !== this.selectedGame?.id && !this.isRemovingFromFavorites) {
-        this.selectedGame = game;
+    showBookmarkGameDetail(game) {
+      if (
+        game.id !== this.selectedBookmarkGame?.id &&
+        !this.isRemovingFromFavorites
+      ) {
+        this.selectedBookmarkGame = game;
+        this.disableScroll();
+      }
+    },
+    showRecommendedGameDetail(game) {
+      if (
+        game.id !== this.selectedRecommendedGame?.id &&
+        !this.isRemovingFromFavorites
+      ) {
+        this.selectedRecommendedGame = game;
         this.disableScroll();
       }
     },
     hideGameDetail() {
-      this.selectedGame = null;
+      this.selectedBookmarkGame = null;
+      this.enableScroll();
+    },
+    hideRecommendedGameDetail() {
+      this.selectedRecommendedGame = null;
       this.enableScroll();
     },
     disableScroll() {
