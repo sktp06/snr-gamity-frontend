@@ -68,15 +68,18 @@
     <div class="flex justify-between items-center px-4 py-6">
       <h2 class="text-3xl text-white font-bold mt-2">Recommended Game:</h2>
     </div>
-    <div class="grid grid-cols-2 gap-10 md:grid-cols-5 mx-4">
-      <div
-        v-for="game in recommendedGames"
-        :key="game.id"
-        class="relative rounded-lg shadow-md overflow-hidden hover:shadow-lg border border-amber-200 mb-4"
-        style="height: 300px; width: 230px"
+
+    <!-- Carousel for Recommended Games -->
+    <carousel :items-to-show="6.5" :items-to-scroll="7">
+      <slide
+        v-for="(game, index) in recommendedGames"
+        :key="index"
         @click="showGameDetail(game)"
       >
-        <div class="h-250px relative">
+        <div
+          class="relative rounded-lg shadow-md overflow-hidden hover:shadow-lg border border-amber-200 mb-4"
+          style="height: 300px; width: 230px"
+        >
           <img
             :src="game.cover"
             alt="image"
@@ -106,6 +109,7 @@
             </p>
           </div>
         </div>
+
         <div class="remove-favorite-container" style="z-index: 9999">
           <button
             @click="removeFromFavorite(game.id)"
@@ -127,8 +131,8 @@
             </svg>
           </button>
         </div>
-      </div>
-    </div>
+      </slide>
+    </carousel>
 
     <div v-if="selectedGame" class="overlay" @click="hideGameDetail"></div>
     <div v-if="selectedGame" class="game-popup">
@@ -147,12 +151,16 @@
 <script>
 import BookmarkService from "@/services/BookmarkService.js";
 import GameDetail from "@/components/GameDetail.vue";
+import "vue3-carousel/dist/carousel.css"; // Import carousel CSS
+import { Carousel, Slide } from "vue3-carousel"; // Import Carousel and Slid
 
 export default {
   name: "bookmark-page",
   inject: ["GStore"],
   components: {
     GameDetail,
+    Carousel,
+    Slide,
   },
   data() {
     return {
