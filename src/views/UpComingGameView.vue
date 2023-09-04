@@ -39,16 +39,18 @@
         </select>
       </div>
     </div>
-    <div class="flex flex-wrap -mx-4">
-      <div
-        v-for="game in filteredGames"
-        :key="game.id"
-        class="w-1/3 px-4 md:w-1/6"
-      >
+    <div class="mr-8 ml-6">
+      <div class="flex flex-wrap -mx-4">
         <div
-          class="bg-white transform transition duration-300 shadow-lg rounded-md ml-2 mr-2"
+          v-for="game in filteredGames"
+          :key="game.id"
+          class="w-1/1 px-2 py-6 sm:w-1/2 md:w-1/4 lg:w-1/5"
         >
-          <GameCard :game="game" />
+          <div
+            class="bg-white transform transition duration-300 shadow-lg rounded-md ml-2 mr-2"
+          >
+            <GameCard :game="game" />
+          </div>
         </div>
       </div>
     </div>

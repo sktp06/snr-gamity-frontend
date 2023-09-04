@@ -13,11 +13,11 @@
       >
         {{ game.name }}
       </h2>
-      <div class="h-12">
+      <!-- <div class="h-12">
         <p class="mb-2 text-sm text-gray-600 overflow-hidden line-clamp-2">
           {{ game.genres.length > 0 ? game.genres.join(", ") : "no genres" }}
         </p>
-      </div>
+      </div> -->
       <p class="text-gray-600 font-bold">{{ formattedReleaseDate }}</p>
       <p v-if="remainingDays" class="text-sm text-gray-500">
         In ( {{ remainingDays }} ) days

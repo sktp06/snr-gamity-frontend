@@ -3,7 +3,7 @@
     <div class="flex justify-between items-center px-4 py-6">
       <h2 class="text-3xl text-white font-bold mt-2">My List</h2>
     </div>
-    <div class="grid grid-cols-2 gap-10 md:grid-cols-5 mx-4">
+    <div class="grid grid-cols-2 gap-10 md:grid-cols-5 mx-2">
       <div
         v-for="game in GStore.bookmarks"
         :key="game.id"
@@ -130,6 +130,7 @@ import BookmarkService from "@/services/BookmarkService.js";
 import GameDetail from "@/components/GameDetail.vue";
 import "vue3-carousel/dist/carousel.css"; // Import carousel CSS
 import { Carousel, Slide, Navigation } from "vue3-carousel"; // Import Carousel and Slide
+import defaultCoverImage from "@/assets/no-image-available.png";
 
 export default {
   name: "bookmark-page",
@@ -158,7 +159,6 @@ export default {
       )
         .then(() => {
           this.getBookmarks();
-          this.selectedBookmarkGame = null; // Set selectedBookmarkGame to null after removing from favorites
         })
         .catch((err) => {
           console.log(err);
@@ -183,7 +183,11 @@ export default {
         JSON.parse(localStorage.getItem("user")).user_id
       )
         .then((recommendedGames) => {
-          this.recommendedGames = recommendedGames;
+          // Check if each game has a cover image, and if not, use the default cover image
+          this.recommendedGames = recommendedGames.map((game) => ({
+            ...game,
+            cover: game.cover || defaultCoverImage,
+          }));
         })
         .catch((err) => {
           console.log(err);
