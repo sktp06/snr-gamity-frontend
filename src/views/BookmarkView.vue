@@ -84,30 +84,9 @@
               In ({{ remainingDays(game) }}) days until the game's release
             </p>
           </div>
-          <!-- Recommended Game Details Button -->
-          <div class="remove-favorite-container" style="z-index: 9999">
-            <button
-              @click="showRecommendedGameDetail(game)"
-              class="absolute top-2 right-2 p-4 text-white hover:text-red-500 transition-colors duration-300"
-            >
-              <svg
-                class="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
         </div>
       </slide>
+      <template #addons> <navigation class="carousel__icon" /> </template>
     </carousel>
     <!-- Bookmark Game Details -->
     <div
@@ -150,7 +129,7 @@
 import BookmarkService from "@/services/BookmarkService.js";
 import GameDetail from "@/components/GameDetail.vue";
 import "vue3-carousel/dist/carousel.css"; // Import carousel CSS
-import { Carousel, Slide } from "vue3-carousel"; // Import Carousel and Slide
+import { Carousel, Slide, Navigation } from "vue3-carousel"; // Import Carousel and Slide
 
 export default {
   name: "bookmark-page",
@@ -159,6 +138,7 @@ export default {
     GameDetail,
     Carousel,
     Slide,
+    Navigation,
   },
   data() {
     return {
