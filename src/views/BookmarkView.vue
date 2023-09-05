@@ -28,6 +28,27 @@
             In ({{ remainingDays(game) }}) days until the game's release
           </p>
         </div>
+        <div class="remove-favorite-container" style="z-index: 9999">
+          <button
+            @click="removeFromFavorite(game.id)"
+            class="absolute top-2 right-2 p-4 text-white hover:text-red-500 transition-colors duration-300"
+          >
+            <svg
+              class="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
     <!-- Recommended Games Section -->
@@ -128,23 +149,26 @@ export default {
     };
   },
   methods: {
-    // removeFromFavorite(gameId) {
-    //   this.isRemovingFromFavorites = true; // Set the flag before removing from favorites
+    removeFromFavorite(gameId) {
+      this.isRemovingFromFavorites = true;
 
-    //   BookmarkService.removeBookmark(
-    //     JSON.parse(localStorage.getItem("user")).user_id,
-    //     gameId
-    //   )
-    //     .then(() => {
-    //       this.getBookmarks();
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     })
-    //     .finally(() => {
-    //       this.isRemovingFromFavorites = false; // Reset the flag after the removal process is complete
-    //     });
-    // },
+      BookmarkService.removeBookmark(
+        JSON.parse(localStorage.getItem("user")).user_id,
+        gameId
+      )
+        .then(() => {
+          // Remove the game from the local list as well
+          this.GStore.bookmarks = this.GStore.bookmarks.filter(
+            (game) => game.id !== gameId
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          this.isRemovingFromFavorites = false;
+        });
+    },
     getBookmarks() {
       BookmarkService.getbookmarkList(
         JSON.parse(localStorage.getItem("user")).user_id
