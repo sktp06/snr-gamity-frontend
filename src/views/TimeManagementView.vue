@@ -102,15 +102,25 @@
           >
           <div class="flex mt-2">
             <button
-              class="flex-1 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-              :class="{ 'bg-blue-500 text-white': dateMode === 'range' }"
+              class="flex-1 py-2 px-4 rounded-lg focus:outline-none"
+              :class="{
+                'bg-blue-500 text-white hover:bg-blue-600':
+                  dateMode === 'range',
+                'bg-white text-gray-800 hover:bg-gray-100':
+                  dateMode !== 'range',
+              }"
               @click="changeDateMode('range')"
             >
               Date Range
             </button>
             <button
-              class="flex-1 ml-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-              :class="{ 'bg-blue-500 text-white': dateMode === 'single' }"
+              class="flex-1 ml-2 py-2 px-4 rounded-lg focus:outline-none"
+              :class="{
+                'bg-blue-500 text-white hover:bg-blue-600':
+                  dateMode === 'single',
+                'bg-white text-gray-800 hover:bg-gray-100':
+                  dateMode !== 'single',
+              }"
               @click="changeDateMode('single')"
             >
               Single Date
