@@ -356,15 +356,11 @@ export default {
         const startDate = this.date[0];
         const endDate = this.date[1];
         const currentDate = new Date(startDate);
-        const dayCount = this.calculateDayCount(startDate, endDate);
 
-        // Define a minimum day threshold based on total game time
-        let minimumDaysRequired = 3; // Default minimum days
-        if (totalHours >= 24) {
-          minimumDaysRequired = Math.ceil(totalHours / 24);
-        }
+        const totalDays = this.calculateDayCount(startDate, endDate);
+        const minimumDaysRequired = Math.ceil(totalHours / 24);
 
-        if (dayCount < minimumDaysRequired) {
+        if (totalDays < minimumDaysRequired) {
           Swal.fire({
             icon: "error",
             title: "Insufficient Days Selected",
@@ -373,8 +369,8 @@ export default {
           return;
         }
 
-        const hoursPerDay = Math.floor(totalHours / dayCount);
-        const minutesPerDay = Math.round(totalMinutes / dayCount);
+        const hoursPerDay = Math.floor(totalHours / totalDays);
+        const minutesPerDay = Math.round(totalMinutes / totalDays);
 
         while (currentDate <= endDate) {
           eventData.push({
@@ -395,7 +391,6 @@ export default {
       this.showCalendar = true;
       this.calendarEventData = eventData;
     },
-
     calculateDayCount(startDate, endDate) {
       const oneDay = 24 * 60 * 60 * 1000; // One day in milliseconds
       return Math.round(Math.abs((endDate - startDate) / oneDay)) + 1;
