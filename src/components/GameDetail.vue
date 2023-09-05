@@ -15,8 +15,11 @@
             @click="toggleBookmark"
             class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
           >
-            <i v-if="isGameInMyList" class="fas fa-minus-circle"></i>
-            <i v-else class="fas fa-plus-circle"></i>
+            <i
+              v-if="isGameInMyList"
+              class="fas fa-minus-circle text-red-600"
+            ></i>
+            <i v-else class="fas fa-plus-circle text-green-600"></i>
             {{ isGameInMyList ? "Remove from My List" : "Add to My List" }}
           </button>
         </div>

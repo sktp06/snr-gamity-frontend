@@ -13,11 +13,6 @@
       >
         {{ game.name }}
       </h2>
-      <!-- <div class="h-12">
-        <p class="mb-2 text-sm text-gray-600 overflow-hidden line-clamp-2">
-          {{ game.genres.length > 0 ? game.genres.join(", ") : "no genres" }}
-        </p>
-      </div> -->
       <p class="text-gray-600 font-bold">{{ formattedReleaseDate }}</p>
       <p v-if="remainingDays" class="text-sm text-gray-500">
         In ( {{ remainingDays }} ) days
@@ -25,9 +20,10 @@
       <button
         @click="toggleFavorite(game.id)"
         class="favorite-button"
-        :class="{ 'text-red-500': isFavorite, 'full-heart': isFavorite }"
+        :class="{ 'text-green-500': isFavorite, 'full-heart': isFavorite }"
       >
-        <i :class="['fa', isFavorite ? 'fas' : 'far', 'fa-heart']"></i>
+        <i v-if="isFavorite" class="fas fa-minus-circle text-red-500"></i>
+        <i v-else class="fas fa-plus-circle"></i>
       </button>
     </div>
   </div>
@@ -101,7 +97,7 @@ export default {
   bottom: 4px;
   right: 4px;
   background-color: transparent;
-  color: red;
+  color: #008000;
   border: none;
   outline: none;
   cursor: pointer;
@@ -110,7 +106,7 @@ export default {
 }
 
 .favorite-button:hover {
-  color: darkred;
+  color: #8b0000;
 }
 
 .full-heart {
