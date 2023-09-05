@@ -356,6 +356,17 @@ export default {
             });
             return;
           }
+        } else if (this.dateMode === "range") {
+          const selectedDayCount = this.selectedDates.length;
+          const minimumDaysRequired = Math.ceil(totalHours / 24);
+          if (selectedDayCount < minimumDaysRequired) {
+            Swal.fire({
+              icon: "error",
+              title: "Insufficient Days Selected",
+              text: `You must select at least ${minimumDaysRequired} days for this game time.`,
+            });
+            return;
+          }
         }
 
         this.selectedDates.forEach((selectedDate) => {
