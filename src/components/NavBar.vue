@@ -96,8 +96,8 @@
 
 <script>
 import AuthService from "@/services/AuthService.js";
-import SearchService from "@/services/SearchService.js";
-import SpellService from "@/services/SpellService.js";
+// import SearchService from "@/services/SearchService.js";
+// import SpellService from "@/services/SpellService.js";
 // import { Form, Field } from "vee-validate";
 import * as yup from "yup";
 
@@ -131,22 +131,22 @@ export default {
       AuthService.logout();
       this.$router.push("/login");
     },
-    onSearch() {
-      const query = this.searchQuery; // Use the updated searchQuery property
+    // onSearch() {
+    //   const query = this.searchQuery; // Use the updated searchQuery property
 
-      SpellService.correction(query)
-        .then((res) => {
-          if (query !== res.data) {
-            alert("Maybe you mean: " + res.data);
-            return SearchService.search(res.data);
-          } else {
-            return SearchService.search(query);
-          }
-        })
-        .then(() => {
-          this.$router.push("/home");
-        });
-    },
+    //   SpellService.correction(query)
+    //     .then((res) => {
+    //       if (query !== res.data) {
+    //         alert("Maybe you mean: " + res.data);
+    //         return SearchService.search(res.data);
+    //       } else {
+    //         return SearchService.search(query);
+    //       }
+    //     })
+    //     .then(() => {
+    //       this.$router.push("/home");
+    //     });
+    // },
   },
 };
 </script>

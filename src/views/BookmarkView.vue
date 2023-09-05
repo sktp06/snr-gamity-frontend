@@ -32,7 +32,7 @@
     </div>
     <!-- Recommended Games Section -->
     <div class="flex justify-between items-center px-4 py-6">
-      <h2 class="text-3xl text-white font-bold mt-2">Recommended Game:</h2>
+      <h2 class="text-3xl text-white font-bold mt-2">Recommended Game</h2>
     </div>
     <!-- Carousel for Recommended Games -->
     <carousel :items-to-show="6.5" :items-to-scroll="7">
