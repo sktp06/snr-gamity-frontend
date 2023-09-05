@@ -78,7 +78,7 @@
         <GameDetail
           :game="selectedBookmarkGame"
           @close="hideGameDetail"
-          :hide-add-to-favorites-button="true"
+          :isInBookmarkList="true"
         />
       </div>
     </div>

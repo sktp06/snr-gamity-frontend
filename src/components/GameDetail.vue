@@ -12,6 +12,7 @@
         </div>
         <div class="px-10">
           <button
+            v-if="!isInBookmarkList"
             @click="toggleBookmark"
             class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
           >
@@ -115,7 +116,7 @@ export default {
       type: Object,
       required: true,
     },
-    hideAddToFavoritesButton: {
+    isInBookmarkList: {
       type: Boolean,
       default: false,
     },
