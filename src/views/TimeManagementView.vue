@@ -324,6 +324,7 @@ export default {
         (game) => game.name === gameName
       );
     },
+    // Inside your openCalendar method
     openCalendar() {
       const selectedGameModeMap = {
         mainStory: "main_story",
@@ -359,11 +360,20 @@ export default {
         } else if (this.dateMode === "range") {
           const selectedDayCount = this.selectedDates.length;
           const minimumDaysRequired = Math.ceil(totalHours / 24);
-          if (selectedDayCount < minimumDaysRequired) {
+          const selectedDays = Object.keys(this.selectedDays).filter(
+            (day) => this.selectedDays[day]
+          );
+
+          if (
+            selectedDayCount < minimumDaysRequired ||
+            !selectedDays.every((day) =>
+              this.isDayInRange(day, this.date[0], this.date[1])
+            )
+          ) {
             Swal.fire({
               icon: "error",
-              title: "Insufficient Days Selected",
-              text: `You must select at least ${minimumDaysRequired} days for this game time.`,
+              title: "Invalid Days Selected",
+              text: `You must select at least ${minimumDaysRequired} days, and they must be within the chosen date range for this game time.`,
             });
             return;
           }
@@ -383,12 +393,20 @@ export default {
 
         const totalDays = this.calculateDayCount(startDate, endDate);
         const minimumDaysRequired = Math.ceil(totalHours / 24);
+        const selectedDays = Object.keys(this.selectedDays).filter(
+          (day) => this.selectedDays[day]
+        );
 
-        if (totalDays < minimumDaysRequired) {
+        if (
+          totalDays < minimumDaysRequired ||
+          !selectedDays.every((day) =>
+            this.isDayInRange(day, startDate, endDate)
+          )
+        ) {
           Swal.fire({
             icon: "error",
-            title: "Insufficient Days Selected",
-            text: `You must select at least ${minimumDaysRequired} days for this game time.`,
+            title: "Invalid Days Selected",
+            text: `You must select at least ${minimumDaysRequired} days, and they must be within the chosen date range for this game time.`,
           });
           return;
         }
@@ -414,6 +432,33 @@ export default {
       this.calendarInitialDate = initialDate;
       this.showCalendar = true;
       this.calendarEventData = eventData;
+    },
+    isDayInRange(day, startDate, endDate) {
+      const daysOfWeek = {
+        sunday: 0,
+        monday: 1,
+        tuesday: 2,
+        wednesday: 3,
+        thursday: 4,
+        friday: 5,
+        saturday: 6,
+      };
+      const selectedDayOfWeek = daysOfWeek[day];
+      const currentDayOfWeek = startDate.getDay();
+      const endDayOfWeek = endDate.getDay();
+
+      if (currentDayOfWeek <= endDayOfWeek) {
+        return (
+          selectedDayOfWeek >= currentDayOfWeek &&
+          selectedDayOfWeek <= endDayOfWeek
+        );
+      } else {
+        // Handle date ranges that cross over to the next week
+        return (
+          selectedDayOfWeek >= currentDayOfWeek ||
+          selectedDayOfWeek <= endDayOfWeek
+        );
+      }
     },
     calculateDayCount(startDate, endDate) {
       const oneDay = 24 * 60 * 60 * 1000; // One day in milliseconds
