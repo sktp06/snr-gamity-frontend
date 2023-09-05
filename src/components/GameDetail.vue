@@ -1,97 +1,98 @@
 <template>
   <div class="game-popup">
-    <div class="game-details">
-      <h3 class="mb-2text-2xl font-bold mb-4 capitalize text-center">
-        {{ game.name }}
-      </h3>
-      <div class="image-container">
-        <img
-          :src="game.cover || defaultCover"
-          alt="Game Cover"
-          class="game-image rounded-lg mb-2"
-        />
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <!-- Game Cover on the Left -->
+      <div class="md:col-span-1">
+        <div class="image-container">
+          <img
+            :src="game.cover || defaultCover"
+            alt="Game Cover"
+            class="game-image rounded-lg mb-2"
+          />
+        </div>
+        <div class="px-10">
+          <button
+            @click="toggleBookmark"
+            class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+          >
+            <i v-if="isGameInMyList" class="fas fa-minus-circle"></i>
+            <i v-else class="fas fa-plus-circle"></i>
+            {{ isGameInMyList ? "Remove from My List" : "Add to My List" }}
+          </button>
+        </div>
       </div>
-      <button
-        v-if="!hideAddToFavoritesButton"
-        @click="addToFavorites(game.id)"
-        :class="{
-          'bg-gray-500 hover:bg-gray-900': isFavorite,
-          'bg-red-500 hover:bg-red-900': !isFavorite,
-        }"
-        class="text-white font-bold py-2 px-4 rounded-full mt-4"
-        :style="{
-          'background-color': isFavorite ? 'gray' : 'red',
-          hover: {
-            'background-color': isFavorite ? 'grey' : 'green',
-          },
-        }"
-      >
-        {{ isFavorite ? "Remove from Favorites" : "Add to Favorites" }}
-      </button>
-      <p class="mb-2 text-justify">
-        <span class="font-bold">Description:</span>
-        {{ game.unclean_summary }}
-      </p>
-      <p class="mb-2">
-        <span class="font-bold">Release Date:</span>
-        {{
-          game.release_dates
-            ? formatDate(game.release_dates) + getReleaseStatus(game)
-            : "No release date"
-        }}
-      </p>
-      <p class="mb-2">
-        <span class="font-bold">Genres:</span>
-        {{
-          game.genres && game.genres.length > 0
-            ? game.genres.join(", ")
-            : "No genres"
-        }}
-      </p>
-      <p class="mb-4">
-        <span class="font-bold">Rating:</span>
-        {{ game.rating ? Math.round(game.rating) : "No rating" }}
-      </p>
-      <p class="mb-4">
-        <span class="font-bold">Aggregate Rating:</span>
-        {{
-          game.aggregated_rating
-            ? Math.round(game.aggregated_rating)
-            : "No rating"
-        }}
-      </p>
-      <div>
-        <p class="font-bold mb-2">Time to Beat:</p>
-        <ul class="mb-4">
-          <li>
-            <span class="font-bold">Story:</span>
-            {{ game.main_story ? game.main_story : "--" }} hour(s)
-          </li>
-          <li>
-            <span class="font-bold">Extra:</span>
-            {{ game.main_extra ? game.main_extra : "--" }} hour(s)
-          </li>
-          <li>
-            <span class="font-bold">Completionist:</span>
-            {{ game.completionist ? game.completionist : "--" }}
-            hour(s)
-          </li>
-        </ul>
-      </div>
-      <div>
-        <p class="font-bold mb-2">List of store(s):</p>
-        <ul class="mb-4 flex flex-wrap">
-          <li v-for="store in game.websites" :key="store.id">
-            <a
-              :href="store[0]"
-              target="_blank"
-              class="inline-block bg-gray-200 hover:bg-gray-300 rounded-full px-3 py-1 mr-2 mb-2"
-              >{{ store[1] }}</a
-            >
-          </li>
-        </ul>
+
+      <!-- Game Details on the Right -->
+      <div class="md:col-span-2 px-4">
+        <h3 class="text-2xl font-bold mb-4 capitalize text-center">
+          {{ game.name }}
+        </h3>
+        <p class="mb-2 text-justify">
+          <span class="font-bold">Description:</span>
+          {{ game.unclean_summary }}
+        </p>
+        <p class="mb-2">
+          <span class="font-bold">Release Date:</span>
+          {{
+            game.release_dates
+              ? formatDate(game.release_dates) + getReleaseStatus(game)
+              : "No release date"
+          }}
+        </p>
+        <p class="mb-2">
+          <span class="font-bold">Genres:</span>
+          {{
+            game.genres && game.genres.length > 0
+              ? game.genres.join(", ")
+              : "No genres"
+          }}
+        </p>
+        <p class="mb-4">
+          <span class="font-bold">Rating:</span>
+          {{ game.rating ? Math.round(game.rating) : "No rating" }}
+        </p>
+        <p class="mb-4">
+          <span class="font-bold">Aggregate Rating:</span>
+          {{
+            game.aggregated_rating
+              ? Math.round(game.aggregated_rating)
+              : "No rating"
+          }}
+        </p>
+        <div>
+          <p class="font-bold mb-2">Time to Beat:</p>
+          <ul class="mb-4">
+            <li>
+              <span class="font-bold">Story:</span>
+              {{ game.main_story ? game.main_story : "--" }} hour(s)
+            </li>
+            <li>
+              <span class="font-bold">Extra:</span>
+              {{ game.main_extra ? game.main_extra : "--" }} hour(s)
+            </li>
+            <li>
+              <span class="font-bold">Completionist:</span>
+              {{ game.completionist ? game.completionist : "--" }}
+              hour(s)
+            </li>
+          </ul>
+        </div>
+        <div>
+          <p class="font-bold mb-2">List of store(s):</p>
+          <ul class="mb-4 flex flex-wrap">
+            <li v-for="store in game.websites" :key="store.id">
+              <a
+                :href="store[0]"
+                target="_blank"
+                class="inline-block bg-gray-200 hover:bg-gray-300 rounded-full px-3 py-1 mr-2 mb-2"
+                >{{ store[1] }}</a
+              >
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
+
     <button
       class="close-button bg-gray-200 text-gray-500 font-bold py-2 px-4 rounded-full mt-4"
       @click="$emit('close')"
@@ -118,32 +119,37 @@ export default {
   },
   data() {
     return {
-      isFavorite: false, // Track if the game is already a favorite
+      isGameInMyList: false, // Track if the game is already a favorite
       defaultCover: defaultCoverImage,
     };
   },
   methods: {
-    addToFavorites(gameId) {
+    async toggleBookmark() {
       const userId = JSON.parse(localStorage.getItem("user")).user_id;
+      const gameId = this.game.id;
 
-      if (this.isFavorite) {
-        BookmarkService.removeBookmark(userId, gameId)
-          .then(() => {
-            console.log("Removed game from favorites:", gameId);
-            this.isFavorite = false;
-          })
-          .catch((error) => {
-            console.log("Error removing game from favorites:", error);
-          });
-      } else {
-        BookmarkService.addBookmark(userId, gameId)
-          .then(() => {
-            console.log("Added game to favorites:", gameId);
-            this.isFavorite = true;
-          })
-          .catch((error) => {
-            console.log("Error adding game to favorites:", error);
-          });
+      try {
+        if (this.isGameInMyList) {
+          // Remove the game from the bookmark list
+          await BookmarkService.removeBookmark(userId, gameId);
+          console.log("Removed game from My List:", gameId);
+        } else {
+          // Add the game to the bookmark list
+          await BookmarkService.addBookmark(userId, gameId);
+          console.log("Added game to My List:", gameId);
+        }
+
+        // Toggle the isGameInMyList value
+        this.isGameInMyList = !this.isGameInMyList;
+
+        // Emit a custom event to forward the change to the parent component
+        this.$emit("bookmark-updated", {
+          gameId: this.game.id,
+          isGameInMyList: this.isGameInMyList,
+        });
+      } catch (error) {
+        console.error("Error toggling bookmark:", error);
+        // You can handle the error in your Vue component or display an error message here if needed.
       }
     },
     formatDate(dateString) {
@@ -226,9 +232,9 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 9999;
+  z-index: 9998; /* Set a lower z-index for the card */
   width: 80%;
-  max-width: 600px;
+  max-width: 800px;
   background-color: #ffffff;
   padding: 20px;
   border-radius: 10px;
@@ -241,6 +247,9 @@ export default {
   scrollbar-color: transparent transparent;
 }
 
+.swal2-container {
+  z-index: 9999;
+}
 .game-popup::-webkit-scrollbar {
   width: 0;
   display: none;
@@ -258,13 +267,14 @@ export default {
 
 .image-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; /* Horizontally center */
+  align-items: center; /* Vertically center */
+  margin-top: 30%;
 }
 
 .game-image {
-  width: 50%;
-  height: 50%;
+  max-width: 100%;
+  max-height: 100%;
   border-radius: 10px;
 }
 

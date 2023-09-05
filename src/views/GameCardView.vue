@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-zinc-900 text-white min-h-screen">
+  <div class="bg-zinc-900 min-h-screen">
     <div class="flex justify-between items-center px-4 py-6">
       <h2 class="text-3xl text-white font-bold mt-2">Game Library</h2>
       <div class="relative inline-block">
@@ -25,7 +25,7 @@
       </div>
     </div>
     <div v-for="(value, index) in displayedGenres" :key="index">
-      <h2 class="text-2xl font-bold mx-4 my-2">{{ value.genre }}</h2>
+      <h2 class="text-2xl font-bold mx-4 my-2 text-white">{{ value.genre }}</h2>
       <Carousel
         :games="value.games"
         @game-clicked="showGameDetail"

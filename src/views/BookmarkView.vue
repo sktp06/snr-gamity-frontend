@@ -28,28 +28,6 @@
             In ({{ remainingDays(game) }}) days until the game's release
           </p>
         </div>
-        <!-- Bookmark Game Details Button -->
-        <div class="remove-favorite-container" style="z-index: 9999">
-          <button
-            @click="showBookmarkGameDetail(game)"
-            class="absolute top-2 right-2 p-4 text-white hover:text-red-500 transition-colors duration-300"
-          >
-            <svg
-              class="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-        </div>
       </div>
     </div>
     <!-- Recommended Games Section -->
@@ -63,11 +41,11 @@
         :key="index"
         @click="showRecommendedGameDetail(game)"
       >
+        <!-- Recommended Game Card -->
         <div
           class="relative rounded-lg shadow-md overflow-hidden hover:shadow-lg border border-amber-200 mb-4"
           style="height: 300px; width: 230px"
         >
-          <!-- Recommended Game Card -->
           <div class="h-250px relative">
             <img
               :src="game.cover"
@@ -88,6 +66,7 @@
       </slide>
       <template #addons> <navigation class="carousel__icon" /> </template>
     </carousel>
+
     <!-- Bookmark Game Details -->
     <div
       v-if="selectedBookmarkGame"
@@ -101,7 +80,6 @@
           @close="hideGameDetail"
           :hide-add-to-favorites-button="true"
         />
-        <button class="close-button" @click="hideGameDetail">Close</button>
       </div>
     </div>
     <!-- Recommended Game Details -->
@@ -150,23 +128,23 @@ export default {
     };
   },
   methods: {
-    removeFromFavorite(gameId) {
-      this.isRemovingFromFavorites = true; // Set the flag before removing from favorites
+    // removeFromFavorite(gameId) {
+    //   this.isRemovingFromFavorites = true; // Set the flag before removing from favorites
 
-      BookmarkService.removeBookmark(
-        JSON.parse(localStorage.getItem("user")).user_id,
-        gameId
-      )
-        .then(() => {
-          this.getBookmarks();
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => {
-          this.isRemovingFromFavorites = false; // Reset the flag after the removal process is complete
-        });
-    },
+    //   BookmarkService.removeBookmark(
+    //     JSON.parse(localStorage.getItem("user")).user_id,
+    //     gameId
+    //   )
+    //     .then(() => {
+    //       this.getBookmarks();
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     })
+    //     .finally(() => {
+    //       this.isRemovingFromFavorites = false; // Reset the flag after the removal process is complete
+    //     });
+    // },
     getBookmarks() {
       BookmarkService.getbookmarkList(
         JSON.parse(localStorage.getItem("user")).user_id
@@ -278,8 +256,11 @@ export default {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   grid-gap: 10px;
+  z-index: 9998;
 }
-
+.swal2-container {
+  z-index: 9999;
+}
 .close-button {
   cursor: pointer;
   background-color: transparent;
