@@ -246,7 +246,7 @@ export default {
         .sort((a, b) => b.aggregated_rating - a.aggregated_rating);
     },
     isButtonDisabled() {
-      return !this.date || this.date.length < 2;
+      return this.dateMode === "range" && (!this.date || this.date.length < 2);
     },
     selectedDates() {
       if (this.dateMode === "range") {
@@ -345,6 +345,19 @@ export default {
       const eventData = [];
 
       if (this.selectedDates.length > 0) {
+        if (this.dateMode === "single") {
+          // Check for single date mode
+          const minimumDaysRequired = Math.ceil(totalHours / 24);
+          if (this.selectedDates.length < minimumDaysRequired) {
+            Swal.fire({
+              icon: "error",
+              title: "Insufficient Days Selected",
+              text: `You must select at least ${minimumDaysRequired} days for this game time.`,
+            });
+            return;
+          }
+        }
+
         this.selectedDates.forEach((selectedDate) => {
           eventData.push({
             date: selectedDate,
