@@ -75,14 +75,21 @@
 </template>
 
 <script>
-import Carousel from "@/components/Carousel.vue";
+import { defineAsyncComponent } from "vue";
 import gameService from "@/services/gameService";
-import GameDetail from "@/components/GameDetail.vue";
+
+const AsyncCarousel = defineAsyncComponent(() =>
+  import("@/components/Carousel.vue")
+);
+
+const AsyncGameDetail = defineAsyncComponent(() =>
+  import("@/components/GameDetail.vue")
+);
 
 export default {
   components: {
-    Carousel,
-    GameDetail,
+    Carousel: AsyncCarousel,
+    GameDetail: AsyncGameDetail,
   },
   data() {
     return {
