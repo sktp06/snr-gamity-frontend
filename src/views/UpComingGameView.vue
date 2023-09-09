@@ -30,7 +30,7 @@
           id="genre"
           v-model="selectedGenre"
           @change="filterGamesByGenre"
-          class="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white mx-4"
+          class="filterGamesByGenre px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white mx-4"
         >
           <option value="">All</option>
           <option v-for="genre in uniqueGenres" :value="genre" :key="genre">
@@ -39,7 +39,7 @@
         </select>
       </div>
     </div>
-    <div class="mr-8 ml-6">
+    <div class="px-4">
       <div class="flex flex-wrap -mx-4">
         <div
           v-for="game in filteredGames"
@@ -176,14 +176,28 @@ export default {
       // Format the year as desired
       return year;
     },
-    filterGamesByYear() {
-      // Apply the selected year filter
-      // This will trigger the computed property 'filteredGames'
-    },
-    filterGamesByGenre() {
-      // Apply the selected genre filter
-      // This will trigger the computed property 'filteredGames'
-    },
+    filterGamesByYear() {},
+    filterGamesByGenre() {},
   },
 };
 </script>
+<style>
+.filterGamesByGenre {
+  width: 50%;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.filterGamesByGenre::-webkit-scrollbar {
+  width: 6px;
+}
+
+.filterGamesByGenre::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 3px;
+}
+
+.filterGamesByGenre::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+</style>

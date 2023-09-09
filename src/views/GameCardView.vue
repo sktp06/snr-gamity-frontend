@@ -32,7 +32,10 @@
         :items-to-show="5.5"
         class="mx-4"
       />
-      <button class="see-more mx-4" @click="toggleGenrePopup(value.genre)">
+      <button
+        class="see-more mx-4 text-white"
+        @click="toggleGenrePopup(value.genre)"
+      >
         {{ expandedGenres.includes(value.genre) ? "See Less" : "See More" }}
       </button>
 
@@ -42,20 +45,21 @@
         @click.self="hideGenrePopup"
       >
         <div class="popup-content">
-          <button class="close-button" @click="hideGenrePopup">Close</button>
-          <div class="game-grid">
-            <!-- <h2 class="genre-title">{{ value.genre }}</h2> -->
-            <!-- Moved above the div block -->
-            <div
-              v-for="(game, gameIndex) in filteredGames(value.genre).slice(
-                0,
-                100
-              )"
-              :key="gameIndex"
-              class="game-item"
-              @click="showGameDetail(game)"
-            >
-              <img :src="game.cover" :alt="game.name" class="game-image" />
+          <div class="mt-5">
+            <button class="close-button" @click="hideGenrePopup">Close</button>
+            <div class="game-grid">
+              <!-- <h2 class="genre-title">{{ value.genre }}</h2> -->
+              <div
+                v-for="(game, gameIndex) in filteredGames(value.genre).slice(
+                  0,
+                  250
+                )"
+                :key="gameIndex"
+                class="game-item"
+                @click="showGameDetail(game)"
+              >
+                <img :src="game.cover" :alt="game.name" class="game-image" />
+              </div>
             </div>
           </div>
         </div>
@@ -238,16 +242,14 @@ export default {
 .genre-popup .game-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
   align-content: flex-start;
-  gap: 10px; /* Add a gap between the game images */
+  gap: 20px;
 }
 
 .genre-popup .game-item {
-  width: calc(
-    20% - 10px
-  ); /* Adjust the width calculation based on your needs */
-  height: fit-content; /* Adjust the height calculation based on your needs */
+  width: calc(20% - 10px);
+  height: fit-content;
   margin: 10px;
   cursor: pointer;
   transition: transform 0.3s;
@@ -292,9 +294,6 @@ export default {
   z-index: 9998;
 }
 .genre-popup .popup-content {
-  /* Other existing styles */
-
-  /* Hide the scrollbar */
   scrollbar-width: none;
   -ms-overflow-style: none;
   overflow: -moz-scrollbars-none;

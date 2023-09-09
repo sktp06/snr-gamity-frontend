@@ -10,7 +10,7 @@
             class="game-image rounded-lg mb-2"
           />
         </div>
-        <div class="px-10">
+        <div class="px-10 text-center sm::text-left md:text-left lg:text-left">
           <button
             v-if="!isInBookmarkList"
             @click="toggleBookmark"
@@ -67,11 +67,11 @@
           <p class="font-bold mb-2">Time to Beat:</p>
           <ul class="mb-4">
             <li>
-              <span class="font-bold">Story:</span>
+              <span class="font-bold">Main Story:</span>
               {{ game.main_story ? game.main_story : "--" }} hour(s)
             </li>
             <li>
-              <span class="font-bold">Extra:</span>
+              <span class="font-bold">Main + Extra:</span>
               {{ game.main_extra ? game.main_extra : "--" }} hour(s)
             </li>
             <li>

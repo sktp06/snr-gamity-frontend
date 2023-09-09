@@ -1,6 +1,6 @@
 <template>
   <div
-    class="game-card relative border border-gray-300 p-4 mb-4 text-center rounded-lg overflow-hidden transform transition duration-200 hover:scale-105"
+    class="game-card relative border border-gray-300 p-2 mb- text-center rounded-lg overflow-hidden transform transition duration-200 hover:scale-105"
   >
     <img
       :src="game.cover || defaultCover"
@@ -9,7 +9,7 @@
     />
     <div class="p-4">
       <h2
-        class="text-lg font-bold h-16 overflow-hidden line-clamp-2 mt-2 capitalize"
+        class="text-lg font-bold h-14 overflow-hidden line-clamp-2 mt-1 capitalize"
       >
         {{ game.name }}
       </h2>

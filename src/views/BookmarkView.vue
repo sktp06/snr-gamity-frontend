@@ -3,7 +3,7 @@
     <div class="flex justify-between items-center px-4 py-6">
       <h2 class="text-3xl text-white font-bold mt-2">My List</h2>
     </div>
-    <div class="grid grid-cols-2 gap-10 md:grid-cols-5 mx-2">
+    <div class="grid grid-cols-2 gap-10 md:grid-cols-5 px-4">
       <div
         v-for="game in GStore.bookmarks"
         :key="game.id"
@@ -56,7 +56,7 @@
       <h2 class="text-3xl text-white font-bold mt-2">Recommended Game</h2>
     </div>
     <!-- Carousel for Recommended Games -->
-    <carousel :items-to-show="6.5" :items-to-scroll="7">
+    <carousel :items-to-show="6.5" :items-to-scroll="7" class="px-4">
       <slide
         v-for="(game, index) in recommendedGames"
         :key="index"
@@ -295,5 +295,8 @@ export default {
   right: 10px;
   color: #fff;
   font-size: 20px;
+}
+.carousel__icon {
+  color: white; /* Replace with your desired color value */
 }
 </style>
