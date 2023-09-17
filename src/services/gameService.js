@@ -16,6 +16,20 @@ export default {
       throw error;
     }
   },
+  async getUpcoming() {
+    try {
+      const response = await apiClient.get("/game/upcoming");
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching games:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error Fetching Games",
+        text: "An error occurred while fetching games.",
+      });
+      throw error;
+    }
+  },
   async get_clean_gameplay() {
     try {
       const response = await apiClient.get("/game/clean_data");

@@ -128,7 +128,7 @@ export default {
   methods: {
     async fetchUpcomingGames() {
       try {
-        const response = await apiClient.get("/game/data");
+        const response = await apiClient.get("/game/upcoming");
         const games = response.data;
         const currentDate = new Date();
         const currentYear = currentDate.getFullYear();
