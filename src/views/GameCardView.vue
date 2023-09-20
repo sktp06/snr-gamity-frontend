@@ -7,9 +7,8 @@
           class="block appearance-none bg-zinc-800 text-white px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:bg-zinc-700"
           v-model="sortingOption"
         >
-          <option value="popularity">Popularity</option>
-          <option value="rating">Rating</option>
-          <option value="release_dates">New</option>
+          <option value="popularity">Trending</option>
+          <option value="release_dates">New Released</option>
         </select>
         <div
           class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white"
@@ -122,8 +121,6 @@ export default {
           .sort((a, b) => {
             if (this.sortingOption === "popularity") {
               return b.popularity - a.popularity;
-            } else if (this.sortingOption === "rating") {
-              return b.rating - a.rating;
             } else if (this.sortingOption === "release_dates") {
               return new Date(b.release_dates) - new Date(a.release_dates);
             }
