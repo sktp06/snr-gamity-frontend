@@ -1,6 +1,9 @@
 <template>
   <div class="bg-zinc-900 min-h-screen">
-    <div class="container mx-auto px-4">
+    <h2 class="text-3xl text-white font-bold p-10 pl-4">
+      Gaming Time Management
+    </h2>
+    <div class="container mx-auto px-4 p-2 px-20">
       <form ref="searchForm">
         <label
           for="default-search"
@@ -35,7 +38,7 @@
             type="search"
             id="default-search"
             class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Search Games name"
+            placeholder="Search..."
             required
           />
         </div>
@@ -102,18 +105,6 @@
           >
           <div class="flex mt-2">
             <button
-              class="flex-1 py-2 px-4 rounded-lg focus:outline-none"
-              :class="{
-                'bg-blue-500 text-white hover:bg-blue-600':
-                  dateMode === 'range',
-                'bg-white text-gray-800 hover:bg-gray-100':
-                  dateMode !== 'range',
-              }"
-              @click="changeDateMode('range')"
-            >
-              Date Range
-            </button>
-            <button
               class="flex-1 ml-2 py-2 px-4 rounded-lg focus:outline-none"
               :class="{
                 'bg-blue-500 text-white hover:bg-blue-600':
@@ -125,45 +116,21 @@
             >
               Single Date
             </button>
+            <button
+              class="flex-1 py-2 px-4 rounded-lg focus:outline-none"
+              :class="{
+                'bg-blue-500 text-white hover:bg-blue-600':
+                  dateMode === 'range',
+                'bg-white text-gray-800 hover:bg-gray-100':
+                  dateMode !== 'range',
+              }"
+              @click="changeDateMode('range')"
+            >
+              Date Range
+            </button>
           </div>
         </div>
-        <div class="mt-4" v-if="dateMode === 'range'">
-          <label class="block text-sm font-medium text-gray-700"
-            >Select Days</label
-          >
-          <div class="flex mt-2">
-            <input type="checkbox" v-model="selectedDays.sunday" class="mr-2" />
-            <label class="mr-4">Sunday</label>
-            <input type="checkbox" v-model="selectedDays.monday" class="mr-2" />
-            <label class="mr-4">Monday</label>
-            <input
-              type="checkbox"
-              v-model="selectedDays.tuesday"
-              class="mr-2"
-            />
-            <label class="mr-4">Tuesday</label>
-            <input
-              type="checkbox"
-              v-model="selectedDays.wednesday"
-              class="mr-2"
-            />
-            <label class="mr-4">Wednesday</label>
-            <input
-              type="checkbox"
-              v-model="selectedDays.thursday"
-              class="mr-2"
-            />
-            <label class="mr-4">Thursday</label>
-            <input type="checkbox" v-model="selectedDays.friday" class="mr-2" />
-            <label class="mr-4">Friday</label>
-            <input
-              type="checkbox"
-              v-model="selectedDays.saturday"
-              class="mr-2"
-            />
-            <label>Saturday</label>
-          </div>
-        </div>
+
         <div class="mt-4">
           <label class="block text-sm font-medium text-gray-700"
             >Select Date</label
@@ -175,6 +142,69 @@
             :minDate="new Date()"
             :enable-time-picker="false"
           />
+        </div>
+        <div class="mt-4" v-if="dateMode === 'range'">
+          <label class="block text-sm font-medium text-gray-700">
+            Select Days (Optional)
+          </label>
+          <div class="flex flex-col mt-2 md:flex-row">
+            <div class="md:flex md:flex-wrap">
+              <input
+                type="checkbox"
+                v-model="selectedDays.sunday"
+                class="mr-2"
+              />
+              <label class="mr-4">Sunday</label>
+            </div>
+            <div class="md:flex md:flex-wrap">
+              <input
+                type="checkbox"
+                v-model="selectedDays.monday"
+                class="mr-2"
+              />
+              <label class="mr-4">Monday</label>
+            </div>
+            <div class="md:flex md:flex-wrap">
+              <input
+                type="checkbox"
+                v-model="selectedDays.tuesday"
+                class="mr-2"
+              />
+              <label class="mr-4">Tuesday</label>
+            </div>
+            <div class="md:flex md:flex-wrap">
+              <input
+                type="checkbox"
+                v-model="selectedDays.wednesday"
+                class="mr-2"
+              />
+              <label class="mr-4">Wednesday</label>
+            </div>
+            <div class="md:flex md:flex-wrap">
+              <input
+                type="checkbox"
+                v-model="selectedDays.thursday"
+                class="mr-2"
+              />
+              <label class="mr-4">Thursday</label>
+            </div>
+            <div class="md:flex md:flex-wrap">
+              <input
+                type="checkbox"
+                v-model="selectedDays.friday"
+                class="mr-2"
+              />
+              <label class="mr-4">Friday</label>
+            </div>
+            <div class="md:flex md:flex-wrap">
+              <input
+                type="checkbox"
+                v-model="selectedDays.saturday"
+                class="mr-2"
+              />
+              <label>Saturday</label>
+            </div>
+          </div>
         </div>
         <div>
           <button
@@ -227,7 +257,7 @@ export default {
       selectedGameMode: "mainStory",
       date: null,
       showCalendar: false,
-      dateMode: "range",
+      dateMode: "single",
       selectedDays: {
         sunday: false,
         monday: false,
@@ -496,5 +526,26 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+.dp__theme_dark {
+  --dp-background-color: #212121;
+  --dp-text-color: #ffffff;
+  --dp-hover-color: #484848;
+  --dp-hover-text-color: #ffffff;
+  --dp-hover-icon-color: #959595;
+  --dp-primary-color: #005cb2;
+  --dp-primary-text-color: #ffffff;
+  --dp-secondary-color: #a9a9a9;
+  --dp-border-color: #2d2d2d;
+  --dp-menu-border-color: #2d2d2d;
+  --dp-border-color-hover: #aaaeb7;
+  --dp-disabled-color: #737373;
+  --dp-scroll-bar-background: #212121;
+  --dp-scroll-bar-color: #484848;
+  --dp-success-color: #00701a;
+  --dp-success-color-disabled: #428f59;
+  --dp-icon-color: #959595;
+  --dp-danger-color: #e53935;
+  --dp-highlight-color: rgba(0, 92, 178, 0.2);
 }
 </style>

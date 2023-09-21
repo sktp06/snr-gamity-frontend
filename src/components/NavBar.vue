@@ -2,7 +2,10 @@
   <div class="bg-gradient-to-r from-black to-gray-900 text-white">
     <div class="px-4 py-4 flex flex-wrap justify-between items-center">
       <div class="flex items-center">
-        <router-link to="/home" class="text-2xl font-bold mr-4">
+        <router-link
+          to="/home"
+          class="transform transition-all duration-300 hover:text-indigo-400 hover:-translate-y-0.5 focus:-translate-y-0.5 text-white text-2xl font-bold mr-4 mb-1"
+        >
           Gamity
         </router-link>
         <!-- Add a button for mobile navigation -->
@@ -17,28 +20,28 @@
           <router-link
             v-if="GStore.currentUser && !isAdmin"
             to="/bookmark"
-            class="transform hover:-translate-y-0.5 focus:-translate-y-0.5 transition-all duration-300 ml-4"
+            class="transform transition-all duration-300 hover:text-indigo-400 hover:-translate-y-0.5 focus:-translate-y-0.5 text-white ml-4 font-bold text-lg"
           >
             Bookmark
           </router-link>
           <router-link
             v-if="GStore.currentUser"
             to="/upcoming"
-            class="transform hover:-translate-y-0.5 focus:-translate-y-0.5 transition-all duration-300 ml-4"
+            class="transform transition-all duration-300 hover:text-indigo-400 hover:-translate-y-0.5 focus:-translate-y-0.5 text-white ml-4 font-bold text-lg"
           >
             Upcoming
           </router-link>
           <router-link
             v-if="GStore.currentUser && isAdmin"
             to="/data-management"
-            class="transform hover:-translate-y-0.5 focus:-translate-y-0.5 transition-all duration-300 ml-4"
+            class="transform transition-all duration-300 hover:text-indigo-400 hover:-translate-y-0.5 focus:-translate-y-0.5 text-white ml-4 font-bold text-lg"
           >
             Data-Management
           </router-link>
           <router-link
             v-if="GStore.currentUser && !isAdmin"
             to="/time-management"
-            class="transform hover:-translate-y-0.5 focus:-translate-y-0.5 transition-all duration-300 ml-4"
+            class="transform transition-all duration-300 hover:text-indigo-400 hover:-translate-y-0.5 focus:-translate-y-0.5 text-white ml-4 font-bold text-lg"
           >
             Time-Management
           </router-link>
@@ -84,28 +87,28 @@
       <router-link
         v-if="GStore.currentUser && !isAdmin"
         to="/bookmark"
-        class="block text-xl font-bold mb-2"
+        class="transform transition-all duration-300 hover:text-indigo-400 hover:-translate-y-0.5 focus:-translate-y-0.5 text-white uppercase font-bold ml-4"
       >
         Bookmark
       </router-link>
       <router-link
         v-if="GStore.currentUser"
         to="/upcoming"
-        class="block text-xl font-bold mb-2"
+        class="transform transition-all duration-300 hover:text-indigo-400 hover:-translate-y-0.5 focus:-translate-y-0.5 text-white uppercase font-bold ml-4"
       >
         Upcoming
       </router-link>
       <router-link
         v-if="GStore.currentUser && isAdmin"
         to="/data-management"
-        class="block text-xl font-bold mb-2"
+        class="transform transition-all duration-300 hover:text-indigo-400 hover:-translate-y-0.5 focus:-translate-y-0.5 text-white uppercase font-bold ml-4"
       >
         Data-Management
       </router-link>
       <router-link
         v-if="GStore.currentUser && !isAdmin"
         to="/time-management"
-        class="block text-xl font-bold mb-2"
+        class="transform transition-all duration-300 hover:text-indigo-400 hover:-translate-y-0.5 focus:-translate-y-0.5 text-white uppercase font-bold ml-4"
       >
         Time-Management
       </router-link>
