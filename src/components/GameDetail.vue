@@ -29,7 +29,7 @@
       <!-- Game Details on the Right -->
       <div class="md:col-span-2 px-4">
         <h3 class="text-2xl font-bold mb-4 capitalize text-center">
-          {{ game.name }}
+          {{ game.unclean_name }}
         </h3>
         <p class="mb-2 text-justify">
           <span class="font-bold">Description:</span>

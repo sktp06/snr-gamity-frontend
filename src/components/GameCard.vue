@@ -11,7 +11,7 @@
       <h2
         class="text-lg font-bold h-14 overflow-hidden line-clamp-2 mt-1 capitalize"
       >
-        {{ game.name }}
+        {{ game.unclean_name }}
       </h2>
       <p class="text-gray-600 font-bold">{{ formattedReleaseDate }}</p>
       <p v-if="remainingDays" class="text-sm text-gray-500">
