@@ -26,6 +26,16 @@
         <i v-else class="fas fa-plus-circle"></i>
       </button>
     </div>
+    <div>
+      <p class="text-gray-600 text-sm inline-block mr-2 mb-2">More Details:</p>
+      <a
+        :href="game.url"
+        target="_blank"
+        class="inline-block bg-gray-200 hover:bg-gray-300 rounded-full px-3 py-1 mr-2 mb-2"
+      >
+        <p class="text-gray-600 font-bold inline-block">IGDB</p>
+      </a>
+    </div>
   </div>
 </template>
 
@@ -66,7 +76,12 @@ export default {
       const releaseDate = new Date(this.game.release_dates);
       const today = new Date();
       const differenceInTime = releaseDate.getTime() - today.getTime();
-      const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
+      let differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
+
+      if (differenceInDays > 0) {
+        differenceInDays--;
+      }
+
       return differenceInDays > 0 ? differenceInDays : null;
     },
   },

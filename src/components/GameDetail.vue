@@ -94,6 +94,18 @@
             </li>
           </ul>
         </div>
+        <div>
+          <p class="font-bold mb-2">More Details:</p>
+          <ul class="mb-4 flex flex-wrap">
+            <a
+              :href="game.url"
+              target="_blank"
+              class="inline-block bg-gray-200 hover:bg-gray-300 rounded-full px-3 py-1 mr-2 mb-2"
+            >
+              {{ game.url }}
+            </a>
+          </ul>
+        </div>
       </div>
     </div>
 
