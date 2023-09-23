@@ -2,12 +2,18 @@
   <div class="bg-gradient-to-r from-black to-gray-900 text-white">
     <div class="px-4 py-4 flex flex-wrap justify-between items-center">
       <div class="flex items-center">
-        <router-link
-          to="/home"
-          class="transform transition-all duration-300 hover:text-indigo-400 hover:-translate-y-0.5 focus:-translate-y-0.5 text-white text-2xl font-bold mr-4 mb-1"
-        >
-          Gamity
-        </router-link>
+        <div style="display: flex; align-items: center">
+          <router-link
+            to="/home"
+            class="flex items-center transform transition-all duration-300 hover:text-indigo-400 hover:-translate-y-0.5 focus:-translate-y-0.5 text-white text-2xl font-bold ml-2"
+          >
+            <img
+              src="../assets/logo_nobg.png"
+              alt="logo"
+              class="h-10 w-9 mr-2"
+            />
+          </router-link>
+        </div>
         <!-- Add a button for mobile navigation -->
         <button
           @click="showMobileMenu = !showMobileMenu"
