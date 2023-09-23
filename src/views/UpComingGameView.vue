@@ -129,39 +129,14 @@ export default {
     async fetchUpcomingGames() {
       try {
         const response = await apiClient.get("/game/upcoming");
-        const games = response.data;
-        const currentDate = new Date();
-        const currentYear = currentDate.getFullYear();
-        const currentMonth = currentDate.getMonth() + 1; // Month index starts from 0
+        this.upcomingGames = response.data;
+        this.error = null;
 
-        this.upcomingGames = games.filter((game) => {
-          if (game.release_dates) {
-            const releaseDate = new Date(game.release_dates);
-            const releaseYear = releaseDate.getFullYear();
-            const releaseMonth = releaseDate.getMonth() + 1;
-
-            // Check if the release year is greater than or equal to the current year
-            // and the release month is greater than the current month
-            if (releaseYear > currentYear) {
-              return true;
-            } else if (
-              releaseYear === currentYear &&
-              releaseMonth > currentMonth
-            ) {
-              return true;
-            }
-          }
-          return false;
-        });
-
-        // Sort the upcoming games by release dates from closest to farthest
         this.upcomingGames.sort((a, b) => {
           const releaseDateA = new Date(a.release_dates);
           const releaseDateB = new Date(b.release_dates);
           return releaseDateA - releaseDateB;
         });
-
-        this.error = null;
       } catch (error) {
         console.error("Error fetching upcoming games:", error);
         this.upcomingGames = [];

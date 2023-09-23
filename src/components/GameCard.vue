@@ -49,6 +49,13 @@ export default {
   computed: {
     formattedReleaseDate() {
       const releaseDate = new Date(this.game.release_dates);
+
+      // Check if the release date is December 31st
+      if (releaseDate.getMonth() === 11 && releaseDate.getDate() === 31) {
+        return releaseDate.getFullYear().toString();
+      }
+
+      // For other release dates, format as usual
       return releaseDate.toLocaleDateString("en-US", {
         year: "numeric",
         month: "short",
