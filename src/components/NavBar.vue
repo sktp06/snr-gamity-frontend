@@ -58,12 +58,15 @@
           @input="onSearch(query)"
           type="text"
           placeholder="Search..."
-          class="px-4 ml py-2 rounded-full bg-gray-800 text-white focus:outline-none focus:shadow-outline w-full md:w-60 sm:w-30"
+          class="px-4 py-2 rounded-full bg-gray-800 text-white focus:outline-none focus:shadow-outline w-full md:w-60 sm:w-30"
         />
+        <!-- Render search or clear button based on the query -->
         <button
+          v-if="query === ''"
           @click="onSearch(query)"
           class="absolute right-0 top-0 mt-2 mr-2 text-white hover:text-indigo-400"
         >
+          <!-- Search SVG -->
           <svg
             class="w-5 h-5"
             fill="none"
@@ -75,6 +78,24 @@
           >
             <path d="M22 22l-6-6"></path>
             <circle cx="10.5" cy="10.5" r="7.5"></circle>
+          </svg>
+        </button>
+        <button
+          v-else
+          @click="clearQuery"
+          class="absolute right-0 top-0 mt-2 mr-2 text-white hover:text-red-400"
+        >
+          <!-- Clear SVG -->
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M6 18L18 6M6 6l12 12"></path>
           </svg>
         </button>
       </div>
@@ -204,6 +225,10 @@ export default {
           console.log("Search results:", results);
         })
         .catch(() => {});
+    },
+    clearQuery() {
+      this.query = "";
+      this.GStore.searchGameList.content = [];
     },
   },
 };
