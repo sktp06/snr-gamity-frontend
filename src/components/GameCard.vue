@@ -78,9 +78,9 @@ export default {
       const differenceInTime = releaseDate.getTime() - today.getTime();
       let differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
 
-      if (differenceInDays > 0) {
-        differenceInDays--;
-      }
+      // if (differenceInDays > 0) {
+      //   differenceInDays--;
+      // }
 
       return differenceInDays > 0 ? differenceInDays : null;
     },
