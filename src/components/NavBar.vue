@@ -22,7 +22,6 @@
           Menu
         </button>
         <div v-if="GStore.currentUser" class="hidden md:flex">
-          <!-- Your router links go here -->
           <router-link
             v-if="GStore.currentUser && !isAdmin"
             to="/bookmark"
@@ -52,6 +51,32 @@
             Time-Management
           </router-link>
         </div>
+      </div>
+      <div class="relative">
+        <input
+          v-model="query"
+          @input="onSearch(query)"
+          type="text"
+          placeholder="Search..."
+          class="px-4 ml py-2 rounded-full bg-gray-800 text-white focus:outline-none focus:shadow-outline w-full md:w-60 sm:w-30"
+        />
+        <button
+          @click="onSearch(query)"
+          class="absolute right-0 top-0 mt-2 mr-2 text-white hover:text-indigo-400"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M22 22l-6-6"></path>
+            <circle cx="10.5" cy="10.5" r="7.5"></circle>
+          </svg>
+        </button>
       </div>
       <div class="flex items-center ml-4">
         <div class="relative" v-if="GStore.currentUser">
@@ -83,36 +108,9 @@
             >
               Logout
             </button>
-            <!-- Add other user-related options here -->
           </div>
         </div>
       </div>
-    </div>
-    <div class="relative">
-      <input
-        v-model="query"
-        @input="onSearch(query)"
-        type="text"
-        placeholder="Search..."
-        class="px-4 py-2 rounded-full bg-gray-800 text-white focus:outline-none focus:shadow-outline w-40"
-      />
-      <button
-        @click="onSearch(query)"
-        class="absolute right-0 top-0 mt-2 mr-2 text-white hover:text-indigo-400"
-      >
-        <svg
-          class="w-4 h-4"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path d="M22 22l-6-6"></path>
-          <circle cx="10.5" cy="10.5" r="7.5"></circle>
-        </svg>
-      </button>
     </div>
     <!-- Display game covers in a grid -->
     <div
@@ -121,13 +119,12 @@
         GStore.searchGameList.content &&
         GStore.searchGameList.content.length > 0
       "
-      class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4"
+      class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4"
     >
       <div v-for="game in GStore.searchGameList.content" :key="game.id">
         <img :src="game.cover" :alt="game.name" class="w-full h-auto" />
       </div>
     </div>
-
     <!-- Mobile Menu (shown when screen size is small) -->
     <div v-if="showMobileMenu" class="px-4 py-2 md:hidden">
       <router-link
