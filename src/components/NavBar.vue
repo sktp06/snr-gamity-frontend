@@ -88,6 +88,32 @@
         </div>
       </div>
     </div>
+    <div class="relative">
+      <input
+        v-model="searchQuery"
+        @input="onSearch(searchQuery)"
+        type="text"
+        placeholder="Search..."
+        class="px-4 py-2 rounded-full bg-gray-800 text-white focus:outline-none focus:shadow-outline w-40"
+      />
+      <button
+        @click="onSearch(searchQuery)"
+        class="absolute right-0 top-0 mt-2 mr-2 text-white hover:text-indigo-400"
+      >
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path d="M22 22l-6-6"></path>
+          <circle cx="10.5" cy="10.5" r="7.5"></circle>
+        </svg>
+      </button>
+    </div>
     <!-- Mobile Menu (shown when screen size is small) -->
     <div v-if="showMobileMenu" class="px-4 py-2 md:hidden">
       <router-link
@@ -125,6 +151,7 @@
 <script>
 import AuthService from "@/services/AuthService.js";
 import * as yup from "yup";
+import SearchService from "@/services/SearchService";
 
 export default {
   inject: ["GStore"],
@@ -137,7 +164,7 @@ export default {
       schema,
       showMobileMenu: false,
       showUserDropdown: false,
-      // searchQuery: "",
+      query: "",
     };
   },
   computed: {
@@ -151,6 +178,14 @@ export default {
     handleLogout() {
       AuthService.logout();
       this.$router.push("/login");
+    },
+    onSearch(query) {
+      SearchService.search(query)
+        .then(() => {})
+        .catch((error) => {
+          console.error("Error searching for games:", error);
+          alert("Something went wrong!");
+        });
     },
   },
 };
