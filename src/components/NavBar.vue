@@ -114,21 +114,20 @@
         </svg>
       </button>
     </div>
-    <!-- Display game titles -->
+    <!-- Display game covers in a grid -->
     <div
       v-if="
         GStore.searchGameList &&
         GStore.searchGameList.content &&
         GStore.searchGameList.content.length > 0
       "
+      class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4"
     >
-      <h2>Search Results</h2>
-      <ul>
-        <li v-for="game in GStore.searchGameList.content" :key="game.id">
-          {{ game.name }}
-        </li>
-      </ul>
+      <div v-for="game in GStore.searchGameList.content" :key="game.id">
+        <img :src="game.cover" :alt="game.name" class="w-full h-auto" />
+      </div>
     </div>
+
     <!-- Mobile Menu (shown when screen size is small) -->
     <div v-if="showMobileMenu" class="px-4 py-2 md:hidden">
       <router-link
@@ -207,10 +206,7 @@ export default {
           this.GStore.searchGameList.content = results.content;
           console.log("Search results:", results);
         })
-        .catch(() => {
-          // console.error("Error searching for games:", error);
-          // alert("Something went wrong!");
-        });
+        .catch(() => {});
     },
   },
 };
