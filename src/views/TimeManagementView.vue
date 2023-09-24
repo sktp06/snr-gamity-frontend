@@ -110,9 +110,9 @@
             <label class="block text-sm font-medium text-gray-700"
               >Select Date Mode</label
             >
-            <div class="flex mt-2">
+            <div class="flex">
               <button
-                class="flex-1 ml-2 py-2 px-4 rounded-lg focus:outline-none"
+                class="flex-1 mr-2 py-2 rounded-lg focus:outline-none border border-grey-500"
                 :class="{
                   'bg-blue-500 text-white hover:bg-blue-600':
                     dateMode === 'single',
@@ -124,7 +124,7 @@
                 Single Date
               </button>
               <button
-                class="flex-1 py-2 px-4 rounded-lg focus:outline-none"
+                class="flex-1 ml-2 py-2 rounded-lg focus:outline-none border border-grey-500"
                 :class="{
                   'bg-blue-500 text-white hover:bg-blue-600':
                     dateMode === 'range',
@@ -538,5 +538,8 @@ export default {
 .main-container {
   padding-top: 30px;
   padding-bottom: 30px;
+}
+.dp__action_button.dp__action_select {
+  background-color: black;
 }
 </style>
