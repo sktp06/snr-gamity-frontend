@@ -1,7 +1,13 @@
 <template>
-  <div class="bg-gradient-to-r from-black to-gray-900">
+  <div
+    class="bg-gradient-to-r from-black to-gray-900"
+    style="
+      background-image: url('https://i.pinimg.com/originals/79/88/bc/7988bc25b9b9e7999307ce002e0c433f.gif');
+      background-size: cover;
+    "
+  >
     <main>
-      <section class="h-screen flex items-center">
+      <section class="h-screen flex items-center overflow-hidden">
         <div class="container mx-auto px-4">
           <div class="max-w-md mx-auto">
             <div class="bg-white shadow-md rounded-md p-8">

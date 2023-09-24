@@ -1,72 +1,24 @@
 <template>
-  <div class="bg-zinc-900 min-h-screen">
-    <div class="flex justify-between items-center px-4 py-6">
-      <h2 class="text-3xl text-white font-bold mt-2">My List</h2>
-    </div>
-    <div class="grid grid-cols-2 gap-10 md:grid-cols-5 px-4">
-      <div
-        v-for="game in GStore.bookmarks"
-        :key="game.id"
-        class="relative rounded-lg shadow-md overflow-hidden hover:shadow-lg border border-amber-200 mb-4"
-        style="height: 300px; width: 230px"
-        @click="showBookmarkGameDetail(game)"
-      >
-        <!-- Bookmark Game Card -->
-        <div class="h-250px relative">
-          <img
-            :src="game.cover"
-            alt="image"
-            class="object-cover w-full h-full transform transition-transform hover:scale-105"
-            style="z-index: 0"
-          />
-        </div>
-        <div
-          v-if="remainingDays(game) !== null && isRecentlyReleased(game)"
-          class="absolute bottom-0 left-0 right-0 p-4 bg-black bg-opacity-80"
-        >
-          <p class="text-white text-center font-bold text-lg">
-            In ({{ remainingDays(game) }}) days until the game's release
-          </p>
-        </div>
-        <div class="remove-favorite-container" style="z-index: 9999">
-          <button
-            @click="removeFromFavorite(game.id)"
-            class="absolute top-2 right-2 p-4 text-white hover:text-red-500 transition-colors duration-300"
-          >
-            <svg
-              class="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-        </div>
+  <div
+    class="bg-zinc-900 min-h-screen"
+    style="
+      background-image: url('https://t3.ftcdn.net/jpg/02/64/27/90/360_F_264279006_WDXxV3OHjAOoHqH7iiLDrg23p0947g7U.jpg');
+      background-size: auto;
+    "
+  >
+    <div class="bg-zinc-900 min-h-screen ml-10 mr-10">
+      <div class="flex justify-between items-center px-4 py-6">
+        <h2 class="text-3xl text-white font-bold mt-2">My List</h2>
       </div>
-    </div>
-    <!-- Recommended Games Section -->
-    <div class="flex justify-between items-center px-4 py-6">
-      <h2 class="text-3xl text-white font-bold mt-2">Recommended Game</h2>
-    </div>
-    <!-- Carousel for Recommended Games -->
-    <carousel :items-to-show="6.5" :items-to-scroll="7" class="px-4">
-      <slide
-        v-for="(game, index) in recommendedGames"
-        :key="index"
-        @click="showRecommendedGameDetail(game)"
-      >
-        <!-- Recommended Game Card -->
+      <div class="grid grid-cols-2 gap-10 md:grid-cols-5 px-4">
         <div
+          v-for="game in GStore.bookmarks"
+          :key="game.id"
           class="relative rounded-lg shadow-md overflow-hidden hover:shadow-lg border border-amber-200 mb-4"
           style="height: 300px; width: 230px"
+          @click="showBookmarkGameDetail(game)"
         >
+          <!-- Bookmark Game Card -->
           <div class="h-250px relative">
             <img
               :src="game.cover"
@@ -83,42 +35,98 @@
               In ({{ remainingDays(game) }}) days until the game's release
             </p>
           </div>
+          <div class="remove-favorite-container" style="z-index: 9999">
+            <button
+              @click="removeFromFavorite(game.id)"
+              class="absolute top-2 right-2 p-4 text-white hover:text-red-500 transition-colors duration-300"
+            >
+              <svg
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
-      </slide>
-      <template #addons> <navigation class="carousel__icon" /> </template>
-    </carousel>
-
-    <!-- Bookmark Game Details -->
-    <div
-      v-if="selectedBookmarkGame"
-      class="overlay"
-      @click="hideGameDetail"
-    ></div>
-    <div v-if="selectedBookmarkGame" class="game-popup">
-      <div class="popup-content">
-        <GameDetail
-          :game="selectedBookmarkGame"
-          @close="hideGameDetail"
-          :isInBookmarkList="true"
-        />
       </div>
-    </div>
-    <!-- Recommended Game Details -->
-    <div
-      v-if="selectedRecommendedGame"
-      class="overlay"
-      @click="hideRecommendedGameDetail"
-    ></div>
-    <div v-if="selectedRecommendedGame" class="game-popup">
-      <div class="popup-content">
-        <GameDetail
-          :game="selectedRecommendedGame"
-          @close="hideRecommendedGameDetail"
-          :hide-add-to-favorites-button="true"
-        />
-        <button class="close-button" @click="hideRecommendedGameDetail">
-          Close
-        </button>
+      <!-- Recommended Games Section -->
+      <div class="flex justify-between items-center px-4 py-6">
+        <h2 class="text-3xl text-white font-bold mt-2">Recommended Game</h2>
+      </div>
+      <!-- Carousel for Recommended Games -->
+      <carousel :items-to-show="6.5" :items-to-scroll="7" class="px-4">
+        <slide
+          v-for="(game, index) in recommendedGames"
+          :key="index"
+          @click="showRecommendedGameDetail(game)"
+        >
+          <!-- Recommended Game Card -->
+          <div
+            class="relative rounded-lg shadow-md overflow-hidden hover:shadow-lg border border-amber-200 mb-4"
+            style="height: 300px; width: 230px"
+          >
+            <div class="h-250px relative">
+              <img
+                :src="game.cover"
+                alt="image"
+                class="object-cover w-full h-full transform transition-transform hover:scale-105"
+                style="z-index: 0"
+              />
+            </div>
+            <div
+              v-if="remainingDays(game) !== null && isRecentlyReleased(game)"
+              class="absolute bottom-0 left-0 right-0 p-4 bg-black bg-opacity-80"
+            >
+              <p class="text-white text-center font-bold text-lg">
+                In ({{ remainingDays(game) }}) days until the game's release
+              </p>
+            </div>
+          </div>
+        </slide>
+        <template #addons> <navigation class="carousel__icon" /> </template>
+      </carousel>
+
+      <!-- Bookmark Game Details -->
+      <div
+        v-if="selectedBookmarkGame"
+        class="overlay"
+        @click="hideGameDetail"
+      ></div>
+      <div v-if="selectedBookmarkGame" class="game-popup">
+        <div class="popup-content">
+          <GameDetail
+            :game="selectedBookmarkGame"
+            @close="hideGameDetail"
+            :isInBookmarkList="true"
+          />
+        </div>
+      </div>
+      <!-- Recommended Game Details -->
+      <div
+        v-if="selectedRecommendedGame"
+        class="overlay"
+        @click="hideRecommendedGameDetail"
+      ></div>
+      <div v-if="selectedRecommendedGame" class="game-popup">
+        <div class="popup-content">
+          <GameDetail
+            :game="selectedRecommendedGame"
+            @close="hideRecommendedGameDetail"
+            :hide-add-to-favorites-button="true"
+          />
+          <button class="close-button" @click="hideRecommendedGameDetail">
+            Close
+          </button>
+        </div>
       </div>
     </div>
   </div>

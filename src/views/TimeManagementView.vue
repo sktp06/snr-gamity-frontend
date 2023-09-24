@@ -1,239 +1,247 @@
 <template>
-  <div class="bg-zinc-900 min-h-screen">
-    <h2 class="text-3xl text-white font-bold p-10 pl-4">
-      Gaming Time Management
-    </h2>
-    <div class="container mx-auto px-4 p-2 px-20">
-      <form ref="searchForm">
-        <label
-          for="default-search"
-          class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-black"
-        >
-          Search
-        </label>
-        <div class="relative">
-          <div
-            class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+  <div
+    class="bg-zinc-900 min-h-screen"
+    style="
+      background-image: url('https://t3.ftcdn.net/jpg/02/64/27/90/360_F_264279006_WDXxV3OHjAOoHqH7iiLDrg23p0947g7U.jpg');
+      background-size: auto;
+    "
+  >
+    <div class="bg-zinc-900 min-h-screen ml-10 mr-10">
+      <h2 class="text-3xl text-white font-bold p-10 pl-4">
+        Gaming Time Management
+      </h2>
+      <div class="container mx-auto px-4 p-2 px-20">
+        <form ref="searchForm">
+          <label
+            for="default-search"
+            class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-black"
           >
-            <svg
-              class="w-4 h-4 text-gray-500 dark:text-gray-400"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 20 20"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-              />
-            </svg>
-          </div>
-          <input
-            v-model="searchQuery"
-            @input="handleSearchInput"
-            @focus="handleInputFocus"
-            type="search"
-            id="default-search"
-            class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Search..."
-            required
-          />
-        </div>
-        <transition name="fade">
-          <ul
-            v-if="visibleResults.length > 0"
-            class="mt-2 border border-gray-300 rounded-lg bg-white overflow-y-auto max-h-48 shadow"
-          >
-            <li
-              v-for="result in sortedVisibleResults"
-              :key="result.id"
-              class="p-3 flex items-center space-x-4 hover:bg-gray-100 cursor-pointer"
-              @click="handleGameClick(result.name)"
-            >
-              <img
-                :src="result.cover"
-                alt="Game Cover"
-                class="w-12 h-12 rounded-lg object-cover"
-              />
-              <div class="flex-1">
-                <p class="text-sm font-semibold capitalize">
-                  {{ result.name }}
-                </p>
-                <p class="text-xs text-gray-600">
-                  Rating: {{ result.aggregated_rating }}
-                </p>
-              </div>
-            </li>
-          </ul>
-        </transition>
-      </form>
-      <div
-        v-if="selectedGame"
-        class="mt-4 p-4 bg-white rounded-lg shadow rounded-md"
-      >
-        <h3 class="text-lg font-semibold capitalize">
-          {{ selectedGame.name }}
-        </h3>
-        <p>Main Story: {{ formatTime(selectedGame.main_story) }}</p>
-        <p>Main Extra: {{ formatTime(selectedGame.main_extra) }}</p>
-        <p>Completionist: {{ formatTime(selectedGame.completionist) }}</p>
-        <div class="mt-4">
-          <label class="block text-sm font-medium text-gray-700"
-            >Select Game Mode</label
-          >
-          <select
-            v-model="selectedGameMode"
-            class="mt-1 block w-full rounded-md border border-gray-300 bg-white"
-          >
-            <option value="mainStory">
-              Main Story : {{ formatTime(selectedGame.main_story) }}
-            </option>
-            <option value="mainExtra">
-              Main Extra : {{ formatTime(selectedGame.main_extra) }}
-            </option>
-            <option value="completionist">
-              Completionist : {{ formatTime(selectedGame.completionist) }}
-            </option>
-          </select>
-        </div>
-        <div class="mt-4">
-          <label class="block text-sm font-medium text-gray-700"
-            >Select Date Mode</label
-          >
-          <div class="flex mt-2">
-            <button
-              class="flex-1 ml-2 py-2 px-4 rounded-lg focus:outline-none"
-              :class="{
-                'bg-blue-500 text-white hover:bg-blue-600':
-                  dateMode === 'single',
-                'bg-white text-gray-800 hover:bg-gray-100':
-                  dateMode !== 'single',
-              }"
-              @click="changeDateMode('single')"
-            >
-              Single Date
-            </button>
-            <button
-              class="flex-1 py-2 px-4 rounded-lg focus:outline-none"
-              :class="{
-                'bg-blue-500 text-white hover:bg-blue-600':
-                  dateMode === 'range',
-                'bg-white text-gray-800 hover:bg-gray-100':
-                  dateMode !== 'range',
-              }"
-              @click="changeDateMode('range')"
-            >
-              Date Range
-            </button>
-          </div>
-        </div>
-
-        <div class="mt-4">
-          <label class="block text-sm font-medium text-gray-700"
-            >Select Date</label
-          >
-          <VueDatePicker
-            v-model="date"
-            :range="dateMode === 'range'"
-            :multi-dates="dateMode === 'single'"
-            :minDate="new Date()"
-            :enable-time-picker="false"
-          />
-        </div>
-        <div class="mt-4" v-if="dateMode === 'range'">
-          <label class="block text-sm font-medium text-gray-700">
-            Select Days (Optional)
+            Search
           </label>
-          <div class="flex flex-col mt-2 md:flex-row">
-            <div class="md:flex md:flex-wrap">
-              <input
-                type="checkbox"
-                v-model="selectedDays.sunday"
-                class="mr-2"
-              />
-              <label class="mr-4">Sunday</label>
+          <div class="relative">
+            <div
+              class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+            >
+              <svg
+                class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                />
+              </svg>
             </div>
-            <div class="md:flex md:flex-wrap">
-              <input
-                type="checkbox"
-                v-model="selectedDays.monday"
-                class="mr-2"
-              />
-              <label class="mr-4">Monday</label>
-            </div>
-            <div class="md:flex md:flex-wrap">
-              <input
-                type="checkbox"
-                v-model="selectedDays.tuesday"
-                class="mr-2"
-              />
-              <label class="mr-4">Tuesday</label>
-            </div>
-            <div class="md:flex md:flex-wrap">
-              <input
-                type="checkbox"
-                v-model="selectedDays.wednesday"
-                class="mr-2"
-              />
-              <label class="mr-4">Wednesday</label>
-            </div>
-            <div class="md:flex md:flex-wrap">
-              <input
-                type="checkbox"
-                v-model="selectedDays.thursday"
-                class="mr-2"
-              />
-              <label class="mr-4">Thursday</label>
-            </div>
-            <div class="md:flex md:flex-wrap">
-              <input
-                type="checkbox"
-                v-model="selectedDays.friday"
-                class="mr-2"
-              />
-              <label class="mr-4">Friday</label>
-            </div>
-            <div class="md:flex md:flex-wrap">
-              <input
-                type="checkbox"
-                v-model="selectedDays.saturday"
-                class="mr-2"
-              />
-              <label>Saturday</label>
+            <input
+              v-model="searchQuery"
+              @input="handleSearchInput"
+              @focus="handleInputFocus"
+              type="search"
+              id="default-search"
+              class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Search..."
+              required
+            />
+          </div>
+          <transition name="fade">
+            <ul
+              v-if="visibleResults.length > 0"
+              class="mt-2 border border-gray-300 rounded-lg bg-white overflow-y-auto max-h-48 shadow"
+            >
+              <li
+                v-for="result in sortedVisibleResults"
+                :key="result.id"
+                class="p-3 flex items-center space-x-4 hover:bg-gray-100 cursor-pointer"
+                @click="handleGameClick(result.name)"
+              >
+                <img
+                  :src="result.cover"
+                  alt="Game Cover"
+                  class="w-12 h-12 rounded-lg object-cover"
+                />
+                <div class="flex-1">
+                  <p class="text-sm font-semibold capitalize">
+                    {{ result.name }}
+                  </p>
+                  <p class="text-xs text-gray-600">
+                    Rating: {{ result.aggregated_rating }}
+                  </p>
+                </div>
+              </li>
+            </ul>
+          </transition>
+        </form>
+        <div
+          v-if="selectedGame"
+          class="mt-4 p-4 bg-white rounded-lg shadow rounded-md"
+        >
+          <h3 class="text-lg font-semibold capitalize">
+            {{ selectedGame.name }}
+          </h3>
+          <p>Main Story: {{ formatTime(selectedGame.main_story) }}</p>
+          <p>Main Extra: {{ formatTime(selectedGame.main_extra) }}</p>
+          <p>Completionist: {{ formatTime(selectedGame.completionist) }}</p>
+          <div class="mt-4">
+            <label class="block text-sm font-medium text-gray-700"
+              >Select Game Mode</label
+            >
+            <select
+              v-model="selectedGameMode"
+              class="mt-1 block w-full rounded-md border border-gray-300 bg-white"
+            >
+              <option value="mainStory">
+                Main Story : {{ formatTime(selectedGame.main_story) }}
+              </option>
+              <option value="mainExtra">
+                Main Extra : {{ formatTime(selectedGame.main_extra) }}
+              </option>
+              <option value="completionist">
+                Completionist : {{ formatTime(selectedGame.completionist) }}
+              </option>
+            </select>
+          </div>
+          <div class="mt-4">
+            <label class="block text-sm font-medium text-gray-700"
+              >Select Date Mode</label
+            >
+            <div class="flex mt-2">
+              <button
+                class="flex-1 ml-2 py-2 px-4 rounded-lg focus:outline-none"
+                :class="{
+                  'bg-blue-500 text-white hover:bg-blue-600':
+                    dateMode === 'single',
+                  'bg-white text-gray-800 hover:bg-gray-100':
+                    dateMode !== 'single',
+                }"
+                @click="changeDateMode('single')"
+              >
+                Single Date
+              </button>
+              <button
+                class="flex-1 py-2 px-4 rounded-lg focus:outline-none"
+                :class="{
+                  'bg-blue-500 text-white hover:bg-blue-600':
+                    dateMode === 'range',
+                  'bg-white text-gray-800 hover:bg-gray-100':
+                    dateMode !== 'range',
+                }"
+                @click="changeDateMode('range')"
+              >
+                Date Range
+              </button>
             </div>
           </div>
+
+          <div class="mt-4">
+            <label class="block text-sm font-medium text-gray-700"
+              >Select Date</label
+            >
+            <VueDatePicker
+              v-model="date"
+              :range="dateMode === 'range'"
+              :multi-dates="dateMode === 'single'"
+              :minDate="new Date()"
+              :enable-time-picker="false"
+            />
+          </div>
+          <div class="mt-4" v-if="dateMode === 'range'">
+            <label class="block text-sm font-medium text-gray-700">
+              Select Days (Optional)
+            </label>
+            <div class="flex flex-col mt-2 md:flex-row">
+              <div class="md:flex md:flex-wrap">
+                <input
+                  type="checkbox"
+                  v-model="selectedDays.sunday"
+                  class="mr-2"
+                />
+                <label class="mr-4">Sunday</label>
+              </div>
+              <div class="md:flex md:flex-wrap">
+                <input
+                  type="checkbox"
+                  v-model="selectedDays.monday"
+                  class="mr-2"
+                />
+                <label class="mr-4">Monday</label>
+              </div>
+              <div class="md:flex md:flex-wrap">
+                <input
+                  type="checkbox"
+                  v-model="selectedDays.tuesday"
+                  class="mr-2"
+                />
+                <label class="mr-4">Tuesday</label>
+              </div>
+              <div class="md:flex md:flex-wrap">
+                <input
+                  type="checkbox"
+                  v-model="selectedDays.wednesday"
+                  class="mr-2"
+                />
+                <label class="mr-4">Wednesday</label>
+              </div>
+              <div class="md:flex md:flex-wrap">
+                <input
+                  type="checkbox"
+                  v-model="selectedDays.thursday"
+                  class="mr-2"
+                />
+                <label class="mr-4">Thursday</label>
+              </div>
+              <div class="md:flex md:flex-wrap">
+                <input
+                  type="checkbox"
+                  v-model="selectedDays.friday"
+                  class="mr-2"
+                />
+                <label class="mr-4">Friday</label>
+              </div>
+              <div class="md:flex md:flex-wrap">
+                <input
+                  type="checkbox"
+                  v-model="selectedDays.saturday"
+                  class="mr-2"
+                />
+                <label>Saturday</label>
+              </div>
+            </div>
+          </div>
+          <div>
+            <button
+              class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mt-3"
+              @click="openCalendar"
+              :disabled="isButtonDisabled"
+              type="button"
+            >
+              Confirm
+            </button>
+            <!-- Conditionally render the "Clear" button -->
+            <button
+              v-if="date || Object.values(selectedDays).some((day) => day)"
+              class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 border border-red-600 rounded shadow mt-3 ml-3"
+              @click="clearSelection"
+              type="button"
+            >
+              Clear
+            </button>
+          </div>
         </div>
-        <div>
-          <button
-            class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mt-3"
-            @click="openCalendar"
-            :disabled="isButtonDisabled"
-            type="button"
-          >
-            Confirm
-          </button>
-          <!-- Conditionally render the "Clear" button -->
-          <button
-            v-if="date || Object.values(selectedDays).some((day) => day)"
-            class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 border border-red-600 rounded shadow mt-3 ml-3"
-            @click="clearSelection"
-            type="button"
-          >
-            Clear
-          </button>
+        <!--Pass the calendarEventData to the CalendarPreview component and use it to create events: -->
+        <div v-if="showCalendar">
+          <CalendarPreview
+            :show="showCalendar"
+            :eventData="calendarEventData"
+            :initialDate="calendarInitialDate"
+            @close="closeCalendar"
+          />
         </div>
-      </div>
-      <!--Pass the calendarEventData to the CalendarPreview component and use it to create events: -->
-      <div v-if="showCalendar">
-        <CalendarPreview
-          :show="showCalendar"
-          :eventData="calendarEventData"
-          :initialDate="calendarInitialDate"
-          @close="closeCalendar"
-        />
       </div>
     </div>
   </div>

@@ -1,77 +1,93 @@
 <template>
-  <div class="bg-zinc-900 min-h-screen">
-    <div class="flex justify-between items-center px-4 py-6">
-      <h2 class="text-3xl text-white font-bold mt-2">Game Library</h2>
-      <div class="relative inline-block">
-        <select
-          class="block appearance-none bg-zinc-800 text-white px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:bg-zinc-700"
-          v-model="sortingOption"
-        >
-          <option value="popularity">Trending</option>
-          <option value="release_dates">New Released</option>
-        </select>
-        <div
-          class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white"
-        >
-          <svg
-            class="fill-current h-4 w-4"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
+  <div
+    class="bg-zinc-900 min-h-screen"
+    style="
+      background-image: url('https://t3.ftcdn.net/jpg/02/64/27/90/360_F_264279006_WDXxV3OHjAOoHqH7iiLDrg23p0947g7U.jpg');
+      background-size: auto;
+    "
+  >
+    <div class="bg-zinc-900 min-h-screen ml-10 mr-10">
+      <div class="flex justify-between items-center px-4 py-6">
+        <h2 class="text-3xl text-white font-bold mt-2">Game Library</h2>
+        <div class="relative inline-block">
+          <select
+            class="block appearance-none bg-zinc-800 text-white px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:bg-zinc-700"
+            v-model="sortingOption"
           >
-            <path d="M10 12l-6-6 1.5-1.5L10 9.8l4.5-4.3L16 6l-6 6z"></path>
-          </svg>
+            <option value="popularity">Trending</option>
+            <option value="release_dates">New Released</option>
+          </select>
+          <div
+            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white"
+          >
+            <svg
+              class="fill-current h-4 w-4"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+            >
+              <path d="M10 12l-6-6 1.5-1.5L10 9.8l4.5-4.3L16 6l-6 6z"></path>
+            </svg>
+          </div>
         </div>
       </div>
-    </div>
-    <div v-for="(value, index) in displayedGenres" :key="index">
-      <h2 class="text-2xl font-bold mx-4 my-2 text-white">{{ value.genre }}</h2>
-      <Carousel
-        :games="value.games"
-        @game-clicked="showGameDetail"
-        :items-to-show="5.5"
-        class="mx-4"
-      />
-      <button
-        class="see-more mx-4 text-white"
-        @click="toggleGenrePopup(value.genre)"
-      >
-        {{ expandedGenres.includes(value.genre) ? "See Less" : "See More" }}
-      </button>
+      <div v-for="(value, index) in displayedGenres" :key="index">
+        <h2 class="text-2xl font-bold mx-4 my-2 text-white">
+          {{ value.genre }}
+        </h2>
+        <Carousel
+          :games="value.games"
+          @game-clicked="showGameDetail"
+          :items-to-show="5.5"
+          class="mx-4"
+        />
+        <button
+          class="see-more mx-4 text-white"
+          @click="toggleGenrePopup(value.genre)"
+        >
+          {{ expandedGenres.includes(value.genre) ? "See Less" : "See More" }}
+        </button>
 
-      <div
-        v-if="expandedGenres.includes(value.genre)"
-        class="genre-popup"
-        @click.self="hideGenrePopup"
-      >
-        <div class="popup-content">
-          <div class="mt-5">
-            <button class="close-button" @click="hideGenrePopup">Close</button>
-            <div class="game-grid">
-              <!-- <h2 class="genre-title">{{ value.genre }}</h2> -->
-              <div
-                v-for="(game, gameIndex) in filteredGames(value.genre).slice(
-                  0,
-                  250
-                )"
-                :key="gameIndex"
-                class="game-item"
-                @click="showGameDetail(game)"
-              >
-                <img :src="game.cover" :alt="game.name" class="game-image" />
+        <div
+          v-if="expandedGenres.includes(value.genre)"
+          class="genre-popup"
+          @click.self="hideGenrePopup"
+        >
+          <div class="popup-content">
+            <div class="mt-5">
+              <button class="close-button" @click="hideGenrePopup">
+                Close
+              </button>
+              <div class="game-grid">
+                <!-- <h2 class="genre-title">{{ value.genre }}</h2> -->
+                <div
+                  v-for="(game, gameIndex) in filteredGames(value.genre).slice(
+                    0,
+                    250
+                  )"
+                  :key="gameIndex"
+                  class="game-item"
+                  @click="showGameDetail(game)"
+                >
+                  <img :src="game.cover" :alt="game.name" class="game-image" />
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div
-        v-if="selectedGame"
-        class="game-popup"
-        :class="{ 'show-popup': selectedGame }"
-      >
-        <div v-if="selectedGame" class="overlay" @click="hideGameDetail"></div>
-        <GameDetail :game="selectedGame" @close="hideGameDetail" />
-        <button class="close-button" @click="hideGameDetail">Close</button>
+        <div
+          v-if="selectedGame"
+          class="game-popup"
+          :class="{ 'show-popup': selectedGame }"
+        >
+          <div
+            v-if="selectedGame"
+            class="overlay"
+            @click="hideGameDetail"
+          ></div>
+          <GameDetail :game="selectedGame" @close="hideGameDetail" />
+          <button class="close-button" @click="hideGameDetail">Close</button>
+        </div>
       </div>
     </div>
   </div>

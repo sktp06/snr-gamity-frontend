@@ -1,10 +1,16 @@
 <template>
-  <div class="bg-gradient-to-r from-black to-gray-800">
+  <div
+    class="bg-gradient-to-r from-black to-gray-800"
+    style="
+      background-image: url('https://cdna.artstation.com/p/assets/images/images/001/929/508/original/roger-mas-concept-pixel-art.gif?1454720666');
+      background-size: cover;
+    "
+  >
     <main>
       <section class="h-screen flex items-center">
         <div class="container mx-auto px-4">
           <div class="max-w-md mx-auto">
-            <div class="bg-white bg-opacity-40 shadow-md rounded-md p-8">
+            <div class="bg-white bg-opacity-90 shadow-md rounded-md p-8">
               <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">
                 Sign Up
               </h1>

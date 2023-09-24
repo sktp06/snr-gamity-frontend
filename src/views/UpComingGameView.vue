@@ -1,55 +1,63 @@
 <template>
-  <div class="bg-zinc-900 min-h-screen overflow-x-hidden">
-    <div class="flex justify-between items-center px-4 py-6">
-      <h2 class="text-3xl text-white font-bold">Upcoming Games</h2>
-      <h2
-        v-if="selectedYear"
-        class="ml-2 mt-4 mb-2 font-bold text-xl text-white"
-      >
-        {{ formatYear(selectedYear) }}
-      </h2>
-      <div class="flex items-center">
-        <label for="year" class="mr-2 mt-4 mb-2 text-white"
-          >Filter by Year:</label
+  <div
+    class="bg-zinc-900 min-h-screen overflow-x-hidden"
+    style="
+      background-image: url('https://t3.ftcdn.net/jpg/02/64/27/90/360_F_264279006_WDXxV3OHjAOoHqH7iiLDrg23p0947g7U.jpg');
+      background-size: auto;
+    "
+  >
+    <div class="bg-zinc-900 min-h-screen ml-10 mr-10">
+      <div class="flex justify-between items-center px-4 py-6">
+        <h2 class="text-3xl text-white font-bold">Upcoming Games</h2>
+        <h2
+          v-if="selectedYear"
+          class="ml-2 mt-4 mb-2 font-bold text-xl text-white"
         >
-        <select
-          id="year"
-          v-model="selectedYear"
-          @change="filterGamesByYear"
-          class="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white mx-4"
-        >
-          <option value="">All</option>
-          <option v-for="year in sortedUniqueYears" :value="year" :key="year">
-            {{ formatYear(year) }}
-          </option>
-        </select>
-        <label for="genre" class="mr-2 mt-4 mb-2 text-white"
-          >Filter by Genre:</label
-        >
-        <select
-          id="genre"
-          v-model="selectedGenre"
-          @change="filterGamesByGenre"
-          class="filterGamesByGenre px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white mx-4"
-        >
-          <option value="">All</option>
-          <option v-for="genre in uniqueGenres" :value="genre" :key="genre">
-            {{ genre }}
-          </option>
-        </select>
-      </div>
-    </div>
-    <div class="px-4">
-      <div class="flex flex-wrap -mx-4">
-        <div
-          v-for="game in filteredGames"
-          :key="game.id"
-          class="w-1/1 px-2 py-6 sm:w-1/2 md:w-1/4 lg:w-1/5"
-        >
-          <div
-            class="bg-white transform transition duration-300 shadow-lg rounded-md ml-2 mr-2"
+          {{ formatYear(selectedYear) }}
+        </h2>
+        <div class="flex items-center">
+          <label for="year" class="mr-2 mt-4 mb-2 text-white"
+            >Filter by Year:</label
           >
-            <GameCard :game="game" />
+          <select
+            id="year"
+            v-model="selectedYear"
+            @change="filterGamesByYear"
+            class="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white mx-4"
+          >
+            <option value="">All</option>
+            <option v-for="year in sortedUniqueYears" :value="year" :key="year">
+              {{ formatYear(year) }}
+            </option>
+          </select>
+          <label for="genre" class="mr-2 mt-4 mb-2 text-white"
+            >Filter by Genre:</label
+          >
+          <select
+            id="genre"
+            v-model="selectedGenre"
+            @change="filterGamesByGenre"
+            class="filterGamesByGenre px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white mx-4"
+          >
+            <option value="">All</option>
+            <option v-for="genre in uniqueGenres" :value="genre" :key="genre">
+              {{ genre }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="px-4">
+        <div class="flex flex-wrap -mx-4">
+          <div
+            v-for="game in filteredGames"
+            :key="game.id"
+            class="w-1/1 px-2 py-6 sm:w-1/2 md:w-1/4 lg:w-1/5"
+          >
+            <div
+              class="bg-white transform transition duration-300 shadow-lg rounded-md ml-2 mr-2"
+            >
+              <GameCard :game="game" />
+            </div>
           </div>
         </div>
       </div>
