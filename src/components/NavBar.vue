@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gradient-to-r from-black to-gray-900 text-white">
+  <div class="bg-gradient-to-r from-black to-gray-900">
     <div class="px-4 py-4 flex flex-wrap justify-between items-center">
       <div class="flex items-center">
         <div style="display: flex; align-items: center">
@@ -140,11 +140,28 @@
         GStore.searchGameList.content &&
         GStore.searchGameList.content.length > 0
       "
-      class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4"
+      class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 p-4"
     >
       <div v-for="game in GStore.searchGameList.content" :key="game.id">
-        <img :src="game.cover" :alt="game.name" class="w-full h-auto" />
+        <!-- Add a click event handler to the game image -->
+        <img
+          :src="game.cover"
+          :alt="game.name"
+          class="w-full h-auto"
+          @click="showGameDetail(game)"
+          style="cursor: pointer"
+        />
       </div>
+    </div>
+    <!-- Display game details modal for bookmarked games -->
+    <div
+      v-if="selectedGame"
+      class="game-popup"
+      :class="{ 'show-popup': selectedGame }"
+    >
+      <div v-if="selectedGame" class="overlay" @click="hideGameDetail"></div>
+      <GameDetail :game="selectedGame" @close="hideGameDetail" />
+      <button class="close-button" @click="hideGameDetail">Close</button>
     </div>
     <!-- Mobile Menu (shown when screen size is small) -->
     <div v-if="showMobileMenu" class="px-4 py-2 md:hidden">
@@ -185,7 +202,12 @@ import AuthService from "@/services/AuthService.js";
 import * as yup from "yup";
 import SearchService from "@/services/SearchService";
 
+import GameDetail from "@/components/GameDetail.vue";
+
 export default {
+  components: {
+    GameDetail,
+  },
   inject: ["GStore"],
   name: "navbar-component",
   data() {
@@ -198,6 +220,7 @@ export default {
       showUserDropdown: false,
       query: "",
       searchResults: null,
+      selectedGame: null,
     };
   },
   computed: {
@@ -230,6 +253,145 @@ export default {
       this.query = "";
       this.GStore.searchGameList.content = [];
     },
+    showGameDetail(game) {
+      this.selectedGame = game;
+      this.disableScroll();
+    },
+    hideGameDetail() {
+      this.selectedGame = null;
+      this.enableScroll();
+    },
+    disableScroll() {
+      document.body.style.overflow = "hidden";
+    },
+    enableScroll() {
+      document.body.style.overflow = "";
+    },
   },
 };
 </script>
+
+<style>
+.game-popup {
+  width: 50%;
+  scrollbar-width: thin;
+  scrollbar-color: #a0aec0 #edf2f7;
+}
+
+.genre-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9997;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  /* align-items: flex-start; */
+  justify-content: center;
+}
+
+.popup-content {
+  position: relative;
+  width: 90vw;
+  height: 90vh;
+  max-width: 1000px;
+  max-height: 1000px;
+  overflow-y: auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-gap: 10px;
+}
+.genre-popup .game-item {
+  width: calc(
+    16.666% - 20px
+  ); /* Adjust the width calculation based on your needs */
+  height: calc(
+    20% - 20px
+  ); /* Adjust the height calculation based on your needs */
+  margin: 10px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+.genre-popup .game-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: flex-start;
+  gap: 20px;
+}
+
+.genre-popup .game-item {
+  width: calc(20% - 10px);
+  height: fit-content;
+  margin: 10px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.genre-popup .game-item:hover {
+  transform: scale(1.05);
+}
+
+.genre-popup .game-image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.genre-popup h3 {
+  font-size: 16px;
+  margin-top: 10px;
+  text-align: center;
+  color: #fff;
+}
+
+.close-button {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #fff;
+  font-size: 20px;
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9998;
+}
+.genre-popup .popup-content {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none;
+}
+
+.genre-popup .popup-content::-webkit-scrollbar {
+  display: none;
+}
+
+.genre-popup .popup-content::-webkit-scrollbar-track {
+  background-color: #edf2f7;
+}
+
+.genre-popup .popup-content::-webkit-scrollbar-thumb {
+  background-color: #a0aec0;
+  border-radius: 10px;
+}
+
+.genre-popup .popup-content::-webkit-scrollbar-thumb:hover {
+  background-color: #718096;
+}
+.main-container {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+</style>
