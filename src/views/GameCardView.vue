@@ -54,9 +54,7 @@
         >
           <div class="popup-content">
             <div class="mt-5">
-              <button class="close-button" @click="hideGenrePopup">
-                Close
-              </button>
+              <button class="close-button" @click="hideGenrePopup"></button>
               <div class="game-grid">
                 <!-- <h2 class="genre-title">{{ value.genre }}</h2> -->
                 <div
@@ -74,20 +72,15 @@
             </div>
           </div>
         </div>
-
-        <div
-          v-if="selectedGame"
-          class="game-popup"
-          :class="{ 'show-popup': selectedGame }"
-        >
-          <div
-            v-if="selectedGame"
-            class="overlay"
-            @click="hideGameDetail"
-          ></div>
-          <GameDetail :game="selectedGame" @close="hideGameDetail" />
-          <button class="close-button" @click="hideGameDetail">Close</button>
-        </div>
+      </div>
+      <div
+        v-if="selectedGame"
+        class="game-popup"
+        :class="{ 'show-popup': selectedGame }"
+      >
+        <div v-if="selectedGame" class="overlay" @click="hideGameDetail"></div>
+        <GameDetail :game="selectedGame" @close="hideGameDetail" />
+        <button @click="hideGameDetail"></button>
       </div>
     </div>
   </div>
@@ -242,12 +235,8 @@ export default {
   grid-gap: 10px;
 }
 .genre-popup .game-item {
-  width: calc(
-    16.666% - 20px
-  ); /* Adjust the width calculation based on your needs */
-  height: calc(
-    20% - 20px
-  ); /* Adjust the height calculation based on your needs */
+  width: calc(16.666% - 20px);
+  height: calc(20% - 20px);
   margin: 10px;
   cursor: pointer;
   transition: transform 0.3s;
@@ -286,26 +275,6 @@ export default {
   color: #fff;
 }
 
-.close-button {
-  cursor: pointer;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  color: #fff;
-  font-size: 20px;
-}
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 9998;
-}
 .genre-popup .popup-content {
   scrollbar-width: none;
   -ms-overflow-style: none;
