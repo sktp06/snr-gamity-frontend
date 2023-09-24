@@ -10,12 +10,11 @@
       <div class="flex justify-between items-center px-4 py-6">
         <h2 class="text-3xl text-white font-bold mt-2">My List</h2>
       </div>
-      <div class="grid grid-cols-2 gap-10 md:grid-cols-5 px-4">
+      <div class="flex px-4">
         <div
           v-for="game in GStore.bookmarks"
           :key="game.id"
-          class="relative rounded-lg shadow-md overflow-hidden hover:shadow-lg border border-amber-200 mb-4"
-          style="height: 300px; width: 230px"
+          class="relative rounded-lg shadow-md overflow-hidden hover:shadow-lg border border-white mb-4 w-60 h-full mx-2"
           @click="showBookmarkGameDetail(game)"
         >
           <!-- Bookmark Game Card -->
@@ -26,35 +25,35 @@
               class="object-cover w-full h-full transform transition-transform hover:scale-105"
               style="z-index: 0"
             />
-          </div>
-          <div
-            v-if="remainingDays(game) !== null && isRecentlyReleased(game)"
-            class="absolute bottom-0 left-0 right-0 p-4 bg-black bg-opacity-80"
-          >
-            <p class="text-white text-center font-bold text-lg">
-              In ({{ remainingDays(game) }}) days until the game's release
-            </p>
-          </div>
-          <div class="remove-favorite-container" style="z-index: 9999">
-            <button
-              @click="removeFromFavorite(game.id)"
-              class="absolute top-2 right-2 p-4 text-white hover:text-red-500 transition-colors duration-300"
+            <div
+              v-if="remainingDays(game) !== null && isRecentlyReleased(game)"
+              class="absolute bottom-0 left-0 right-0 p-4 bg-black bg-opacity-80"
             >
-              <svg
-                class="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
+              <p class="text-white text-center font-bold text-lg">
+                In ({{ remainingDays(game) }}) days until the game's release
+              </p>
+            </div>
+            <div class="remove-favorite-container" style="z-index: 9999">
+              <button
+                @click="removeFromFavorite(game.id)"
+                class="absolute top-2 right-2 p-4 text-white hover:text-red-500 transition-colors duration-300"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
+                <svg
+                  class="h-5 w-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -71,8 +70,7 @@
         >
           <!-- Recommended Game Card -->
           <div
-            class="relative rounded-lg shadow-md overflow-hidden hover:shadow-lg border border-amber-200 mb-4"
-            style="height: 300px; width: 230px"
+            class="relative shadow-md overflow-hidden hover:shadow-lg mb-4 mx-2"
           >
             <div class="h-250px relative">
               <img
@@ -305,7 +303,7 @@ export default {
   font-size: 20px;
 }
 .carousel__icon {
-  color: white; /* Replace with your desired color value */
+  color: white;
 }
 .main-container {
   padding-top: 30px;
