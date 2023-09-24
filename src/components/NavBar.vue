@@ -90,14 +90,14 @@
     </div>
     <div class="relative">
       <input
-        v-model="searchQuery"
-        @input="onSearch(searchQuery)"
+        v-model="query"
+        @input="onSearch(query)"
         type="text"
         placeholder="Search..."
         class="px-4 py-2 rounded-full bg-gray-800 text-white focus:outline-none focus:shadow-outline w-40"
       />
       <button
-        @click="onSearch(searchQuery)"
+        @click="onSearch(query)"
         class="absolute right-0 top-0 mt-2 mr-2 text-white hover:text-indigo-400"
       >
         <svg
@@ -113,6 +113,21 @@
           <circle cx="10.5" cy="10.5" r="7.5"></circle>
         </svg>
       </button>
+    </div>
+    <!-- Display game titles -->
+    <div
+      v-if="
+        GStore.searchGameList &&
+        GStore.searchGameList.content &&
+        GStore.searchGameList.content.length > 0
+      "
+    >
+      <h2>Search Results</h2>
+      <ul>
+        <li v-for="game in GStore.searchGameList.content" :key="game.id">
+          {{ game.name }}
+        </li>
+      </ul>
     </div>
     <!-- Mobile Menu (shown when screen size is small) -->
     <div v-if="showMobileMenu" class="px-4 py-2 md:hidden">
@@ -165,6 +180,7 @@ export default {
       showMobileMenu: false,
       showUserDropdown: false,
       query: "",
+      searchResults: null,
     };
   },
   computed: {
@@ -181,10 +197,19 @@ export default {
     },
     onSearch(query) {
       SearchService.search(query)
-        .then(() => {})
-        .catch((error) => {
-          console.error("Error searching for games:", error);
-          alert("Something went wrong!");
+        .then((results) => {
+          // Initialize GStore.searchGameList if it's undefined
+          if (!this.GStore.searchGameList) {
+            this.GStore.searchGameList = {
+              content: [],
+            };
+          }
+          this.GStore.searchGameList.content = results.content;
+          console.log("Search results:", results);
+        })
+        .catch(() => {
+          // console.error("Error searching for games:", error);
+          // alert("Something went wrong!");
         });
     },
   },
