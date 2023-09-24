@@ -1,12 +1,12 @@
 <template>
   <div
-    class="bg-zinc-900 min-h-screen overflow-x-hidden"
+    class="bg-zinc-900 min-h-screen overflow-x-hidden main-container"
     style="
       background-image: url('https://t3.ftcdn.net/jpg/02/64/27/90/360_F_264279006_WDXxV3OHjAOoHqH7iiLDrg23p0947g7U.jpg');
       background-size: auto;
     "
   >
-    <div class="bg-zinc-900 min-h-screen ml-10 mr-10">
+    <div class="bg-zinc-900 min-h-screen ml-10 mr-10 rounded-lg">
       <div class="flex justify-between items-center px-4 py-6">
         <h2 class="text-3xl text-white font-bold">Upcoming Games</h2>
         <h2
@@ -182,5 +182,9 @@ export default {
 
 .filterGamesByGenre::-webkit-scrollbar-track {
   background-color: transparent;
+}
+.main-container {
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 </style>

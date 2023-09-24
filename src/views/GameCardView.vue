@@ -1,14 +1,14 @@
 <template>
   <div
-    class="bg-zinc-900 min-h-screen"
+    class="bg-zinc-900 min-h-screen main-container"
     style="
       background-image: url('https://t3.ftcdn.net/jpg/02/64/27/90/360_F_264279006_WDXxV3OHjAOoHqH7iiLDrg23p0947g7U.jpg');
       background-size: auto;
     "
   >
-    <div class="bg-zinc-900 min-h-screen ml-10 mr-10">
+    <div class="bg-zinc-900 min-h-screen ml-10 mr-10 rounded-lg">
       <div class="flex justify-between items-center px-4 py-6">
-        <h2 class="text-3xl text-white font-bold mt-2">Game Library</h2>
+        <h2 class="text-3xl text-white font-bold">Game Library</h2>
         <div class="relative inline-block">
           <select
             class="block appearance-none bg-zinc-800 text-white px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:bg-zinc-700"
@@ -327,5 +327,9 @@ export default {
 
 .genre-popup .popup-content::-webkit-scrollbar-thumb:hover {
   background-color: #718096;
+}
+.main-container {
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 </style>

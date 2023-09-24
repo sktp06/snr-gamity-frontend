@@ -1,12 +1,12 @@
 <template>
   <div
-    class="bg-zinc-900 min-h-screen"
+    class="bg-zinc-900 min-h-screen main-container"
     style="
       background-image: url('https://t3.ftcdn.net/jpg/02/64/27/90/360_F_264279006_WDXxV3OHjAOoHqH7iiLDrg23p0947g7U.jpg');
       background-size: auto;
     "
   >
-    <div class="bg-zinc-900 min-h-screen ml-10 mr-10">
+    <div class="bg-zinc-900 min-h-screen ml-10 mr-10 rounded-lg">
       <h2 class="text-3xl text-white font-bold p-10 pl-4">
         Gaming Time Management
       </h2>
@@ -535,25 +535,8 @@ export default {
 .fade-leave-to {
   opacity: 0;
 }
-.dp__theme_dark {
-  --dp-background-color: #212121;
-  --dp-text-color: #ffffff;
-  --dp-hover-color: #484848;
-  --dp-hover-text-color: #ffffff;
-  --dp-hover-icon-color: #959595;
-  --dp-primary-color: #005cb2;
-  --dp-primary-text-color: #ffffff;
-  --dp-secondary-color: #a9a9a9;
-  --dp-border-color: #2d2d2d;
-  --dp-menu-border-color: #2d2d2d;
-  --dp-border-color-hover: #aaaeb7;
-  --dp-disabled-color: #737373;
-  --dp-scroll-bar-background: #212121;
-  --dp-scroll-bar-color: #484848;
-  --dp-success-color: #00701a;
-  --dp-success-color-disabled: #428f59;
-  --dp-icon-color: #959595;
-  --dp-danger-color: #e53935;
-  --dp-highlight-color: rgba(0, 92, 178, 0.2);
+.main-container {
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 </style>
