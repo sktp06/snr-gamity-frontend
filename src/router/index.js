@@ -54,7 +54,7 @@ const routes = [
     component: DataManagementView,
     meta: { requiresAuth: true, allowedRoles: ["admin"] },
   },
-  { path: "/:pathMatch(.*)*", redirect: "/login" },
+  { path: "/:pathMatch(.*)*", redirect: "/home" },
 ];
 
 const router = createRouter({

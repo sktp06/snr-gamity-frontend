@@ -47,18 +47,18 @@
                 </div>
                 <div>
                   <button
-                    class="w-full bg-red-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-red-700 focus:outline-none"
+                    class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-indigo-700 focus:outline-none"
                     type="submit"
                   >
                     Sign In
                   </button>
                 </div>
-                <div class="mt-6 text-center">
+                <div class="italic mt-6 text-center">
                   <p class="text-gray-600">
                     Don't have an account?
                     <router-link
                       to="/sign-up"
-                      class="text-indigo-600 font-semibold"
+                      class="text-orange-700 font-semibold"
                     >
                       Sign Up
                     </router-link>

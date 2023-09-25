@@ -75,10 +75,13 @@
                     Sign Up
                   </button>
                 </div>
-                <div class="mt-6 text-center">
+                <div class="italic mt-6 text-center">
                   <p class="text-gray-600">
                     Already have an account?
-                    <router-link to="/login" class="text-red-900 font-semibold">
+                    <router-link
+                      to="/login"
+                      class="text-orange-600 font-semibold"
+                    >
                       Sign In
                     </router-link>
                   </p>

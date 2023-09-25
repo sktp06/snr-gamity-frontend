@@ -1,6 +1,9 @@
 <template>
   <div class="bg-gradient-to-r from-black to-gray-900">
-    <div class="px-4 py-4 flex flex-wrap justify-between items-center">
+    <div
+      class="px-4 py-4 flex flex-wrap justify-between items-center"
+      v-if="shouldShowNavBar"
+    >
       <div class="flex items-center">
         <div style="display: flex; align-items: center">
           <router-link
@@ -17,7 +20,7 @@
         <!-- Add a button for mobile navigation -->
         <button
           @click="showMobileMenu = !showMobileMenu"
-          class="md:hidden text-2xl font-bold ml-4"
+          class="md:hidden text-2xl-white font-bold ml-4 text-white"
         >
           Menu
         </button>
@@ -25,6 +28,7 @@
           <router-link
             v-if="GStore.currentUser && !isAdmin"
             to="/bookmark"
+            :class="{ 'active-link': $route.path === '/bookmark' }"
             class="transform transition-all duration-300 hover:text-indigo-400 hover:-translate-y-0.5 focus:-translate-y-0.5 text-white ml-4 font-bold text-lg"
           >
             Bookmark
@@ -32,6 +36,7 @@
           <router-link
             v-if="GStore.currentUser"
             to="/upcoming"
+            :class="{ 'active-link': $route.path === '/upcoming' }"
             class="transform transition-all duration-300 hover:text-indigo-400 hover:-translate-y-0.5 focus:-translate-y-0.5 text-white ml-4 font-bold text-lg"
           >
             Upcoming
@@ -39,6 +44,7 @@
           <router-link
             v-if="GStore.currentUser && isAdmin"
             to="/data-management"
+            :class="{ 'active-link': $route.path === '/data-management' }"
             class="transform transition-all duration-300 hover:text-indigo-400 hover:-translate-y-0.5 focus:-translate-y-0.5 text-white ml-4 font-bold text-lg"
           >
             Data-Management
@@ -46,6 +52,7 @@
           <router-link
             v-if="GStore.currentUser && !isAdmin"
             to="/time-management"
+            :class="{ 'active-link': $route.path === '/time-management' }"
             class="transform transition-all duration-300 hover:text-indigo-400 hover:-translate-y-0.5 focus:-translate-y-0.5 text-white ml-4 font-bold text-lg"
           >
             Time-Management
@@ -102,12 +109,12 @@
       <div class="flex items-center ml-4">
         <div class="relative" v-if="GStore.currentUser">
           <button
-            class="bg-indigo-600 px-4 py-2 rounded uppercase text-sm font-bold"
+            class="bg-indigo-600 px-4 py-2 rounded uppercase text-sm font-bold text-white"
             @click="showUserDropdown = !showUserDropdown"
           >
             {{ GStore.currentUser && GStore.currentUser.username }}
             <svg
-              class="w-4 h-4 text-white inline-block ml-1"
+              class="w-4 h-4 text-orange-400 inline-block ml-1"
               fill="none"
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -224,6 +231,10 @@ export default {
     };
   },
   computed: {
+    shouldShowNavBar() {
+      // Check if the current route is LoginView or SignupView
+      return !["login", "sign-up"].includes(this.$route.name);
+    },
     isAdmin() {
       return (
         this.GStore.currentUser && this.GStore.currentUser.role === "admin"
@@ -270,3 +281,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.active-link {
+  color: rgb(103, 49, 143);
+}
+</style>
