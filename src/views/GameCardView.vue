@@ -121,7 +121,7 @@ export default {
       this.games.forEach((game) => {
         game.genres.forEach((genre) => allGenres.add(genre));
       });
-      return Array.from(allGenres);
+      return Array.from(allGenres).sort(); // Sort the genres alphabetically
     },
     displayedGenres() {
       return this.allGenres.map((genre) => ({
