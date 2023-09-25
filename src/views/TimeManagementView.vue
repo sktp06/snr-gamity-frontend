@@ -104,7 +104,28 @@
               <option value="completionist">
                 Completionist : {{ formatTime(selectedGame.completionist) }}
               </option>
+              <option value="custom">Custom</option>
             </select>
+          </div>
+          <!-- Add input fields for hours and minutes -->
+          <div v-if="selectedGameMode === 'custom'" class="mt-4">
+            <label class="block text-sm font-medium text-gray-700"
+              >Enter Time (Hours and Minutes)</label
+            >
+            <div class="flex items-center mt-2">
+              <input
+                v-model="customHours"
+                type="number"
+                class="w-1/2 mr-2 p-2 rounded-md border border-gray-300"
+                placeholder="Hours"
+              />
+              <input
+                v-model="customMinutes"
+                type="number"
+                class="w-1/2 p-2 rounded-md border border-gray-300"
+                placeholder="Minutes"
+              />
+            </div>
           </div>
           <div class="mt-4">
             <label class="block text-sm font-medium text-gray-700"
@@ -217,7 +238,6 @@
             <button
               class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mt-3"
               @click="openCalendar"
-              :disabled="isButtonDisabled"
               type="button"
             >
               Confirm
@@ -240,6 +260,7 @@
             :eventData="calendarEventData"
             :initialDate="calendarInitialDate"
             @close="closeCalendar"
+            class="overlay"
           />
         </div>
       </div>
@@ -275,6 +296,8 @@ export default {
         friday: false,
         saturday: false,
       },
+      customHours: 0,
+      customMinutes: 0,
     };
   },
   computed: {
@@ -282,9 +305,6 @@ export default {
       return this.visibleResults
         .slice()
         .sort((a, b) => b.aggregated_rating - a.aggregated_rating);
-    },
-    isButtonDisabled() {
-      return this.dateMode === "range" && (!this.date || this.date.length < 2);
     },
     selectedDates() {
       if (this.dateMode === "range") {
@@ -368,6 +388,7 @@ export default {
         mainStory: "main_story",
         mainExtra: "main_extra",
         completionist: "completionist",
+        custom: "custom",
       };
 
       if (!(this.selectedGameMode in selectedGameModeMap)) {
@@ -375,13 +396,46 @@ export default {
         return;
       }
 
-      const totalHours =
+      let totalHours;
+      let totalMinutes;
+
+      totalHours =
         this.selectedGame[selectedGameModeMap[this.selectedGameMode]];
-      const totalMinutes = Math.round(totalHours * 60);
+      totalMinutes = Math.round(totalHours * 60);
       console.log(totalHours);
       console.log(totalMinutes);
 
+      if (this.selectedGameMode === "custom") {
+        // Handle the custom option
+        totalHours =
+          parseFloat(this.customHours) + parseFloat(this.customMinutes) / 60;
+        totalMinutes = totalHours * 60;
+      } else {
+        totalHours =
+          this.selectedGame[selectedGameModeMap[this.selectedGameMode]];
+        totalMinutes = Math.round(totalHours * 60);
+      }
+
       const eventData = [];
+      // Check if no dates or days are selected in range mode
+      if (this.dateMode === "range" && (!this.date || this.date.length < 2)) {
+        Swal.fire({
+          icon: "error",
+          title: "No Dates Selected",
+          text: "Please select a date range before confirming.",
+        });
+        return;
+      }
+
+      // Check if no dates or days are selected
+      if (this.selectedDates.length === 0) {
+        Swal.fire({
+          icon: "error",
+          title: "No Dates or Days Selected",
+          text: "Please select at least one date or day before confirming.",
+        });
+        return;
+      }
 
       // alert enough days
       if (this.selectedDates.length > 0) {
