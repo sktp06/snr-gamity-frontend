@@ -142,26 +142,28 @@
         </div>
       </div>
       <!-- Display game covers in a grid -->
-      <div
-        v-if="
-          GStore.searchGameList &&
-          GStore.searchGameList.content &&
-          GStore.searchGameList.content.length > 0
-        "
-        class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 p-4"
-        style="max-height: 75vh; overflow-y: auto"
-      >
-        <div v-for="game in GStore.searchGameList.content" :key="game.id">
-          <!-- Add a click event handler to the game image -->
-          <img
-            :src="game.cover"
-            :alt="game.name"
-            class="w-full h-auto"
-            @click="showGameDetail(game)"
-            style="cursor: pointer"
-          />
+      <transition name="fade" mode="out-in">
+        <div
+          v-if="
+            GStore.searchGameList &&
+            GStore.searchGameList.content &&
+            GStore.searchGameList.content.length > 0
+          "
+          class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 p-4"
+          style="max-height: 75vh; overflow-y: auto"
+        >
+          <div v-for="game in GStore.searchGameList.content" :key="game.id">
+            <!-- Add a click event handler to the game image -->
+            <img
+              :src="game.cover"
+              :alt="game.name"
+              class="w-full h-auto"
+              @click="showGameDetail(game)"
+              style="cursor: pointer"
+            />
+          </div>
         </div>
-      </div>
+      </transition>
       <!-- Display game details modal for bookmarked games -->
       <div
         v-if="selectedGame"
@@ -257,17 +259,7 @@ export default {
       AuthService.logout();
       this.$router.push("/login");
     },
-    updateNavbarStyles(backgroundColor, textColor) {
-      const navbar = document.querySelector(".navbar-wrapper");
 
-      if (navbar) {
-        navbar.style.backgroundColor = backgroundColor;
-        const links = navbar.querySelectorAll("a");
-        links.forEach((link) => {
-          link.style.color = textColor;
-        });
-      }
-    },
     handleScroll() {
       // Get the scroll position
       const scrollY = window.scrollY || window.pageYOffset;
@@ -275,11 +267,10 @@ export default {
       // Determine whether to add/remove the 'navbar-fixed' class based on the scroll position
       if (scrollY > 0) {
         this.isNavbarFixed = true;
-        this.updateNavbarStyles("#333", "#000"); // You can change the colors as needed
+        // You can change the colors as needed
       } else {
         this.isNavbarFixed = false;
         // Reset to initial styles when not scrolled
-        this.updateNavbarStyles("transparent", "#fff");
       }
 
       // Check if the user is on the home page and has scrolled
@@ -335,7 +326,14 @@ export default {
   z-index: 1000; /* You can adjust the z-index as needed */
   /* Add any other styles you want for the fixed navbar */
   /* Example: background-color, padding, box-shadow, etc. */
-  background-color: #f40000; /* Change the background color to your desired color */
-  transition: background-color 0.3s ease;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.7s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
