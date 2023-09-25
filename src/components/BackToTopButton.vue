@@ -54,7 +54,7 @@ export default {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: #007bff;
+  background-color: rgb(78, 31, 111);
   color: #fff;
   border: none;
   border-radius: 50%;
