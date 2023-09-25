@@ -121,7 +121,7 @@
                 }"
                 @click="changeDateMode('single')"
               >
-                Single Date
+                Individually Select Date
               </button>
               <button
                 class="flex-1 ml-2 py-2 rounded-lg focus:outline-none border border-grey-500"
@@ -377,16 +377,17 @@ export default {
 
       const totalHours =
         this.selectedGame[selectedGameModeMap[this.selectedGameMode]];
-      const totalMinutes = Math.round(
-        (totalHours - Math.floor(totalHours)) * 60
-      );
+      const totalMinutes = Math.round(totalHours * 60);
+      console.log(totalHours);
+      console.log(totalMinutes);
 
       const eventData = [];
 
+      // alert enough days
       if (this.selectedDates.length > 0) {
         if (this.dateMode === "single") {
           // Check for single date mode
-          const minimumDaysRequired = Math.ceil(totalHours / 24);
+          const minimumDaysRequired = Math.ceil(totalMinutes / (24 * 60)); // Convert total minutes to days
           if (this.selectedDates.length < minimumDaysRequired) {
             Swal.fire({
               icon: "error",
@@ -397,7 +398,7 @@ export default {
           }
         } else if (this.dateMode === "range") {
           const selectedDayCount = this.selectedDates.length;
-          const minimumDaysRequired = Math.ceil(totalHours / 24);
+          const minimumDaysRequired = Math.ceil(totalMinutes / (24 * 60)); // Convert total minutes to days
           const selectedDays = Object.keys(this.selectedDays).filter(
             (day) => this.selectedDays[day]
           );
@@ -416,21 +417,36 @@ export default {
             return;
           }
         }
+        const totalMinutesPerDay = Math.floor(
+          totalMinutes / this.selectedDates.length
+        );
+        let remainingMinutes = totalMinutes % this.selectedDates.length;
 
         this.selectedDates.forEach((selectedDate) => {
+          let minutesToAdd = totalMinutesPerDay;
+
+          // Distribute remaining minutes evenly among the days
+          if (remainingMinutes > 0) {
+            minutesToAdd += 1;
+            remainingMinutes -= 1;
+          }
+
+          // Convert minutesToAdd to hours and minutes
+          const hours = Math.floor(minutesToAdd / 60);
+          const minutes = minutesToAdd % 60;
+
           eventData.push({
             date: selectedDate,
-            hours: Math.floor(totalHours / this.selectedDates.length),
-            minutes: Math.round(totalMinutes / this.selectedDates.length),
+            hours: hours,
+            minutes: minutes,
           });
         });
-      } else if (this.dateMode === "range" && Array.isArray(this.date)) {
+      } // Check if the date mode is "range" and an array of dates is provided
+      else if (this.dateMode === "range" && Array.isArray(this.date)) {
         const startDate = this.date[0];
         const endDate = this.date[1];
-        const currentDate = new Date(startDate);
-
         const totalDays = this.calculateDayCount(startDate, endDate);
-        const minimumDaysRequired = Math.ceil(totalHours / 24);
+        const minimumDaysRequired = Math.ceil(totalMinutes / (24 * 60)); // Convert total minutes to days
         const selectedDays = Object.keys(this.selectedDays).filter(
           (day) => this.selectedDays[day]
         );
@@ -449,15 +465,29 @@ export default {
           return;
         }
 
-        const hoursPerDay = Math.floor(totalHours / totalDays);
-        const minutesPerDay = Math.round(totalMinutes / totalDays);
+        const totalMinutesPerDay = Math.floor(totalMinutes / totalDays);
+        let remainingMinutes = totalMinutes % totalDays;
 
+        const currentDate = new Date(startDate);
         while (currentDate <= endDate) {
+          let minutesToAdd = totalMinutesPerDay;
+
+          // Distribute remaining minutes evenly among the days
+          if (remainingMinutes > 0) {
+            minutesToAdd += 1;
+            remainingMinutes -= 1;
+          }
+
+          // Convert minutesToAdd to hours and minutes
+          const hours = Math.floor(minutesToAdd / 60);
+          const minutes = minutesToAdd % 60;
+
           eventData.push({
             date: new Date(currentDate),
-            hours: hoursPerDay,
-            minutes: minutesPerDay,
+            hours: hours,
+            minutes: minutes,
           });
+
           currentDate.setDate(currentDate.getDate() + 1);
         }
       } else {
