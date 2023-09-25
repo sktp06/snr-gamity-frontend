@@ -62,16 +62,19 @@
         </div>
       </div>
     </div>
+    <BackToTopButton />
   </div>
 </template>
 
 <script>
 import GameCard from "@/components/GameCard.vue";
 import apiClient from "@/services/AxiosClient.js";
+import BackToTopButton from "@/components/BackToTopButton.vue";
 
 export default {
   components: {
     GameCard,
+    BackToTopButton,
   },
   data() {
     return {

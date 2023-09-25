@@ -31,7 +31,7 @@
         </div>
       </div>
       <div v-for="(value, index) in displayedGenres" :key="index">
-        <h2 class="text-2xl font-bold mx-4 my-2 text-white">
+        <h2 class="text-xl font-bold mx-4 my-2 text-white">
           {{ value.genre }}
         </h2>
         <Carousel
@@ -83,12 +83,14 @@
         <button @click="hideGameDetail"></button>
       </div>
     </div>
+    <BackToTopButton />
   </div>
 </template>
 
 <script>
 import { defineAsyncComponent } from "vue";
 import gameService from "@/services/gameService";
+import BackToTopButton from "@/components/BackToTopButton.vue";
 
 const AsyncCarousel = defineAsyncComponent(() =>
   import("@/components/Carousel.vue")
@@ -102,6 +104,7 @@ export default {
   components: {
     Carousel: AsyncCarousel,
     GameDetail: AsyncGameDetail,
+    BackToTopButton,
   },
   data() {
     return {
@@ -121,7 +124,7 @@ export default {
       this.games.forEach((game) => {
         game.genres.forEach((genre) => allGenres.add(genre));
       });
-      return Array.from(allGenres).sort(); // Sort the genres alphabetically
+      return Array.from(allGenres).sort();
     },
     displayedGenres() {
       return this.allGenres.map((genre) => ({
