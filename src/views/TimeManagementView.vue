@@ -259,7 +259,6 @@
             :eventData="calendarEventData"
             :initialDate="calendarInitialDate"
             @close="closeCalendar"
-            class="overlay"
           />
         </div>
       </div>
