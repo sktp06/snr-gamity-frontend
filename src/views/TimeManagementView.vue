@@ -11,7 +11,7 @@
         Gaming Time Management
       </h2>
       <div class="container mx-auto px-4 p-2 px-20">
-        <form ref="searchForm">
+        <form @submit.prevent="handleSearch">
           <label
             for="default-search"
             class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-black"
@@ -69,25 +69,24 @@
                   <p class="text-sm font-semibold capitalize">
                     {{ result.name }}
                   </p>
-                  <p class="text-xs text-gray-600">
-                    Rating: {{ result.aggregated_rating }}
-                  </p>
                 </div>
               </li>
             </ul>
           </transition>
         </form>
         <div
-          v-if="selectedGame"
+          v-if="selectedGame && searchQuery !== ''"
           class="mt-4 p-4 bg-white rounded-lg shadow rounded-md"
         >
-          <h3 class="text-lg font-semibold capitalize">
-            {{ selectedGame.name }}
-          </h3>
-          <p>Main Story: {{ formatTime(selectedGame.main_story) }}</p>
-          <p>Main Extra: {{ formatTime(selectedGame.main_extra) }}</p>
-          <p>Completionist: {{ formatTime(selectedGame.completionist) }}</p>
-          <div class="mt-4">
+          <div class="info">
+            <h3 class="text-lg font-semibold capitalize">
+              {{ selectedGame.name }}
+            </h3>
+            <p>Main Story: {{ formatTime(selectedGame.main_story) }}</p>
+            <p>Main Extra: {{ formatTime(selectedGame.main_extra) }}</p>
+            <p>Completionist: {{ formatTime(selectedGame.completionist) }}</p>
+            <div class="mt-4"></div>
+
             <label class="block text-sm font-medium text-gray-700"
               >Select Game Mode</label
             >
@@ -338,7 +337,18 @@ export default {
       return [];
     },
   },
+  watch: {
+    searchQuery(newSearchQuery) {
+      // Reset selectedGame when searchQuery becomes empty
+      if (newSearchQuery === "") {
+        this.selectedGame = null;
+      }
+    },
+  },
   methods: {
+    handleSearch() {
+      this.handleSearchInput();
+    },
     formatTime(decimalHours) {
       if (decimalHours < 0) {
         return "Invalid";
@@ -361,7 +371,7 @@ export default {
       try {
         if (this.searchQuery === "") {
           this.searchResults = [];
-          this.visibleResults = [];
+          this.visibleResults = []; // Clear visible results
           return;
         }
 
@@ -370,7 +380,10 @@ export default {
           game.name.toLowerCase().includes(this.searchQuery.toLowerCase())
         );
 
-        this.visibleResults = this.searchResults.slice(0, 20);
+        // Update visibleResults only if no game is selected
+        if (!this.selectedGame) {
+          this.visibleResults = this.searchResults.slice(0, 20);
+        }
       } catch (error) {
         console.error("Error handling search input:", error);
       }
@@ -587,7 +600,7 @@ export default {
       return Math.round(Math.abs((endDate - startDate) / oneDay)) + 1;
     },
     clearSelection() {
-      this.date = null;
+      (this.searchQuery = ""), (this.date = null);
       this.selectedGameMode = "mainStory";
       this.selectedDays = {
         sunday: false,
