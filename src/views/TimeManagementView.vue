@@ -441,14 +441,14 @@ export default {
       }
 
       // Check if no dates or days are selected
-      if (this.selectedDates.length === 0) {
-        Swal.fire({
-          icon: "error",
-          title: "No Dates or Days Selected",
-          text: "Please select at least one date or day before confirming.",
-        });
-        return;
-      }
+      // if (this.selectedDates.length === 0) {
+      //   Swal.fire({
+      //     icon: "error",
+      //     title: "No Dates or Days Selected",
+      //     text: "Please select at least one date or day before confirming.",
+      //   });
+      //   return;
+      // }
 
       // alert enough days
       if (this.selectedDates.length > 0) {
