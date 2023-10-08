@@ -475,12 +475,13 @@ export default {
               this.isDayInRange(day, this.date[0], this.date[1])
             )
           ) {
-            Swal.fire({
-              icon: "error",
-              title: "Invalid Days Selected",
-              text: `You must select at least ${minimumDaysRequired} days, and they must be within the chosen date range for this game time.`,
-            });
-            return;
+            // Swal.fire({
+            //   icon: "error",
+            //   title: "Invalid Days Selected",
+            //   // text: `You must select at least ${minimumDaysRequired} days, and they must be within the chosen date range for this game time.`,
+            //   text: "test2",
+            // });
+            // return;
           }
         }
         const totalMinutesPerDay = Math.floor(
@@ -526,7 +527,8 @@ export default {
           Swal.fire({
             icon: "error",
             title: "Invalid Days Selected",
-            text: `You must select at least ${minimumDaysRequired} days, and they must be within the chosen date range for this game time.`,
+            // text: `You must select at least ${minimumDaysRequired} days, and they must be within the chosen date range for this game time.`,
+            text: "test",
           });
           return;
         }
