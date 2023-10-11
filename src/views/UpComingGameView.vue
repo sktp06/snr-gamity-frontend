@@ -140,14 +140,20 @@ export default {
     async fetchUpcomingGames() {
       try {
         const response = await apiClient.get("/game/upcoming");
-        this.upcomingGames = response.data;
-        this.error = null;
+        this.upcomingGames = response.data.content; // Assuming the data is in the 'content' property
 
-        this.upcomingGames.sort((a, b) => {
-          const releaseDateA = new Date(a.release_dates);
-          const releaseDateB = new Date(b.release_dates);
-          return releaseDateA - releaseDateB;
-        });
+        if (Array.isArray(this.upcomingGames)) {
+          this.error = null;
+          this.upcomingGames.sort((a, b) => {
+            const releaseDateA = new Date(a.release_dates);
+            const releaseDateB = new Date(b.release_dates);
+            return releaseDateA - releaseDateB;
+          });
+        } else {
+          // Handle the case where the fetched data is not an array
+          this.upcomingGames = [];
+          this.error = "Error: Data is not in the expected format.";
+        }
       } catch (error) {
         console.error("Error fetching upcoming games:", error);
         this.upcomingGames = [];
