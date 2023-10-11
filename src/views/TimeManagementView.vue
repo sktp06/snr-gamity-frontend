@@ -368,25 +368,36 @@ export default {
     },
     async handleSearchInput() {
       try {
-        if (this.searchQuery === "") {
+        if (this.searchQuery === null || this.searchQuery === undefined) {
           this.searchResults = [];
-          this.visibleResults = []; // Clear visible results
+          this.visibleResults = [];
           return;
         }
 
-        const games = await gameService.get_clean_gameplay();
-        this.searchResults = games.filter((game) =>
-          game.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-        );
+        const response = await gameService.get_clean_gameplay();
 
-        // Update visibleResults only if no game is selected
-        if (!this.selectedGame) {
-          this.visibleResults = this.searchResults.slice(0, 20);
+        if (response.content && Array.isArray(response.content)) {
+          const games = response.content;
+          this.searchResults = games.filter((game) => {
+            const gameName = game.name || ""; // Ensure game.name is a string
+            return gameName
+              .toLowerCase()
+              .includes(this.searchQuery.toLowerCase());
+          });
+
+          // Update visibleResults only if no game is selected
+          if (!this.selectedGame) {
+            this.visibleResults = this.searchResults.slice(0, 20);
+          }
+        } else {
+          // Handle the case where 'content' is not an array
+          console.error("content is not an array in the response:", response);
         }
       } catch (error) {
         console.error("Error handling search input:", error);
       }
     },
+
     handleGameClick(gameName) {
       this.searchQuery = gameName;
       this.visibleResults = [];
