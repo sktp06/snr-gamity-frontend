@@ -190,6 +190,9 @@ export default {
 
       const releaseDate = new Date(game.release_dates);
       const today = new Date();
+      // Set the time for today to the same time as the release date (e.g., 00:00:00)
+      today.setHours(0, 0, 0, 0);
+
       const differenceInTime = releaseDate.getTime() - today.getTime();
       const differenceInDays = Math.floor(
         differenceInTime / (1000 * 3600 * 24)
@@ -223,7 +226,7 @@ export default {
         } else {
           return " (Just Released)";
         }
-      } else {
+      } else if (differenceInDays === 0) {
         return " (Released today)";
       }
     },
