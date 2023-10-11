@@ -121,9 +121,11 @@ export default {
   computed: {
     allGenres() {
       const allGenres = new Set();
-      this.games.forEach((game) => {
-        game.genres.forEach((genre) => allGenres.add(genre));
-      });
+      if (Array.isArray(this.games.content)) {
+        this.games.content.forEach((game) => {
+          game.genres.forEach((genre) => allGenres.add(genre));
+        });
+      }
       return Array.from(allGenres).sort();
     },
     displayedGenres() {
@@ -153,19 +155,25 @@ export default {
     filteredGames(genre) {
       const currentYear = new Date().getFullYear();
 
-      let filtered = this.games.filter((game) => {
-        return (
-          game.genres.includes(genre) &&
-          new Date(game.release_dates).getFullYear() <= currentYear
-        );
-      });
+      if (Array.isArray(this.games.content)) {
+        let filtered = this.games.content.filter((game) => {
+          return (
+            game.genres.includes(genre) &&
+            new Date(game.release_dates).getFullYear() <= currentYear
+          );
+        });
 
-      if (this.sortingOption !== "release_dates") {
-        filtered = filtered.sort((a, b) => b.popularity - a.popularity);
+        if (this.sortingOption !== "release_dates") {
+          filtered = filtered.sort((a, b) => b.popularity - a.popularity);
+        }
+
+        return filtered;
       }
 
-      return filtered;
+      // Return an empty array or handle the case when this.games.content is not available
+      return [];
     },
+
     showGameDetail(game) {
       this.selectedGame = game;
       this.disableScroll();
