@@ -46,7 +46,7 @@
         <p class="mb-2">
           <span class="font-bold">Genres:</span>
           {{
-            game.genres && game.genres.length > 0
+            Array.isArray(game.genres) && game.genres.length > 0
               ? game.genres.join(", ")
               : "No genres"
           }}
