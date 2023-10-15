@@ -32,7 +32,7 @@ export default {
   },
   async get_clean_gameplay() {
     try {
-      const response = await apiClient.get("/game/clean_data");
+      const response = await apiClient.get("/game/clean_gameplay");
       return response.data;
     } catch (error) {
       console.error("Error fetching games:", error);
